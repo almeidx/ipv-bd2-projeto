@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registar Componente</title>
+
+		<script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body>
+		{% include '$navbar.html' %}
+
+    <div class="p-12">
+      <h1 class="text-4xl mb-8">Registo Componente</h1>
+
+      <form class="flex flex-col gap-4 max-w-md" method="post">
+        {% include '$input.html' with type="text" id="name" placeholder="Name" %}
+
+        <select name="componente" class="appearance-none border border-gray-500 rounded-3xl w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="componente1">Componente 1</option>
+          <option value="componente2">Componente 2</option>
+          <option value="componente3">Componente 3</option>
+        </select>
+
+        {% include '$input.html' with type="number" id="preco" placeholder="Preço" %}
+
+        {% include '$submit.html' with text="Criar Componente" %}
+      </form>
+    </div>
+  </body>
+</html>

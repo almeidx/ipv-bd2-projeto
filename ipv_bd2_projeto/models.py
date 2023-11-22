@@ -26,6 +26,7 @@ class Utilizador(models.Model):
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
     email = models.CharField(max_length=256)
+    password = models.CharField(max_length=256)
     type = models.CharField(
         max_length=2,
         choices=TipoDeUtilizador.choices,

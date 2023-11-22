@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+
+		<script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body>
+		{% include '$navbar.html' %}
+
+    <div class="p-12">
+      <h1 class="text-4xl mb-8">Iniciar Sessão</h1>
+
+      <form class="flex flex-col gap-4 max-w-md" method="post">
+				{% include '$input.html' with type="email" id="email" placeholder="Email" %}
+
+				{% include '$input.html' with type="password" id="password" placeholder="Password" %}
+
+        {% include '$submit.html' with text="Login" %}
+      </form>
+    </div>
+  </body>
+</html>
