@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html lang="pt-PT">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Cliente</title>
 
-    <script src="https://cdn.tailwindcss.com"></script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Utilizador</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body>
   {% include '$navbar.html' %}
 
-	<div class="p-12">
-		<h1 class="text-4xl mb-8">Editar Cliente</h1>
+  <div class="p-12">
+    <h1 class="text-4xl mb-8">Editar Utilizador</h1>
 
-		<form class="flex flex-col gap-4 w-5" method="post">
+    <form class="flex flex-col gap-4 max-w-md" method="post">
       {% include '$input.html' with type="text" id="first_name" placeholder="Primeiro Nome" %}
 
       {% include '$input.html' with type="text" id="last_name" placeholder="Último Nome" %}
@@ -22,6 +24,7 @@
 
       {% include '$submit.html' with text="Guardar" %}
     </form>
-	</div>
+  </div>
 </body>
+
 </html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registo Produção Equipamento</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  {% include '$navbar.html' %}
+
+  <div class="p-12 min-w-full">
+    <h1 class="text-4xl mb-8">Registo Produção Equipamento</h1>
+
+    <form class="flex flex-col gap-4" method="post">
+      <div class="flex flex-col gap-4 max-w-md">
+
+        <select name="Equipamento1"
+          class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="Equipamento1">Equipamento1</option>
+          <option value="Equipamento1">Equipamento1 2</option>
+          <option value="Equipamento1">AtribEquipamento1uto 3</option>
+        </select>
+
+        {% include '$input.html' with type="text" id="data_inico" placeholder="Data Inicio" %}
+
+        {% include '$input.html' with type="text" id="data_fim" placeholder="Data Fim" %}
+
+        {% include '$input.html' with type="text" id="funcionario" placeholder="Funcionario" %}
+
+
+        <select name="Tipo"
+          class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="Tipo1">Tipo 1</option>
+          <option value="Tipo2">Tipo 2</option>
+          <option value="Tipo3">Tipo 3</option>
+        </select>
+
+        <select name="armazem" id="armazem"
+          class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="1">Armazem 1</option>
+          <option value="2">Armazem 2</option>
+          <option value="3">Armazem 3</option>
+        </select>
+
+        <div class="flex w-full gap-4">
+          <div id="attr_container" class="flex flex-col gap-4">
+            <div class="flex gap-4">
+              <select name="componente1"
+                class="appearance-none border border-gray-500 rounded-3xl p-2 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="1">Componente 1</option>
+                <option value="2">Componente 2</option>
+                <option value="3">Componente 3</option>
+              </select>
+
+              {% include '$input.html' with type="number" id="quantidade" placeholder="Quantidade" %}
+            </div>
+          </div>
+
+          <button class="bg-gray-900 border px-4 border-gray-500 h-11 rounded-3xl w-fit whitespace-nowrap text-white"
+            id="add_attr_btn" type="button">
+            Adicionar Componente
+          </button>
+        </div>
+      </div>
+
+      {% include '$submit.html' with text="Registar Criação Equipamento" %}
+    </form>
+  </div>
+
+  <script>
+    const addAttrBtn = document.getElementById('add_attr_btn');
+    const attrContainer = document.getElementById('attr_container');
+    let attrCount = 1;
+
+    addAttrBtn.addEventListener('click', () => {
+      const attr = document.createElement('div');
+      attr.className = 'flex gap-4';
+      attr.innerHTML = `
+        <select name="componente${++attrCount}"
+          class="appearance-none border border-gray-500 rounded-3xl p-2 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="1">Componente 1</option>
+          <option value="2">Componente 2</option>
+          <option value="3">Componente 3</option>
+        </select>
+
+        {% include '$input.html' with type="number" id="quantidade" placeholder="Quantidade" %}
+      `;
+
+      attrContainer.appendChild(attr);
+    });
+  </script>
+</body>
+
+</html>

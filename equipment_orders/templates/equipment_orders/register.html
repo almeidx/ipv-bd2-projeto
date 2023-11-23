@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Listagem de Encomendas de Equipamentos</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  {% include '$navbar.html' %}
+
+  <div class="p-12">
+    <h1 class="text-4xl mb-8">Criar Encomenda de Equipamento</h1>
+
+    <form class="flex flex-col gap-4 max-w-md" method="post">
+
+      <select name="cliente"
+        class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+        <option value="Cliente1">Cliente 1</option>
+        <option value="Cliente2">Cliente 2</option>
+        <option value="Cliente3">Cliente 3</option>
+      </select>
+      {% include '$input.html' with type="text" id="morada" placeholder="Morada" %}
+
+      {% include '$input.html' with type="text" id="codigopostal" placeholder="Código Postal" %}
+
+      {% include '$input.html' with type="text" id="localidade" placeholder="Localidade" %}
+
+      <div class="flex w-full gap-4 ">
+        <select name="equipamento"
+          class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+          <option value="Equipamento1">Equipamento 1</option>
+          <option value="Equipamento2">Equipamento 2</option>
+          <option value="Equipamento3">Equipamento 3</option>
+        </select>
+
+        {% include '$input.html' with type="number" id="quantidade" placeholder="quantidade" %}
+
+        <button class="bg-gray-900 px-16 border border-gray-500 rounded-3xl text-white w-fit">
+          Adicionar Equipamento
+        </button>
+      </div>
+
+
+      {% include '$submit.html' with text="Registar Criação de Encomenda " %}
+    </form>
+  </div>
+</body>
+
+</html>

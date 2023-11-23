@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Editar Encomenda Componentes</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+  {% include '$navbar.html' %}
+
+  <div class="p-12 min-w-full">
+    <h1 class="text-4xl mb-8">Editar Encomenda Componentes</h1>
+
+    <form class="flex flex-col gap-4" method="post">
+      <div class="flex flex-col gap-4 max-w-md">
+        {% include '$input.html' with type="text" id="fornecedor" placeholder="Fornecedor" %}
+
+        <div class="flex w-full gap-4 ">
+          <select name="componente"
+            class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+            <option value="componente1">Componente 1</option>
+            <option value="componente2">Componente 2</option>
+            <option value="componente3">Componente 3</option>
+          </select>
+
+          {% include '$input.html' with type="number" id="quantidade" placeholder="Quantidade" %}
+
+          <button class="bg-gray-900 px-16 border border-gray-500 rounded-3xl text-white w-fit">
+            Adicionar/Editar Componente
+          </button>
+        </div>
+      </div>
+
+      <div class="flex flex-col gap-4">
+        <table
+          class="overflow-auto border border-gray-300 h-full min-table-fixed border-collapse border-spacing-px text-left">
+          <thead>
+            <tr>
+              <th class="border border-gray-300 bg-gray-200 text-black p-1">Componente</th>
+              <th class="border border-gray-300 bg-gray-200 text-black p-1">Quantidade</th>
+              <th class="border border-gray-300 bg-gray-200 text-black p-1">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="border border-gray-300 text-black p-4">Componente</td>
+              <td class="border border-gray-300 text-black p-4">2</td>
+              <td>
+                <button>
+                  Apagar
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      {% include '$submit.html' with text="Guardar" %}
+    </form>
+  </div>
+</body>
+
+</html>

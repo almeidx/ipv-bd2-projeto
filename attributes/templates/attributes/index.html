@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Listagem de Componentes</title>
+	<title>Lista de Atributos</title>
 
 	<script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -24,41 +24,40 @@
 		<div class="flex justify-between w-full mb-4">
 			<select name="componente"
 				class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
-				<option value="componente1">Componente 1</option>
-				<option value="componente2">Componente 2</option>
-				<option value="componente3">Componente 3</option>
+				<option value="componente1">Atributo 1</option>
+				<option value="componente2">Atributo 2</option>
+				<option value="componente3">Atributo 3</option>
 			</select>
 
 			<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="stock/">
 				Ver Stock
 			</a>
 		</div>
+
 		<div class="flex flex-col gap-4">
 			<table
 				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
 				<thead>
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 text-black p-1">ID</th>
-						<th class="border border-gray-300 bg-gray-200 text-black p-1">Nome Componente</th>
-						<th class="border border-gray-300 bg-gray-200 text-black p-1">Custo</th>
-						<th class="border border-gray-300 bg-gray-200 text-black p-1">Fornecedor</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Atributo</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Valores</th>
 						<th class="border border-gray-300 bg-gray-200 text-black p-1">Ações</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<td class="border border-gray-300 text-black p-4">1</td>
-						<td class="border border-gray-300 text-black p-4">Componente</td>
-						<td class="border border-gray-300 text-black p-4">10€</td>
-						<td class="border border-gray-300 text-black p-4">Fornecedor 1</td>
+						<td class="border border-gray-300 text-black p-4">Cor</td>
+						<td class="border border-gray-300 text-black p-4">Vermelho, Verde, Preto</td>
 						<td class="border border-gray-300 text-black p-4">
-							<a href="/">Editar</a>
+							<a href="edit/1">
+								Editar
+							</a>
 						</td>
 					</tr>
 				</tbody>
 			</table>
-
-
 		</div>
 	</div>
 </body>

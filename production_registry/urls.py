@@ -1,10 +1,8 @@
 from django.contrib import admin
 from django.urls import path
-from .views import index, register, edit, stock
+from .views import index, register
 
 urlpatterns = [
 		path("", index, name="index"),
 		path("register/", register),
-		path("edit/", edit),
-		path("stock/", stock)
 ]

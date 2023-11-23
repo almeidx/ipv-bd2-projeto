@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Registar Tipo de Mâo de Obra</title>
+
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+	{% include '$navbar.html' %}
+
+	<div class="p-12 min-w-full">
+		<h1 class="text-4xl mb-8">Registar Tipo de Mão de Obra</h1>
+
+		<form class="flex flex-col gap-4  max-w-md" method="post">
+			{% include '$input.html' with type="text" id="nome" placeholder="Nome" %}
+
+			{% include '$input.html' with type="text" id="custo" placeholder="Custo" %}
+
+			<select name="Tipo"
+				class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+				<option value="Tipo1">Tipo 1</option>
+				<option value="Tipo2">Tipo 2</option>
+				<option value="Tipo3">Tipo 3</option>
+			</select>
+
+			{% include '$submit.html' with text="Registar" %}
+		</form>
+	</div>
+</body>
+
+</html>

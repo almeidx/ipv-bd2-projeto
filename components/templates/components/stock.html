@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Listagem de Componentes</title>
+
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+	{% include '$navbar.html' %}
+
+	<div class="p-12">
+		<h1 class="text-4xl mb-8">Listagem de Componentes - Stock </h1>
+
+		<div class="flex flex-col gap-4">
+			<table
+				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
+				<thead>
+					<tr>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Data</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">ID Encomenda</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Componente</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Recebido</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="border border-gray-300 text-black p-4">01/12/03</td>
+						<td class="border border-gray-300 text-black p-4">2</td>
+						<td class="border border-gray-300 text-black p-4">Componente 1</td>
+						<td class="border border-gray-300 text-black p-4">Recebido</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
+</html>

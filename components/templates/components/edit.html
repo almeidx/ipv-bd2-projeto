@@ -1,62 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-PT">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Componente </title>
-		<script src="https://cdn.tailwindcss.com"></script>
-
-    <style>
-      * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-      }
-
-      ul {
-        display: flex;
-        list-style: none;
-        gap: 1rem;
-      }
-
-      ul a {
-        color: white;
-        text-decoration: none;
-      }
-
-      .campos{
-        padding: 3rem;
-      }
-
-      .campos h1{
-        font-size: 2rem;
-        margin-bottom: 2rem;
-      }
-
-      form{
-        display: flex;
-        flex-direction: column;
-        gap: 1rem;
-        width: 20rem;
-      }
-
-      form input{
-        padding: 0.5rem;
-        border: 1px solid gray;
-        border-radius: 0.5rem;
-      }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Componente </title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body>
   {% include '$navbar.html' %}
 
-  <div class="campos">
-    <h1>Editar Componente</h1>
+  <div class="p-12">
+    <h1 class="text-3xl mb-2">Editar Componente</h1>
 
-    <form action="submit">
+    <form class="flex flex-col gap-4 max-w-md" method="post">
       {% include '$input.html' with type="text" id="nome" placeholder="Nome" %}
 
-      <select name="component " class="appearance-none border border-gray-500 rounded-3xl w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+      <select name="component "
+        class="appearance-none border border-gray-500 rounded-3xl w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
         <option value="componente1">Componente 1</option>
         <option value="componente2">Componente 2</option>
         <option value="componente3">Componente 3</option>
@@ -68,4 +30,5 @@
     </form>
   </div>
 </body>
+
 </html>

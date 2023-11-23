@@ -12,13 +12,6 @@ def register(request):
 def edit(request):
 	return render(request, "components/edit.html")
 
-def list_stock(request):
-	return render(request, "components/list_stock.html")
 
-
-def list_orders(request):
-	return render(request, "components/list_orders.html")
-
-
-def register_order(request):
-	return render(request, "components/register_order.html")
+def stock(request):
+	return render(request, "components/stock.html")

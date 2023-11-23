@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Ficha de Produção</title>
+
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+	{% include '$navbar.html' %}
+
+	<div class="p-12">
+		<div class="flex justify-between items-center w-full">
+			<h1 class="text-4xl mb-8">Ficha de Produção</h1>
+
+			<a class="bg-gray-900  py-2 border border-gray-500 rounded-3xl text-white w-40" href="register">
+				Registar
+			</a>
+		</div>
+
+		<div class="flex flex-col gap-4">
+			<table
+				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left text-black">
+				<thead>
+					<tr>
+						<th class="border border-gray-300 bg-gray-200 p-1">ID</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Nome Equipamento</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Tipo Mão de Obra</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Custo</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Data</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Funcionário</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="border border-gray-300 p-4">1</td>
+						<td class="border border-gray-300 p-4">Equipamento</td>
+						<td class="border border-gray-300 p-4">Tipo</td>
+						<td class="border border-gray-300 p-4">Custo</td>
+						<td class="border border-gray-300 p-4">Data</td>
+						<td class="border border-gray-300 p-4">Funcionário</td>
+						<td class="border border-gray-300 p-4">
+							<a href="edit/1">Editar</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
+</html>

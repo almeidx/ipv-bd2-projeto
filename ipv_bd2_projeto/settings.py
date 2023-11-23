@@ -40,7 +40,14 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "ipv_bd2_projeto",
     "components",
-    "clients"
+    "users",
+    "equipments",
+    "component_orders",
+    "equipment_orders",
+    "production_registry",
+    "labor",
+    "invoice",
+    "attributes"
 ]
 
 MIDDLEWARE = [

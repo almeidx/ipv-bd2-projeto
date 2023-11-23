@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Listagem de Equipamento - Stock</title>
+
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+	{% include '$navbar.html' %}
+
+	<div class="p-12">
+		<div class="flex justify-between items-center w-full">
+			<h1 class="text-4xl mb-8">Listagem de Equipamento - Stock</h1>
+
+			<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center"
+				href="../production_registry">
+				Ficha de Produção
+			</a>
+		</div>
+
+		<div class="flex justify-between w-full mb-4">
+		</div>
+
+		FALTA FILTROS
+
+		<div class="flex flex-col gap-4">
+			<table
+				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
+				<thead>
+					<tr>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">ID</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Nome Componente</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Quantidade</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Armazém</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="border border-gray-300 text-black p-4">1</td>
+						<td class="border border-gray-300 text-black p-4">Componente</td>
+						<td class="border border-gray-300 text-black p-4">10</td>
+						<td class="border border-gray-300 text-black p-4">Nome do Armazém</td>
+					</tr>
+				</tbody>
+			</table>
+
+
+		</div>
+	</div>
+</body>
+
+</html>
