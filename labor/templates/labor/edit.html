@@ -16,6 +16,8 @@
     <h1 class="text-4xl mb-8">Editar Tipo de Mão de Obra</h1>
 
     <form class="flex flex-col gap-4  max-w-md" method="post">
+      {% csrf_token %}
+
       {% include '$input.html' with type="text" id="nome" placeholder="Nome" %}
 
       {% include '$input.html' with type="text" id="custo" placeholder="Custo" %}

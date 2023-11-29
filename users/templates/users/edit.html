@@ -16,11 +16,39 @@
     <h1 class="text-4xl mb-8">Editar Utilizador</h1>
 
     <form class="flex flex-col gap-4 max-w-md" method="post">
-      {% include '$input.html' with type="text" id="first_name" placeholder="Primeiro Nome" %}
+      {% csrf_token %}
 
-      {% include '$input.html' with type="text" id="last_name" placeholder="Último Nome" %}
+      {% include '$input.html' with type="text" id="first_name" placeholder="Primeiro Nome" value=user.1 %}
 
-      {% include '$input.html' with type="email" id="email" placeholder="Email" %}
+      {% include '$input.html' with type="text" id="last_name" placeholder="Último Nome" value=user.2 %}
+
+      <select name="type" id="type"
+      class="appearance-none border border-gray-500 rounded-3xl w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+        <option
+          value="AD" 
+          {% if user.4 == 'AD' %} 
+          selected
+          {% endif %}
+        >
+          Administrador
+        </option>
+        <option
+          value="FU"
+          {% if user.4 == 'FU' %} 
+          selected
+          {% endif %}
+        >
+          Funcionário
+        </option>
+        <option
+          value="CL"
+          {% if user.4 == 'CL' %}
+          selected
+          {% endif %}
+        >
+          Cliente
+        </option>
+      </select>
 
       {% include '$submit.html' with text="Guardar" %}
     </form>

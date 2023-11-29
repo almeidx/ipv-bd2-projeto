@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Cliente</title>
+    <title>Editar Utilizador</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -13,16 +13,33 @@
     {% include '$navbar.html' %}
 
     <div class="p-12">
-        <h1 class="text-4xl mb-8">Registo de Clientes</h1>
+        <h1 class="text-4xl mb-8">Registo de Utilizador</h1>
 
         <form class="flex flex-col gap-4 max-w-md" method="post">
+            {% csrf_token %}
+
             {% include '$input.html' with type="text" id="first_name" placeholder="Primeiro Nome" %}
 
             {% include '$input.html' with type="text" id="last_name" placeholder="Último Nome" %}
 
             {% include '$input.html' with type="email" id="email" placeholder="Email" %}
 
-            {% include '$submit.html' with text="Registar Cliente" %}
+            {% include '$input.html' with type="password" id="password" placeholder="Password" %}
+
+            <select name="type" id="type"
+                class="appearance-none border border-gray-500 rounded-3xl w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+                <option value="AD">
+                    Administrador
+                </option>
+                <option value="FU" selected>
+                    Funcionário
+                </option>
+                <option value="CL">
+                    Cliente
+                </option>
+            </select>
+
+            {% include '$submit.html' with text="Registar Utilizador" %}
         </form>
     </div>
 </body>

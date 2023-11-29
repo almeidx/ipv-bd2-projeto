@@ -13,8 +13,8 @@
   {% include '$navbar.html' %}
 
   <div class="p-12">
-    <div class="flex items-start justify-between h-fit">
-      <h1 class="text-4xl mb-8">Listagem de Encomendas de Componentes</h1>
+    <div class="flex items-center mb-8 justify-between h-fit">
+      <h1 class="text-4xl">Listagem de Encomendas de Componentes</h1>
 
       <a href="/" class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Encomendar</a>
     </div>
@@ -24,26 +24,24 @@
         class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
         <thead>
           <tr>
+            <th class="border border-gray-300 bg-gray-200 text-black p-1 w-12">ID Encomenda</th>
             <th class="border border-gray-300 bg-gray-200 text-black p-1">Data</th>
-            <th class="border border-gray-300 bg-gray-200 text-black p-1">ID Encomenda</th>
             <th class="border border-gray-300 bg-gray-200 text-black p-1">Componente</th>
             <th class="border border-gray-300 bg-gray-200 text-black p-1">Exportado</th>
-            <th class="border border-gray-300 bg-gray-200 text-black p-1">Ações</th>
+            <th class="border border-gray-300 bg-gray-200 text-black p-1 w-32">Ações</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="border border-gray-300 text-black p-4">01/12/2003</td>
-            <td class="border border-gray-300 text-black p-4">1</td>
-            <td class="border border-gray-300 text-black p-4">componente (10)</td>
-            <td class="border border-gray-300 text-black p-4">Exportado</td>
-            <td class="border border-gray-300 text-black p-4">
+            <td class="border border-gray-300 text-black p-1">1</td>
+            <td class="border border-gray-300 text-black p-1">01/12/2003</td>
+            <td class="border border-gray-300 text-black p-1">componente (10)</td>
+            <td class="border border-gray-300 text-black p-1">Exportado</td>
+            <td class="border border-gray-300 text-black p-1">
               <a href="edit/1">
                 Editar
               </a>
-            </td>
-            <td>
-              <a href="edit/1">
+              <a href="delete/1">
                 Apagar
               </a>
             </td>

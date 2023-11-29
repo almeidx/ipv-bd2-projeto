@@ -13,8 +13,12 @@
 	{% include '$navbar.html' %}
 
 	<div class="p-12">
-		<div class="flex justify-between items-center w-full">
-			<h1 class="text-4xl mb-8">Lista de Cliente</h1>
+		<div class="flex justify-between items-center mb-8 w-full">
+			<h1 class="text-4xl">Lista de Utilizadores</h1>
+
+			<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="register/">
+				Registar
+			</a>
 		</div>
 
 		<div class="flex justify-between w-full mb-4">
@@ -39,17 +43,27 @@
 					</tr>
 				</thead>
 				<tbody>
+					{% for user in users %}
 					<tr>
-						<td class="border border-gray-300 text-black p-4">1</td>
-						<td class="border border-gray-300 text-black p-4">Primeiro e Ultimo</td>
-						<td class="border border-gray-300 text-black p-4">Email</td>
-						<td class="border border-gray-300 text-black p-4">Tipo</td>
-						<td class="border border-gray-300 text-black p-4">
-							<a href="edit/1">
+						<td class="border border-gray-300 text-black p-1">{{ user.0 }}</td>
+						<td class="border border-gray-300 text-black p-1">{{ user.1 }} {{ user.2 }}</td>
+						<td class="border border-gray-300 text-black p-1">{{ user.3 }}</td>
+						<td class="border border-gray-300 text-black p-1">
+							{% if user.4 == 'AD' %}
+							Administrador
+							{% elif user.4 == 'FU' %}
+							Funcionário
+							{% else %}
+							Cliente
+							{% endif %}
+						</td>
+						<td class="border border-gray-300 text-black p-1">
+							<a href="edit/{{ user.0 }}" class="underline">
 								Editar
 							</a>
 						</td>
 					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 		</div>

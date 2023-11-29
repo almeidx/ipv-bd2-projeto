@@ -23,6 +23,7 @@
 				<option value="Ficha de Produção2">Ficha de Produção 2</option>
 				<option value="Ficha de Produção3">Ficha de Produção 3</option>
 			</select>
+			{% csrf_token %}
 
 			{% include '$input.html' with type="date" id="datasaida" placeholder="Data de saída" %}
 

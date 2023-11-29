@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Criar Fatura de Equipamentos</title>
+
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+	{% include '$navbar.html' %}
+
+	<div class="p-12">
+		<h1 class="text-4xl mb-8">Criar Fatura de Equipamentos</h1>
+
+		<form class="flex flex-col gap-4 max-w-md" method="post">
+			{% csrf_token %}
+
+			{% include '$input.html' with type="date" id="contribuinte" placeholder="Contribuinte do Cliente" %}
+
+			{% include '$input.html' with type="date" id="data_criacao" placeholder="Data de Criação" %}
+
+			{% include '$submit.html' with text="Registar Fatura de Encomenda" %}
+		</form>
+	</div>
+</body>
+
+</html>

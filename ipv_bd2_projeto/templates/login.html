@@ -16,6 +16,9 @@
     <h1 class="text-4xl mb-8">Iniciar Sessão</h1>
 
     <form class="flex flex-col gap-4 max-w-md" method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+
       {% include '$input.html' with type="email" id="email" placeholder="Email" %}
 
       {% include '$input.html' with type="password" id="password" placeholder="Password" %}

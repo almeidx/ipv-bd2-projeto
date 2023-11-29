@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Tipo de Equipamento</title>
+
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+	{% include '$navbar.html' %}
+
+	<div class="p-12">
+		<div class="flex justify-between items-center w-full mb-8">
+			<h1 class="text-4xl ">Tipo de Equipamento</h1>
+
+			<button class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40">
+				<a href="register/">
+					Registar
+				</a>
+			</button>
+		</div>
+
+		<div class="flex flex-col gap-4">
+			<table
+				class="overflow-auto border border-gray-300 h-full max-w-3xl table-fixed border-collapse border-spacing-px text-left">
+				<thead>
+					<tr>
+						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Tipo de Equipamento </th>
+						<th class="border border-gray-300 bg-gray-200 p-1 w-32">Editar</th>
+					</tr>
+				</thead>
+				<tbody>
+					{%for equipment_type in equipment_types%}
+					<tr>
+						<td class="border border-gray-300 p-1">{{ equipment_type.0}}</td>
+						<td class="border border-gray-300 p-1">{{ equipment_type.1}}</td>
+						<td class="border border-gray-300 p-1">
+							<a href="edit/1" class="underline">
+								Editar
+							</a>
+					</tr>
+					{%endfor%}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
+</html>

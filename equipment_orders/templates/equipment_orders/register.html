@@ -16,6 +16,7 @@
     <h1 class="text-4xl mb-8">Criar Encomenda de Equipamento</h1>
 
     <form class="flex flex-col gap-4 max-w-md" method="post">
+      {% csrf_token %}
 
       <select name="cliente"
         class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">

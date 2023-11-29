@@ -16,6 +16,8 @@
     <h1 class="text-4xl mb-8">Registo Componente</h1>
 
     <form class="flex flex-col gap-4 max-w-md" method="post">
+      {% csrf_token %}
+
       {% include '$input.html' with type="text" id="name" placeholder="Name" %}
 
       <select name="componente"

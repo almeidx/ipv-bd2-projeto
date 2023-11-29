@@ -6,7 +6,15 @@ def index(request):
 
 
 def info(request, id):
-	return render(request, "invoice/info.html")
+	return render(request, "invoice/info_expedicao.html")
+
+
+def info_expedicao(request):
+	return render(request, "invoice/info_expedicao.html")
+
+
+def create(request):
+	return render(request, "invoice/info_compra.html")
 
 
 def shipping(request):

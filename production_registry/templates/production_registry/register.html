@@ -24,6 +24,7 @@
           <option value="Equipamento1">Equipamento1 2</option>
           <option value="Equipamento1">AtribEquipamento1uto 3</option>
         </select>
+        {% csrf_token %}
 
         {% include '$input.html' with type="text" id="data_inico" placeholder="Data Inicio" %}
 

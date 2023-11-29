@@ -16,6 +16,8 @@
     <h1 class="text-4xl mb-8">Editar Encomenda Componentes</h1>
 
     <form class="flex flex-col gap-4" method="post">
+      {% csrf_token %}
+
       <div class="flex flex-col gap-4 max-w-md">
         {% include '$input.html' with type="text" id="fornecedor" placeholder="Fornecedor" %}
 
@@ -47,9 +49,9 @@
           </thead>
           <tbody>
             <tr>
-              <td class="border border-gray-300 text-black p-4">Componente</td>
-              <td class="border border-gray-300 text-black p-4">2</td>
-              <td>
+              <td class="border border-gray-300 text-black p-1">Componente</td>
+              <td class="border border-gray-300 text-black p-1">2</td>
+              <td class="border border-gray-300 text-black p-1 w-32">
                 <button>
                   Apagar
                 </button>
@@ -58,7 +60,7 @@
           </tbody>
         </table>
       </div>
-      {% include '$submit.html' with text="Guardar" %}
+      {% include '$submit.html' with text=" Guardar" %}
     </form>
   </div>
 </body>

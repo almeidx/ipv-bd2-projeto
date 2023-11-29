@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Editar Atributo</title>
+
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+	{% include '$navbar.html' %}
+
+	<div class="p-12 min-w-full">
+		<h1 class="text-4xl mb-8">Editar Atributo</h1>
+
+		<form class="flex flex-col gap-4  max-w-md" method="post">
+			{% csrf_token %}
+
+			{% include '$input.html' with type="text" id="nome" placeholder="Nome do Atributo" %}
+
+			{% include '$submit.html' with text="Guardar" %}
+
+			{% include '$input.html' with type="text" id="morada" placeholder="Valor novo" %}
+
+			{% include '$submit.html' with text="Adicionar Valor" %}
+		</form>
+	</div>
+	<div class="p-12">
+		<div class="flex flex-col gap-4">
+			<table
+				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
+				<thead>
+					<tr>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">ID</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Valor</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Ações</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td class="border border-gray-300 text-black p-1">1</td>
+						<td class="border border-gray-300 text-black p-1">Vermelho</td>
+						<td class="border border-gray-300 text-black p-1">
+							<a href="edit/{{ user.id }}">
+								Editar
+							</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
+</html>
