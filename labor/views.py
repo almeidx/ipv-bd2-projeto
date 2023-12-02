@@ -1,11 +1,42 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.db import connection
 
 
 def index(request):
-	return render(request, "labor/index.html")
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_tipo_mao_obra();")
+        labors = cursor.fetchall()
 
-def edit(request):
-    return render(request, "labor/edit.html")
+    return render(request, "labor/index.html", {"labors": labors})
+
+
+def edit(request, id):
+        if request.method == "POST":
+            with connection.cursor() as cursor:
+                cursor.execute ("CALL sp_edit_tipo_mao_de_obra(%s, %s, %s);", [
+                    id,
+                    request.POST["name"],
+                    request.POST['cost']]
+                )
+
+            return redirect("/labor/")
+
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM fn_get_tipo_mao_obra_by_id(%s);", [id])
+            labor = cursor.fetchone()
+
+        return render(request, "labor/edit.html", { 'labor': labor })
+
 
 def register(request):
+    if request.method == "POST":
+        name = request.POST['name']
+        cost = request.POST['cost']
+
+        with connection.cursor() as cursor:
+            cursor.execute("CALL sp_create_tipo_mao_obra(%s, %s);", [name, cost])
+            cursor.close()
+
+        return redirect("/labor/")
+
     return render(request, "labor/register.html")

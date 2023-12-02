@@ -18,16 +18,9 @@
 		<form class="flex flex-col gap-4  max-w-md" method="post">
 			{% csrf_token %}
 
-			{% include '$input.html' with type="text" id="nome" placeholder="Nome" %}
+			{% include '$input.html' with type="text" id="name" placeholder="Nome" %}
 
-			{% include '$input.html' with type="text" id="custo" placeholder="Custo" %}
-
-			<select name="Tipo"
-				class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-				<option value="Tipo1">Tipo 1</option>
-				<option value="Tipo2">Tipo 2</option>
-				<option value="Tipo3">Tipo 3</option>
-			</select>
+			{% include '$input.html' with type="number" id="cost" placeholder="Custo" step="0.1" min="0" %}
 
 			{% include '$submit.html' with text="Registar" %}
 		</form>

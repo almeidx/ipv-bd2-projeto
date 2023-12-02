@@ -18,7 +18,7 @@
 		<form class="flex flex-col gap-4  max-w-md" method="post">
 			{% csrf_token %}
 
-			{% include '$input.html' with type="text" id="nome" placeholder="Nome" %}
+			{% include '$input.html' with type="text" id="name" placeholder="Nome" value=equipment_type.1 %}
 
 			{% include '$submit.html' with text="Guardar Tipo de Equipamento" %}
 		</form>

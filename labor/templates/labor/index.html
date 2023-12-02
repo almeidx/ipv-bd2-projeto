@@ -40,22 +40,22 @@
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Nome</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Custo</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Tipo</th>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-32">Ações</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
-						<td class="border border-gray-300 p-1">1</td>
-						<td class="border border-gray-300 p-1">Nome Componente</td>
-						<td class="border border-gray-300 p-1">Custo</td>
-						<td class="border border-gray-300 p-1">Tipo</td>
+						{% for labor in labors %}
+						<td class="border border-gray-300 p-1">{{ labor.0 }}</td>
+						<td class="border border-gray-300 p-1">{{ labor.1 }}</td>
+						<td class="border border-gray-300 p-1">{{ labor.2 }} €</td>
 						<td class="border border-gray-300 p-1">
 							<a href="edit/1">
 								Editar
 							</a>
 						</td>
 					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 		</div>
