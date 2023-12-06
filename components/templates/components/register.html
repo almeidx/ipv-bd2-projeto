@@ -20,14 +20,14 @@
 
       {% include '$input.html' with type="text" id="name" placeholder="Name" %}
 
-      <select name="componente"
-        class="appearance-none border border-gray-500 rounded-3xl w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-        <option value="componente1">Componente 1</option>
-        <option value="componente2">Componente 2</option>
-        <option value="componente3">Componente 3</option>
+      <select id="fornecedor_id_id" name="fornecedor_id_id"
+        class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+        {% for seller in sellers %}
+        <option value="{{seller.0}}">{{seller.1}}</option>
+        {% endfor %}
       </select>
 
-      {% include '$input.html' with type="number" id="preco" placeholder="Preço" %}
+      {% include '$input.html' with type="number" id="cost" placeholder="Preço" %}
 
       {% include '$submit.html' with text="Criar Componente" %}
     </form>

@@ -83,7 +83,7 @@ class TipoDeEquipamento(models.Model):
 class Equipamento(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateField(default=timezone.now)
     tipo_equipamento_id = models.ForeignKey(
         TipoDeEquipamento,
         on_delete=models.DO_NOTHING,
@@ -92,7 +92,7 @@ class Equipamento(models.Model):
 
 class EncomendaEquipamento(models.Model):
     id = models.AutoField(primary_key=True)
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateField(default=timezone.now)
     address = models.CharField(max_length=50)
     postal_code = models.CharField(max_length=50)
     locality = models.CharField(max_length=50)
@@ -135,14 +135,14 @@ class Fornecedor(models.Model):
 class Componente(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=50)
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateField(default=timezone.now)
     cost = models.FloatField()
     fornecedor_id = models.ForeignKey(Fornecedor, on_delete=models.DO_NOTHING)
 
 
 class EncomendaComponente(models.Model):
     id = models.AutoField(primary_key=True)
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateField(default=timezone.now)
     fornecedor_id = models.ForeignKey(Fornecedor, on_delete=models.DO_NOTHING)
     funcionario_responsavel_id = models.ForeignKey(
         Utilizador, on_delete=models.DO_NOTHING
@@ -152,7 +152,7 @@ class EncomendaComponente(models.Model):
 
 class GuiaEntregaComponente(models.Model):
     id = models.AutoField(primary_key=True)
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateField(default=timezone.now)
     armazem_id = models.ForeignKey(Armazem, on_delete=models.DO_NOTHING)
 
 
@@ -186,9 +186,9 @@ class QuantidadeGuiaEntregaComponente(models.Model):
 
 
 class Expedicao(models.Model):
-    sent_at = models.DateField(auto_now_add=True)
+    sent_at = models.DateField(default=timezone.now)
     truck_license = models.CharField(null=True, max_length=50)
-    delivery_date_expected = models.DateField(auto_now_add=True)
+    delivery_date_expected = models.DateField()
     encomenda_id = models.OneToOneField(
         EncomendaEquipamento, on_delete=models.DO_NOTHING, primary_key=True
     )
@@ -196,8 +196,8 @@ class Expedicao(models.Model):
 
 class RegistoProducao(models.Model):
     id = models.AutoField(primary_key=True)
-    started_at = models.DateField(auto_now_add=True)
-    ended_at = models.DateField(auto_now_add=True)
+    started_at = models.DateField(default=timezone.now)
+    ended_at = models.DateField()
     delivery_id = models.ForeignKey(Expedicao, on_delete=models.DO_NOTHING)
     tipo_mao_de_obra_id = models.ForeignKey(TipoMaoDeObra, on_delete=models.DO_NOTHING)
     armazem_id = models.ForeignKey(Armazem, on_delete=models.DO_NOTHING)
@@ -221,7 +221,7 @@ class QuantidadeComponenteRegistoProducao(models.Model):
 
 
 class Fatura(models.Model):
-    created_at = models.DateField(auto_now_add=True)
+    created_at = models.DateField(default=timezone.now)
     contribuinte = models.CharField(max_length=50)
     encomenda_id = models.OneToOneField(
         EncomendaEquipamento, on_delete=models.DO_NOTHING, primary_key=True

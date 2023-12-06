@@ -14,17 +14,23 @@
 
 	<div class="p-12">
 		<div class="flex justify-between items-center mb-8 w-full">
-			<h1 class="text-4xl ">Listagem de Componentes</h1>
+			<h1 class="text-4xl">Listagem de Componentes</h1>
 
-			<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="register/">
-				Registar
-			</a>
+			<div class="flex gap-4">
+				<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="orders">
+					Encomendas
+				</a>
+
+				<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="register/">
+					Registar
+				</a>
+			</div>
 		</div>
 
 		<div class="flex justify-between w-full mb-4">
 			<select name="componente"
 				class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
-				<option value="componente1">Componente 1</option>
+				<option value="">Fornecedor 1</option>
 				<option value="componente2">Componente 2</option>
 				<option value="componente3">Componente 3</option>
 			</select>
@@ -40,25 +46,27 @@
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 text-black p-1 w-12">ID</th>
 						<th class="border border-gray-300 bg-gray-200 text-black p-1">Nome Componente</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Data criação</th>
 						<th class="border border-gray-300 bg-gray-200 text-black p-1">Custo</th>
 						<th class="border border-gray-300 bg-gray-200 text-black p-1">Fornecedor</th>
 						<th class="border border-gray-300 bg-gray-200 text-black p-1 w-32">Ações</th>
 					</tr>
 				</thead>
 				<tbody>
+					{% for componente in components %}
 					<tr>
-						<td class="border border-gray-300 text-black p-1">1</td>
-						<td class="border border-gray-300 text-black p-1">Componente</td>
-						<td class="border border-gray-300 text-black p-1">10€</td>
-						<td class="border border-gray-300 text-black p-1">Fornecedor 1</td>
+						<td class="border border-gray-300 text-black p-1">{{componente.0}}</td>
+						<td class="border border-gray-300 text-black p-1">{{componente.1}}</td>
+						<td class="border border-gray-300 text-black p-1">{{componente.2}}</td>
+						<td class="border border-gray-300 text-black p-1">{{componente.3}} €</td>
+						<td class="border border-gray-300 text-black p-1">{{componente.4}}</td>
 						<td class="border border-gray-300 text-black p-1">
-							<a href="/">Editar</a>
+							<a href="edit/{{componente.0}}">Editar</a>
 						</td>
 					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
-
-
 		</div>
 	</div>
 </body>

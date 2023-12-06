@@ -83,7 +83,7 @@ $$;
 
 -- ✅ Procedure to create tipo de equipamento
 CREATE PROCEDURE sp_create_tipo_equipamento(
-    p_name NVARCHAR(50)
+    p_name VARCHAR(50)
 )
 LANGUAGE plpgsql
 AS $$
@@ -139,7 +139,7 @@ $$;
 -- Coisas novas
 -- Procedure to create component
 CREATE PROCEDURE sp_create_component(
-    p_ComponentName NVARCHAR(50),
+    p_ComponentName VARCHAR(50),
     p_ComponentCost FLOAT,
     p_FornecedorId INT
 )
@@ -250,7 +250,7 @@ $$;
 
 --procedure to sp_create_equipment
 CREATE PROCEDURE sp_create_equipment
-    equipmentName NVARCHAR(50),
+    equipmentName VARCHAR(50),
     tipoEquipamentoId INT
 LANGUAGE plpgsql
 AS $$
@@ -267,7 +267,7 @@ $$;
 -- sp_edit_equipamento
 CREATE PROCEDURE sp_edit_equipamento
     EquipamentoId INT,
-    NewEquipamentoName NVARCHAR(50),
+    NewEquipamentoName VARCHAR(50),
     NewTipoEquipamentoId INT
 LANGUAGE plpgsql
 AS $$
@@ -296,7 +296,7 @@ $$;
 CREATE FUNCTION fn_get_equipamentos()
 RETURNS TABLE(
     id INT,
-    name NVARCHAR(50),
+    name VARCHAR(50),
     created_at DATE,
     tipo_equipamento_id INT
 )
@@ -308,13 +308,13 @@ BEGIN
 END; $$;
 
 
--- procedure to create fornecedor
+✅ -- procedure to create fornecedor
 CREATE PROCEDURE sp_create_fornecedor
-    name NVARCHAR(50),
-    address NVARCHAR(50),
-    postal_code NVARCHAR(50),
-    locality NVARCHAR(50),
-    email NVARCHAR(256)
+    name VARCHAR(50),
+    address VARCHAR(50),
+    postal_code VARCHAR(50),
+    locality VARCHAR(50),
+    email VARCHAR(256)
 LANGUAGE plpgsql
 AS $$
 BEGIN
@@ -336,14 +336,35 @@ END;
 $$;
 
 
+-- sp_delete_fornecedor
+CREATE OR REPLACE PROCEDURE sp_delete_fornecedor(
+    p_FornecedorId INT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_fornecedor WHERE id = p_FornecedorId) THEN
+        RAISE NOTICE 'Fornecedor não encontrado. Falha na exclusão do fornecedor.';
+        RETURN;
+    END IF;
+
+    DELETE FROM ipv_bd2_projeto_fornecedor
+    WHERE id = p_FornecedorId;
+
+    RAISE NOTICE 'Fornecedor excluído com sucesso.';
+END;
+$$;
+
+
+
 -- sp_edit_fornecedor
 CREATE PROCEDURE sp_edit_fornecedor
     FornecedorId INT,
-    NewFornecedorName NVARCHAR(50),
-    NewFornecedorAddress NVARCHAR(50),
-    NewFornecedorPostalCode NVARCHAR(50),
-    NewFornecedorLocality NVARCHAR(50),
-    NewFornecedorEmail NVARCHAR(256)
+    NewFornecedorName VARCHAR(50),
+    NewFornecedorAddress VARCHAR(50),
+    NewFornecedorPostalCode VARCHAR(50),
+    NewFornecedorLocality VARCHAR(50),
+    NewFornecedorEmail VARCHAR(256)
 LANGUAGE plpgsql
 AS $$
 BEGIN
@@ -376,11 +397,11 @@ CREATE FUNCTION fn_get_fornecedor_by_id
 )
 RETURNS TABLE(
     id INT,
-    name NVARCHAR(50),
-    address NVARCHAR(50),
-    postal_code NVARCHAR(50),
-    locality NVARCHAR(50),
-    email NVARCHAR(256)
+    name VARCHAR(50),
+    address VARCHAR(50),
+    postal_code VARCHAR(50),
+    locality VARCHAR(50),
+    email VARCHAR(256)
 )
 LANGUAGE plpgsql
 AS $$
@@ -394,11 +415,11 @@ END; $$;
 CREATE FUNCTION fn_get_fornecedores()
 RETURNS TABLE(
     id INT,
-    name NVARCHAR(50),
-    address NVARCHAR(50),
-    postal_code NVARCHAR(50),
-    locality NVARCHAR(50),
-    email NVARCHAR(256)
+    name VARCHAR(50),
+    address VARCHAR(50),
+    postal_code VARCHAR(50),
+    locality VARCHAR(50),
+    email VARCHAR(256)
 )
 LANGUAGE plpgsql
 AS $$
@@ -467,10 +488,10 @@ CREATE FUNCTION fn_get_armazem_by_id
 )
 RETURNS TABLE(
     id INT,
-    name NVARCHAR(50),
-    address NVARCHAR(100),
-    postal_code NVARCHAR(10),
-    locality NVARCHAR(50)
+    name VARCHAR(50),
+    address VARCHAR(100),
+    postal_code VARCHAR(10),
+    locality VARCHAR(50)
 )
 LANGUAGE plpgsql
 AS $$
@@ -484,10 +505,10 @@ END; $$;
 CREATE FUNCTION fn_get_armazens()
 RETURNS TABLE (
     id INT,
-    name NVARCHAR(50),
-    address NVARCHAR(100),
-    postal_code NVARCHAR(10),
-    locality NVARCHAR(50)
+    name VARCHAR(50),
+    address VARCHAR(100),
+    postal_code VARCHAR(10),
+    locality VARCHAR(50)
 )
 LANGUAGE plpgsql
 AS $$
@@ -522,7 +543,7 @@ $$;
 
 -- ✅  Procedure sp_create_tipo_mao_obra
 CREATE PROCEDURE sp_create_tipo_mao_obra
-    name NVARCHAR(50)
+    name VARCHAR(50)
     cost FLOAT
 LANGUAGE plpgsql
 AS $$
@@ -548,7 +569,7 @@ $$;
 -- ✅  sp_edit_tipo_mao_de_obra
 CREATE PROCEDURE sp_edit_tipo_mao_de_obra
     TipoMaoDeObraId INT,
-    NewTipoMaoDeObraName NVARCHAR(50),
+    NewTipoMaoDeObraName VARCHAR(50),
     NewTipoMaoDeObraCost FLOAT
 LANGUAGE plpgsql
 AS $$
@@ -580,7 +601,7 @@ CREATE FUNCTION fn_get_tipo_mao_obra_by_id
 )
 RETURNS TABLE(
     id INT,
-    name NVARCHAR(50),
+    name VARCHAR(50),
     cost FLOAT
 )
 LANGUAGE plpgsql
@@ -595,7 +616,7 @@ END; $$;
 CREATE FUNCTION fn_get_tipo_mao_obra()
 RETURNS TABLE(
     id INT,
-    name NVARCHAR(50),
+    name VARCHAR(50),
     cost FLOAT
 )
 LANGUAGE plpgsql
@@ -755,9 +776,9 @@ $$;
 
 -- procedure to create encomenda de equipamentos
 CREATE PROCEDURE sp_create_encomenda_equipamentos
-    address NVARCHAR(100),
-    postal_code NVARCHAR(10),
-    locality NVARCHAR(50),
+    address VARCHAR(100),
+    postal_code VARCHAR(10),
+    locality VARCHAR(50),
     client_id INT,
     funcionario_id INT
 LANGUAGE plpgsql
@@ -778,9 +799,9 @@ CREATE FUNCTION fn_get_encomenda_equipamentos()
 RETURNS TABLE(
     id INT,
     created_at DATE,
-    address NVARCHAR(100),
-    postal_code NVARCHAR(10),
-    locality NVARCHAR(50),
+    address VARCHAR(100),
+    postal_code VARCHAR(10),
+    locality VARCHAR(50),
     client_id INT,
     funcionario_id INT
 )
@@ -800,9 +821,9 @@ CREATE FUNCTION fn_get_encomenda_equipamentos_by_id
 RETURNS TABLE(
     id INT,
     created_at DATE,
-    address NVARCHAR(100),
-    postal_code NVARCHAR(10),
-    locality NVARCHAR(50),
+    address VARCHAR(100),
+    postal_code VARCHAR(10),
+    locality VARCHAR(50),
     client_id INT,
     funcionario_id INT
 )
@@ -814,7 +835,7 @@ BEGIN
 END; $$;
 
 
--- sp_edit_encomenda_equipamentos
+-- sp_delete_encomenda_equipamentos
 CREATE PROCEDURE sp_delete_encomenda_equipamentos
     encomenda_id INT
 LANGUAGE plpgsql
@@ -839,9 +860,9 @@ $$;
 -- sp_edit_encomenda_equipamentos
 CREATE PROCEDURE sp_edit_encomenda_equipamentos
     EncomendaEquipamentoId INT,
-    NewAddress NVARCHAR(50),
-    NewPostalCode NVARCHAR(50),
-    NewLocality NVARCHAR(50),
+    NewAddress VARCHAR(50),
+    NewPostalCode VARCHAR(50),
+    NewLocality VARCHAR(50),
     NewClientId INT,
     NewFuncionarioId INT
 LANGUAGE plpgsql
@@ -871,7 +892,7 @@ $$;
 -- procedure create expedicao
 CREATE PROCEDURE sp_create_expedicao
     send_at DATE,
-    truck_license_plate NVARCHAR(10),
+    truck_license_plate VARCHAR(10),
     delivery_at DATE,
     encomenda_id INT
 LANGUAGE plpgsql
@@ -891,7 +912,7 @@ $$;
 CREATE FUNCTION fn_get_expedicao()
 RETURNS TABLE(
     send_at DATE,
-    truck_license_plate NVARCHAR(10),
+    truck_license_plate VARCHAR(10),
     delivery_date_expected DATE,
     encomenda_id INT
 )
@@ -934,3 +955,93 @@ BEGIN
     SELECT * FROM ipv_bd2_projeto_fatura;
 END;
 $$;
+
+
+
+
+----------------------------------------------------------------------------------------------------------------------------------------
+-- Procedure to get stock of all equipment
+CREATE OR REPLACE PROCEDURE sp_get_stock_equipments(
+    armazem_id INT,
+    equipment_id INT,
+    equipment_name VARCHAR(50),
+    tipo_equipamento_id INT,
+    equipment_number INT
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        ipv_bd2_projeto_armazem.id,
+        ipv_bd2_projeto_equipamento.id,
+        ipv_bd2_projeto_equipamento.name,
+        ipv_bd2_projeto_equipamento.tipo_equipamento_id,
+        COUNT(ipv_bd2_projeto_equipamento.id) AS Quantity
+    FROM
+        ipv_bd2_projeto_armazem
+    INNER JOIN
+        ipv_bd2_projeto_equipamento  ON ipv_bd2_projeto_armazem.id = e.armazem_id
+    INNER JOIN
+        ipv_bd2_projeto_equipamento_componente ec ON e.id = ec.equipamento_id
+    WHERE
+        ipv_bd2_projeto_equipamento.armazem_id = armazem_id
+        AND (equipment_id IS NULL OR ipv_bd2_projeto_equipamento.id = equipment_id)
+        AND (equipment_name IS NULL OR ipv_bd2_projeto_equipamento.name = equipment_name)
+        AND (tipo_equipamento_id IS NULL OR ipv_bd2_projeto_equipamento.tipo_equipamento_id = tipo_equipamento_id)
+        AND (equipment_number IS NULL OR ipv_bd2_projeto_equipamento.quantity = equipment_number)
+    GROUP BY
+        ipv_bd2_projeto_armazem.id, e.id, e.name, e.tipo_equipamento_id
+    ORDER BY
+        ipv_bd2_projeto_armazem.id;
+END;
+$$;
+
+
+-- Create procedure to get component orders
+Create function fn_get_component_orders(
+)
+RETURNS TABLE(
+    id INT,
+    created_at DATE,
+    fornecedor_id INT,
+    funcionario_responsavel_id INT,
+    exported BOOLEAN
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT * FROM ipv_bd2_projeto_encomendacomponente WHERE ipv_bd2_projeto_encomendacomponente.id = id
+END; $$;
+
+-- Create function to get user by name
+CREATE FUNCTION fn_get_user_name(
+    first_name VARCHAR(50),
+    last_name VARCHAR(50)
+)
+RETURNS TABLE (
+    id INT,
+    first_name VARCHAR(50),
+    last_name VARCHAR(50),
+    email VARCHAR(255),
+    user_type VARCHAR(50)
+)
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        ipv_bd2_projeto_utilizador.id,
+        ipv_bd2_projeto_utilizador.first_name,
+        ipv_bd2_projeto_utilizador.last_name,
+        ipv_bd2_projeto_utilizador.email,
+        ipv_bd2_projeto_utilizador.type
+    FROM
+        ipv_bd2_projeto_utilizador
+    WHERE
+        ipv_bd2_projeto_utilizador.first_name = first_name
+        AND ipv_bd2_projeto_utilizador.last_name = last_name;
+END;
+$$;
+

@@ -19,15 +19,16 @@
       {% csrf_token %}
 
       <div class="flex flex-col gap-4 max-w-md">
-        {% include '$input.html' with type="text" id="nome" placeholder="Nome" %}
+        {% include '$input.html' with type="text" id="name" placeholder="Nome" %}
 
-        <select name="Tipo"
+        <select id="tipo_equipamento_id_id" name="tipo_equipment_id_id"
           class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-          <option value="Tipo1">Tipo 1</option>
-          <option value="Tipo2">Tipo 2</option>
-          <option value="Tipo3">Tipo 3</option>
+          {% for equipment_type in equipment_types %}
+          <option value="{{equipment_type.0}}">{{equipment_type.1}}</option>
+          {% endfor %}
         </select>
 
+        <!--
         <div class="flex w-full gap-4 ">
           <select name="Atributo"
             class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
@@ -46,7 +47,7 @@
           <button class="bg-gray-900 px-16 border border-gray-500 rounded-3xl text-white w-fit">
             Adicionar Atributo
           </button>
-        </div>
+        </div> -->
       </div>
 
       {% include '$submit.html' with text="Registar Equipamento" %}

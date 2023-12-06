@@ -17,16 +17,21 @@
     <form class="flex flex-col gap-4 max-w-md" method="post">
       {% csrf_token %}
 
-      {% include '$input.html' with type="text" id="nome" placeholder="Nome" %}
+      {% include '$input.html' with type="text" id="name" placeholder="Nome" value=component.1 %}
 
-      <select name="component "
-        class="appearance-none border border-gray-500 rounded-3xl w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-        <option value="componente1">Componente 1</option>
-        <option value="componente2">Componente 2</option>
-        <option value="componente3">Componente 3</option>
+      <select id="fornecedor_id_id" name="fornecedor_id_id"
+        class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+        {% for seller in sellers %}
+        <option
+          value="{{seller.0}}"
+          {% if seller.0 == component.4 %}
+          selected
+          {% endif %}
+        >{{seller.1}}</option>
+        {% endfor %}
       </select>
 
-      {% include '$input.html' with type="number" id="Preço" placeholder="Preço" %}
+      {% include '$input.html' with type="number" id="cost" placeholder="Preço" value=component.3 step=0.1 min="0" %}
 
       {% include '$submit.html' with text="Editar Componente" %}
     </form>

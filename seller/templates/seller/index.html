@@ -36,6 +36,7 @@
 			<table
 				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
 				<thead>
+
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Nome do Fornecedor</th>
@@ -43,23 +44,25 @@
 						<th class="border border-gray-300 bg-gray-200 p-1">Código Postal</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Localidade</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Email</th>
-						<th class="border border-gray-300 bg-gray-200 p-1 w-32">Remover</th>
+						<th class="border border-gray-300 bg-gray-200 p-1 w-32">Ações</th>
 					</tr>
 				</thead>
 				<tbody>
+					{% for seller in sellers%}
 					<tr>
-						<td class="border border-gray-300 p-4">1</td>
-						<td class="border border-gray-300 p-4">Nome Fornecedor</td>
-						<td class="border border-gray-300 p-4">Morada</td>
-						<td class="border border-gray-300 p-4">Codigo Postal</td>
-						<td class="border border-gray-300 p-4">Localidade</td>
-						<td class="border border-gray-300 p-4">Email</td>
+						<td class="border border-gray-300 p-4">{{seller.0}}</td>
+						<td class="border border-gray-300 p-4">{{seller.1}}</td>
+						<td class="border border-gray-300 p-4">{{seller.2}}</td>
+						<td class="border border-gray-300 p-4">{{seller.3}}</td>
+						<td class="border border-gray-300 p-4">{{seller.4}}</td>
+						<td class="border border-gray-300 p-4">{{seller.5}}</td>
 						<td class="border border-gray-300 p-4">
-							<a href="edit/1">
-								Apagar
+							<a href="edit/{{seller.0}}">
+								Editar
 							</a>
 						</td>
 					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 		</div>

@@ -18,16 +18,21 @@
     <form class="flex flex-col gap-4  max-w-md" method="post">
       {% csrf_token %}
 
-      {% include '$input.html' with type="text" id="nome" placeholder="Nome" %}
+      {% include '$input.html' with type="text" id="name" placeholder="Nome" value=equipment.1 %}
 
-      <select name="Tipo"
-        class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-        <option value="Tipo1">Tipo 1</option>
-        <option value="Tipo2">Tipo 2</option>
-        <option value="Tipo3">Tipo 3</option>
-      </select>
+      <select id="tipo_equipamento_id_id" name="tipo_equipment_id_id"
+      class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+      {% for equipment_type in equipment_types %}
+      <option
+        value="{{equipment_type.0}}"
+        {% if equipment.3 == equipment_type.0 %}
+        selected
+        {% endif %}  
+      >{{equipment_type.1}}</option>
+      {% endfor %}
+    </select>
 
-      {% include '$submit.html' with text="Registar Equipamento" %}
+      {% include '$submit.html' with text="Guardar Equipamento" %}
     </form>
   </div>
 </body>

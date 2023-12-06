@@ -39,12 +39,14 @@
 					</tr>
 				</thead>
 				<tbody>
+					{% for stock in stocks %}
 					<tr>
-						<td class="border border-gray-300 text-black p-1">1</td>
-						<td class="border border-gray-300 text-black p-1">Componente</td>
-						<td class="border border-gray-300 text-black p-1">10</td>
-						<td class="border border-gray-300 text-black p-1">Nome do Armazém</td>
+						<td class="border border-gray-300 text-black p-1">{{stock.0}}</td>
+						<td class="border border-gray-300 text-black p-1">{{stock.1}}</td>
+						<td class="border border-gray-300 text-black p-1">{{stock.2}}</td>
+						<td class="border border-gray-300 text-black p-1">{{stock.3}}</td>
 					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 

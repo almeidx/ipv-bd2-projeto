@@ -3,12 +3,27 @@ from django.db import connection
 
 from ipv_bd2_projeto.models import Utilizador
 
-def index(request):
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_users();")
-        users = cursor.fetchall()
+#def index(request):
+#    with connection.cursor() as cursor:
+#        cursor.execute("SELECT * FROM fn_get_users();")
+#        users = cursor.fetchall()
+#
+#    return render(request, "users/index.html", {"users": users})
 
-    return render(request, "users/index.html", {"users": users})
+def index(request):
+    search_query = request.GET.get('search', '')
+
+    if search_query:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM fn_get_user(%s);", [search_query])
+            users = cursor.fetchall()
+    else:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM fn_get_users();")
+            users = cursor.fetchall()
+
+    return render(request, "users/index.html", {"users": users, "search_query": search_query})
+
 
 
 def edit(request, id):

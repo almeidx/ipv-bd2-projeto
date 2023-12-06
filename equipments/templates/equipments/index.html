@@ -41,23 +41,27 @@
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Nome Equipamento</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Data criação</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Tipo</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Atributo</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Atributos</th>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-32">Ações</th>
 					</tr>
 				</thead>
 				<tbody>
+					{% for equipment in equipments %}
 					<tr>
-						<td class="border border-gray-300 p-1">1</td>
-						<td class="border border-gray-300 p-1">Exemplo Nome</td>
-						<td class="border border-gray-300 p-1">Tipo Equipamento</td>
-						<td class="border border-gray-300 p-1">Cor : Azul</td>
+						<td class="border border-gray-300 p-1">{{equipment.0}}</td>
+						<td class="border border-gray-300 p-1">{{equipment.1}}</td>
+						<td class="border border-gray-300 p-1">{{equipment.2}}</td>
+						<td class="border border-gray-300 p-1">{{equipment.3}}</td>
+						<td class="border border-gray-300 p-1">cor: azul</td>
 						<td class="border border-gray-300 p-1">
-							<a href="edit/1">
+							<a href="edit/{{equipment.0}}">
 								Editar
 							</a>
 						</td>
 					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 		</div>

@@ -18,13 +18,13 @@
 		<form class="flex flex-col gap-4  max-w-md" method="post">
 			{% csrf_token %}
 
-			{% include '$input.html' with type="text" id="nome" placeholder="Nome" %}
+			{% include '$input.html' with type="text" id="name" placeholder="Nome" %}
 
-			{% include '$input.html' with type="text" id="morada" placeholder="Morada" %}
+			{% include '$input.html' with type="text" id="address" placeholder="Morada" %}
 
-			{% include '$input.html' with type="text" id="codigoPostal" placeholder="Codigo Postal" %}
+			{% include '$input.html' with type="text" id="postal_code" placeholder="Codigo Postal" %}
 
-			{% include '$input.html' with type="text" id="localidade" placeholder="Localidade" %}
+			{% include '$input.html' with type="text" id="locality" placeholder="Localidade" %}
 
 			{% include '$input.html' with type="email" id="email" placeholder="Email" %}
 
