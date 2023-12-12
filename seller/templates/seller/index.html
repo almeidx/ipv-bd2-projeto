@@ -60,6 +60,10 @@
 							<a href="edit/{{seller.0}}">
 								Editar
 							</a>
+							<a href="delete/{{ seller.0 }}" class="underline text-red-500">
+								Eliminar
+							</a>
+
 						</td>
 					</tr>
 					{% endfor %}
@@ -67,6 +71,12 @@
 			</table>
 		</div>
 	</div>
+
+	{% if delete_fail %}
+	<script defer>
+		alert("Não foi possível eliminar o tipo de equipamento.");
+	</script>
+	{% endif %}
 </body>
 
 </html>

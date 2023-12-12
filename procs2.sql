@@ -1016,9 +1016,40 @@ BEGIN
 END; $$;
 
 -- Create function to get user by name
+-- CREATE FUNCTION fn_get_user_name(
+--     a_first_name VARCHAR(50),
+--     a_last_name VARCHAR(50)
+-- )
+-- RETURNS TABLE (
+--     id INT,
+--     first_name VARCHAR(50),
+--     last_name VARCHAR(50),
+--     email VARCHAR(255),
+--     user_type VARCHAR(50)
+-- )
+-- LANGUAGE plpgsql
+-- AS $$
+-- BEGIN
+--     RETURN QUERY
+--     SELECT
+--         ipv_bd2_projeto_utilizador.id,
+--         ipv_bd2_projeto_utilizador.first_name,
+--     ipv_bd2_projeto_utilizador.last_name,
+--         ipv_bd2_projeto_utilizador.email,
+--         ipv_bd2_projeto_utilizador.type
+--     FROM
+--         ipv_bd2_projeto_utilizador
+--     WHERE
+--         LOWER(ipv_bd2_projeto_utilizador.first_name) = LOWER(a_first_name)
+--         OR LOWER(ipv_bd2_projeto_utilizador.last_name) = LOWER(a_last_name);
+-- END;
+-- $$;
+
+DROP FUNCTION fn_get_user_name;
+-- Create function to get user by name
 CREATE FUNCTION fn_get_user_name(
-    first_name VARCHAR(50),
-    last_name VARCHAR(50)
+    p_first_name VARCHAR(50),
+    p_last_name VARCHAR(50)
 )
 RETURNS TABLE (
     id INT,
@@ -1032,16 +1063,30 @@ AS $$
 BEGIN
     RETURN QUERY
     SELECT
-        ipv_bd2_projeto_utilizador.id,
+        ipv_bd2_projeto_utilizador.\id,
         ipv_bd2_projeto_utilizador.first_name,
         ipv_bd2_projeto_utilizador.last_name,
         ipv_bd2_projeto_utilizador.email,
-        ipv_bd2_projeto_utilizador.type
+        type AS user_type
     FROM
         ipv_bd2_projeto_utilizador
     WHERE
-        ipv_bd2_projeto_utilizador.first_name = first_name
-        AND ipv_bd2_projeto_utilizador.last_name = last_name;
+        (
+            LOWER(ipv_bd2_projeto_utilizador.first_name) ILIKE LOWER('%' || p_first_name || '%')
+            AND LOWER(ipv_bd2_projeto_utilizador.last_name) ILIKE LOWER('%' || p_last_name || '%')
+        )
+        OR
+        (
+            LOWER(ipv_bd2_projeto_utilizador.first_name) ILIKE LOWER('%' || p_first_name || '%')
+            AND p_last_name IS NULL
+        )
+        OR
+        (
+            LOWER(ipv_bd2_projeto_utilizador.last_name) ILIKE LOWER('%' || p_last_name || '%')
+            AND p_first_name IS NULL
+        );
 END;
 $$;
+
+
 

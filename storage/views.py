@@ -5,11 +5,15 @@ from django.shortcuts import redirect
 from django.db import connection
 
 def index(request):
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_armazens();")
-        storages = cursor.fetchall()
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT * FROM fn_get_armazens();")
+		storages = cursor.fetchall()
 
-    return render(request, "storage/index.html", {"storages": storages})
+	context = {	"storages": storages }
+	if request.GET.get("delete_fail"):
+		context["delete_fail"] = True # type: ignore
+
+	return render(request, "storage/index.html", context)
 
 
 def edit(request, id):
@@ -46,3 +50,15 @@ def register(request):
 			return redirect("/storage/")
 
 		return render(request, "storage/register.html")
+
+
+def delete(request, id):
+		with connection.cursor() as cursor:
+			cursor.execute("SELECT public.fn_delete_armazem_by_id(%s);", [id])
+			result = cursor.fetchone()
+			deleted_successfully = result[0] if result is not None else False
+
+		if deleted_successfully:
+			return redirect("/storage/")
+		else:
+			return redirect("/storage/?delete_fail=1")

@@ -22,15 +22,24 @@
 		</div>
 
 		<div class="flex justify-between w-full mb-4">
-			<!--<select name="componente"
-				class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
-				<option value="componente1">Nome 1</option>
-				<option value="componente2">Nome 2</option>
-				<option value="componente3">Nome 3</option>
-			</select>-->
 			<form method="GET" action="">
-				<label for="search">Pesquisar por ID do usuário:</label>
-				<input type="text" id="search" name="search" placeholder="Digite o ID do usuário" value="{{ search_query }}">
+				<label for="search">Nome/ID:</label>
+				<input type="text" id="search" name="search" placeholder="Digite aqui" value="{{ search_query }}">
+
+				<label>
+					<input type="checkbox" id="orderByID" name="order_by" value="id">
+					ID
+				</label>
+
+				<label for="orderByType">
+					Tipo:
+					<select id="orderByType" name="order_by" value="type">
+						<option value="id">Administrador</option>
+						<option value="first_name">Funcionário</option>
+						<option value="type">Cliente</option>
+					</select>
+				</label>
+
 				<button type="submit">Pesquisar</button>
 			</form>
 		</div>

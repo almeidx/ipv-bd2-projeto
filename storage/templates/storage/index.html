@@ -12,6 +12,12 @@
 <body>
 	{% include '$navbar.html' %}
 
+	{% if error_message %}
+	<script>
+		alert("{{ error_message }}");
+	</script>
+	{% endif %}
+
 	<div class="p-12">
 		<div class="flex justify-between items-center mb-8 w-full">
 			<h1 class="text-4xl">Lista de Armazéns</h1>
@@ -57,13 +63,24 @@
 							<a href="edit/{{ storage.0 }}" class="underline">
 								Editar
 							</a>
+							<a href="delete/{{ storage.0 }}" class="underline text-red-500">
+								Eliminar
+							</a>
 						</td>
 					</tr>
+
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
+
+	{% if delete_fail %}
+	<script defer>
+		alert("Não foi possível eliminar o armazém");
+	</script>
+	{% endif %}
+
 </body>
 
 </html>

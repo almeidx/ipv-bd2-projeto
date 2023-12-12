@@ -3,11 +3,15 @@ from django.db import connection
 
 
 def index(request):
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_fornecedores();")
-        sellers = cursor.fetchall()
+		with connection.cursor() as cursor:
+				cursor.execute("SELECT * FROM fn_get_fornecedores();")
+				sellers = cursor.fetchall()
 
-    return render(request, "seller/index.html", {"sellers": sellers})
+		context = {	"sellers": sellers }
+		if request.GET.get("delete_fail"):
+			context["delete_fail"] = True # type: ignore
+
+		return render(request, "seller/index.html", context)
 
 
 def register(request):
@@ -55,4 +59,13 @@ def edit(request, id):
 	return render(request, "seller/edit.html", { 'seller': seller })
 
 
+def delete(request, id):
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT public.fn_delete_fornecedor_by_id(%s);", [id])
+		result = cursor.fetchone()
+		deleted_successfully = result[0] if result is not None else False
 
+	if deleted_successfully:
+		return redirect("/seller/")
+	else:
+		return redirect("/seller/?delete_fail=1")

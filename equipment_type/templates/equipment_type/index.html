@@ -34,7 +34,7 @@
 					</tr>
 				</thead>
 				<tbody>
-					{%for equipment_type in equipment_types%}
+					{% for equipment_type in equipment_types %}
 					<tr>
 						<td class="border border-gray-300 p-1">{{ equipment_type.0}}</td>
 						<td class="border border-gray-300 p-1">{{ equipment_type.1}}</td>
@@ -42,12 +42,22 @@
 							<a href="edit/{{ equipment_type.0 }}" class="underline">
 								Editar
 							</a>
+							<br>
+							<a href="delete/{{ equipment_type.0 }}" class="underline text-red-500">
+								Eliminar
+							</a>
 					</tr>
 					{%endfor%}
 				</tbody>
 			</table>
 		</div>
 	</div>
+
+	{% if delete_fail %}
+	<script defer>
+		alert("Não foi possível eliminar o tipo de equipamento.");
+	</script>
+	{% endif %}
 </body>
 
 </html>

@@ -3,11 +3,27 @@ from django.db import connection
 
 
 def index(request):
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_tipo_mao_obra();")
-        labors = cursor.fetchall()
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT * FROM fn_get_tipo_mao_obra();")
+		labors = cursor.fetchall()
 
-    return render(request, "labor/index.html", {"labors": labors})
+	context = {	"labors": labors }
+	if request.GET.get("delete_fail"):
+		context["delete_fail"] = True # type: ignore
+
+	return render(request, "labor/index.html", context)
+
+
+def delete(request, id):
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT public.fn_delete_labor_by_id(%s);", [id])
+		result = cursor.fetchone()
+		deleted_successfully = result[0] if result is not None else False
+
+	if deleted_successfully:
+		return redirect("/labor/")
+	else:
+		return redirect("/labor/?delete_fail=1")
 
 
 def edit(request, id):

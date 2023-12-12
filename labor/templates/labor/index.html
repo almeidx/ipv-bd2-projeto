@@ -49,10 +49,14 @@
 						<td class="border border-gray-300 p-1">{{ labor.0 }}</td>
 						<td class="border border-gray-300 p-1">{{ labor.1 }}</td>
 						<td class="border border-gray-300 p-1">{{ labor.2 }} €</td>
-						<td class="border border-gray-300 p-1">
-							<a href="edit/1">
+						<td class="border border-gray-300 p-4">
+							<a href="edit/{{ labor.0 }}" class="underline">
 								Editar
 							</a>
+							<a href="delete/{{ labor.0 }}" class="underline text-red-500">
+								Eliminar
+							</a>
+
 						</td>
 					</tr>
 					{% endfor %}
@@ -60,6 +64,13 @@
 			</table>
 		</div>
 	</div>
+
+	{% if delete_fail %}
+	<script>
+		alert("Não foi possível eliminar o Tipo de Mão de Obra.");
+	</script>
+	{% endif %}
+
 </body>
 
 </html>
