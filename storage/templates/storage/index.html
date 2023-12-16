@@ -54,15 +54,16 @@
 				<tbody>
 					{% for storage in storages %}
 					<tr>
-						<td class="border border-gray-300 p-4">{{ storage.0 }}</td>
-						<td class="border border-gray-300 p-4">{{ storage.1 }}</td>
-						<td class="border border-gray-300 p-4">{{ storage.2 }}</td>
-						<td class="border border-gray-300 p-4">{{ storage.3 }}</td>
-						<td class="border border-gray-300 p-4">{{ storage.4 }}</td>
-						<td class="border border-gray-300 p-4">
+						<td class="border border-gray-300 p-1">{{ storage.0 }}</td>
+						<td class="border border-gray-300 p-1">{{ storage.1 }}</td>
+						<td class="border border-gray-300 p-1">{{ storage.2 }}</td>
+						<td class="border border-gray-300 p-1">{{ storage.3 }}</td>
+						<td class="border border-gray-300 p-1">{{ storage.4 }}</td>
+						<td class="border border-gray-300 p-1">
 							<a href="edit/{{ storage.0 }}" class="underline">
 								Editar
 							</a>
+							<br>
 							<a href="delete/{{ storage.0 }}" class="underline text-red-500">
 								Eliminar
 							</a>

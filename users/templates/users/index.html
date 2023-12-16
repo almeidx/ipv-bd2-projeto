@@ -31,18 +31,23 @@
 					ID
 				</label>
 
-				<label for="orderByType">
+				<label>
 					Tipo:
-					<select id="orderByType" name="order_by" value="type">
-						<option value="id">Administrador</option>
-						<option value="first_name">Funcionário</option>
-						<option value="type">Cliente</option>
+					<select id="orderByType" name="order_by_type">
+						<option>Todos</option>
+						<option value="Administrador">Administrador</option>
+						<option value="Funcionário">Funcionário</option>
+						<option value="Cliente">Cliente</option>
 					</select>
 				</label>
+
+				<input type="hidden" name="search_mode" value="default">
 
 				<button type="submit">Pesquisar</button>
 			</form>
 		</div>
+
+
 
 		<div class="flex flex-col gap-4">
 			<table
@@ -72,7 +77,7 @@
 							{% endif %}
 						</td>
 						<td class="border border-gray-300 text-black p-1">
-							<a href="edit/{{ user.0 }}" class="underline">
+							<a href="edit/{{ user.0 }}" class="underline ">
 								Editar
 							</a>
 						</td>

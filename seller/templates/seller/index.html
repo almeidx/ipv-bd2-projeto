@@ -50,16 +50,17 @@
 				<tbody>
 					{% for seller in sellers%}
 					<tr>
-						<td class="border border-gray-300 p-4">{{seller.0}}</td>
-						<td class="border border-gray-300 p-4">{{seller.1}}</td>
-						<td class="border border-gray-300 p-4">{{seller.2}}</td>
-						<td class="border border-gray-300 p-4">{{seller.3}}</td>
-						<td class="border border-gray-300 p-4">{{seller.4}}</td>
-						<td class="border border-gray-300 p-4">{{seller.5}}</td>
-						<td class="border border-gray-300 p-4">
+						<td class="border border-gray-300 p-1">{{seller.0}}</td>
+						<td class="border border-gray-300 p-1">{{seller.1}}</td>
+						<td class="border border-gray-300 p-1">{{seller.2}}</td>
+						<td class="border border-gray-300 p-1">{{seller.3}}</td>
+						<td class="border border-gray-300 p-1">{{seller.4}}</td>
+						<td class="border border-gray-300 p-1">{{seller.5}}</td>
+						<td class="border border-gray-300 p-1">
 							<a href="edit/{{seller.0}}">
 								Editar
 							</a>
+							<br>
 							<a href="delete/{{ seller.0 }}" class="underline text-red-500">
 								Eliminar
 							</a>

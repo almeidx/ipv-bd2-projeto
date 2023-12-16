@@ -3,11 +3,15 @@ from django.db import connection
 
 
 def index(request):
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_components();")
-        components = cursor.fetchall()
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT * FROM fn_get_components();")
+		components = cursor.fetchall()
 
-    return render(request, "components/index.html", {"components": components})
+	context = {	"components": components }
+	if request.GET.get("delete_fail"):
+		context["delete_fail"] = True # type: ignore
+
+	return render(request, "components/index.html", context)
 
 
 def register(request):
@@ -54,3 +58,16 @@ def edit(request, id):
 
 def stock(request):
 	return render(request, "components/stock.html")
+
+
+def delete(request, id):
+		with connection.cursor() as cursor:
+			cursor.execute("SELECT public.fn_delete_component_by_id(%s);", [id])
+			result = cursor.fetchone()
+			deleted_successfully = result[0] if result is not None else False
+
+		if deleted_successfully:
+			return redirect("/components/")
+		else:
+			return redirect("/components/?delete_fail=1")
+

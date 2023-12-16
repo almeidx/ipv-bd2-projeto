@@ -6,6 +6,21 @@ def index(request):
         cursor.execute("SELECT * FROM fn_get_component_orders();")
         component_orders = cursor.fetchall()
 
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_component_order_amounts();")
+        amounts = cursor.fetchall()
+
+    context = {	"component_orders": component_orders }
+    if request.GET.get("delete_fail"):
+        context["delete_fail"] = True # type: ignore
+
+    for (index, component_order) in enumerate(component_orders):
+        amounts_for_order = list(filter(lambda x: x[0] == component_order[0], amounts))
+        tmp_list = list(component_order)
+        tmp_list.append(amounts_for_order)
+
+        component_orders[index] = tuple(tmp_list)
+
     return render(request, "component_orders/index.html", {"component_orders": component_orders})
 
 
@@ -14,7 +29,7 @@ def register(request):
         created_at = request.POST["created_at"]
         fornecedor_id_id = request.POST["fornecedor_id_id"]
 
-        componente_id = request.POST.getlist("componente_id_id")
+        componente_id = request.POST.getlist("componente_id")
         amount = request.POST.getlist("amount")
         componentes = list(zip(componente_id, amount))
 
@@ -28,6 +43,10 @@ def register(request):
             ])
             encomenda_id = cursor.fetchone()
 
+        print(encomenda_id, componentes)
+
+        encomenda_id = encomenda_id[0] if encomenda_id else None
+
         for (componente_id, amount) in componentes:
             with connection.cursor() as cursor:
                 cursor.execute("CALL sp_create_quantidades_encomenda_componentes(%s, %s, %s);", [
@@ -36,7 +55,7 @@ def register(request):
                     amount
                 ])
 
-        return redirect("/componentes/orders/")
+        return redirect("/components/orders/")
 
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM fn_get_components();")

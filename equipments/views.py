@@ -2,11 +2,27 @@ from django.shortcuts import render, redirect
 from django.db import connection
 
 def index(request):
-    with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_equipamentos();")
-        equipments = cursor.fetchall()
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT * FROM fn_get_equipamentos();")
+		equipments = cursor.fetchall()
 
-    return render(request, "equipments/index.html", {"equipments": equipments})
+	context = {	"equipments": equipments }
+	if request.GET.get("delete_fail"):
+		context["delete_fail"] = True # type: ignore
+
+	return render(request, "equipments/index.html", context)
+
+
+def delete(request, id):
+	with connection.cursor() as cursor:
+		cursor.execute("SELECT fn_delete_equipment_by_id(%s);", [id])
+		result = cursor.fetchone()
+		deleted_successfully = result[0] if result is not None else False
+
+	if deleted_successfully:
+		return redirect("/equipments/")
+	else:
+		return redirect("/equipments/?delete_fail=1")
 
 
 def register(request):
@@ -55,4 +71,6 @@ def stock(request):
         equipments = cursor.fetchall()
 
     return render(request, "equipments/stock.html", {"equipments": equipments})
+
+
 

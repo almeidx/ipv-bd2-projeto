@@ -56,8 +56,12 @@
 						<td class="border border-gray-300 p-1">{{equipment.3}}</td>
 						<td class="border border-gray-300 p-1">cor: azul</td>
 						<td class="border border-gray-300 p-1">
-							<a href="edit/{{equipment.0}}">
+							<a href="edit/{{equipment.0}}" class="underline">
 								Editar
+							</a>
+							<br>
+							<a href="delete/{{equipment.0}}" class="underline text-red-500">
+								Eliminar
 							</a>
 						</td>
 					</tr>
@@ -66,6 +70,11 @@
 			</table>
 		</div>
 	</div>
+	{% if delete_fail %}
+	<script defer>
+		alert("Não foi possível eliminar o equipamento");
+	</script>
+	{% endif %}
 </body>
 
 </html>

@@ -27,7 +27,9 @@
           <tr>
             <th class="border border-gray-300 bg-gray-200 text-black p-1 w-12">ID</th>
             <th class="border border-gray-300 bg-gray-200 text-black p-1">Data</th>
-            <th class="border border-gray-300 bg-gray-200 text-black p-1">Componente</th>
+            <th class="border border-gray-300 bg-gray-200 text-black p-1">Componentes</th>
+            <th class="border border-gray-300 bg-gray-200 text-black p-1">Fornecedor</th>
+            <th class="border border-gray-300 bg-gray-200 text-black p-1">Funcionário</th>
             <th class="border border-gray-300 bg-gray-200 text-black p-1">Exportado</th>
             <th class="border border-gray-300 bg-gray-200 text-black p-1 w-32">Ações</th>
           </tr>
@@ -38,17 +40,29 @@
             <td class="border border-gray-300 text-black p-1">{{component_order.0}}</td>
             <td class="border border-gray-300 text-black p-1">{{component_order.1}}</td>
             <td class="border border-gray-300 text-black p-1">
-              {% for component in component_order.components %}
-                {{ component.1 }} ({{ component.2 }})
-                {% if not forloop.last %}, {% endif %}
+              {% for component in component_order.5 %}
+              {{ component.1 }} ({{ component.2 }})
+              {% if not forloop.last %}, {% endif %}
               {% endfor %}
             </td>
             <td class="border border-gray-300 text-black p-1">{{component_order.2}}</td>
             <td class="border border-gray-300 text-black p-1">
-              <a href="edit/{{component_order.0}}">
+              {% if component_order.4 %}
+              Sim
+              {% else %}
+              Não
+              {% endif %}
+            </td>
+            <td class="border border-gray-300 text-black p-1">
+              {{component_order.3}}
+            </td>
+
+            <td class="border border-gray-300 text-black p-1">
+              <a href="edit/{{component_order.0}}" class="underline">
                 Editar
               </a>
-              <a href="delete/{{component_order.0}}">
+              <br>
+              <a href="delete/{{component_order.0}}" class="underline text-red-500">
                 Apagar
               </a>
             </td>

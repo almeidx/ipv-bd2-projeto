@@ -61,14 +61,26 @@
 						<td class="border border-gray-300 text-black p-1">{{componente.3}} €</td>
 						<td class="border border-gray-300 text-black p-1">{{componente.4}}</td>
 						<td class="border border-gray-300 text-black p-1">
-							<a href="edit/{{componente.0}}">Editar</a>
+							<a href="edit/{{componente.0}}" class="underline">
+								Editar
+							</a>
+							<br>
+							<a href="delete/{{componente.0}}" class="underline text-red-500">
+								Eliminar
+							</a>
 						</td>
+
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
+	{% if delete_fail %}
+	<script defer>
+		alert("Não foi possível eliminar o componente!");
+	</script>
+	{% endif %}
 </body>
 
 </html>

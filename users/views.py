@@ -3,30 +3,6 @@ from django.db import connection
 
 from ipv_bd2_projeto.models import Utilizador
 
-
-# def index(request):
-#     search_query = request.GET.get('search', '')
-
-#     if search_query:
-#         with connection.cursor() as cursor:
-#             if search_query.isdigit():
-#                 cursor.execute("SELECT * FROM fn_get_user(%s);", [search_query])
-#             else:
-#                 if ' ' in search_query:
-#                     first_name, last_name = search_query.split(' ', 1)
-#                     cursor.execute("SELECT * FROM fn_get_user_name(%s, %s);", [first_name, last_name])
-#                 else:
-#                     cursor.execute("SELECT * FROM fn_get_user_name(%s, NULL) UNION SELECT * FROM fn_get_user_name(NULL, %s);", [search_query, search_query])
-
-#             users = cursor.fetchall()
-#     else:
-#         with connection.cursor() as cursor:
-#             cursor.execute("SELECT * FROM fn_get_users();")
-#             users = cursor.fetchall()
-
-#     return render(request, "users/index.html", {"users": users, "search_query": search_query})
-
-
 def index(request):
     search_query = request.GET.get('search', '')
     order_by = request.GET.get('order_by', 'id') if 'order_by' in request.GET else None
@@ -56,6 +32,7 @@ def index(request):
             users = cursor.fetchall()
 
     return render(request, "users/index.html", {"users": users, "search_query": search_query, "order_by": order_by})
+
 
 def edit(request, id):
 	if request.method == "POST":
