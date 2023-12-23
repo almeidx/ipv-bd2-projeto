@@ -48,9 +48,9 @@ INSTALLED_APPS = [
     "labor",
     "invoice",
     "attributes",
-	"seller",
-	"equipment_type",
-	"storage"
+    "seller",
+    "equipment_type",
+    "storage",
 ]
 
 MIDDLEWARE = [
@@ -96,6 +96,18 @@ DATABASES = {
         "USER": "aluno5",
         "PASSWORD": "Aluno5#3754",
     },
+    "mongo": {
+        "ENGINE": "djongo",
+        "NAME": "aluno5",
+        "ENFORCE_SCHEMA": False,
+        "AUTH_DATABASE": "aluno5",
+        "CLIENT": {
+            "host": "localhost",
+            "port": 27017,
+            "username": "aluno5",
+            "password": "Aluno5#3754",
+        },
+    },
 }
 
 
@@ -135,7 +147,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 STATICFILES_DIRS = [
-    path.join(BASE_DIR, 'ipv_bd2_projeto/static'),
+    path.join(BASE_DIR, "ipv_bd2_projeto/static"),
 ]
 
 # Default primary key field type
@@ -143,4 +155,4 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = 'ipv_bd2_projeto.Utilizador'
+AUTH_USER_MODEL = "ipv_bd2_projeto.Utilizador"

@@ -18,11 +18,34 @@
 		<form class="flex flex-col gap-4  max-w-md" method="post">
 			{% csrf_token %}
 
-			{% include '$input.html' with type="text" id="nome" placeholder="Nome" %}
+			{% include '$input.html' with type="text" id="name" placeholder="Nome" %}
+
+			<div class="flex gap-8">
+				<div id="value_cnt" class="flex flex-col gap-4">
+					<div>
+						{% include '$input.html' with type="text" id="values" placeholder="Valor" %}
+					</div>
+				</div>
+
+				<button id="add_btn" type="button" class="border border-gray-500 px-5 rounded-full h-11">
+					Adicionar
+				</button>
+			</div>
 
 			{% include '$submit.html' with text="Registar" %}
 		</form>
 	</div>
+
+	<script>
+		const addButton = document.getElementById('add_btn');
+		const valueContainer = document.getElementById('value_cnt');
+
+		addButton.addEventListener('click', () => {
+			const li = document.createElement('div');
+			li.innerHTML = `{% include '$input.html' with type="text" id="values" placeholder="Valor" %}`;
+			valueContainer.appendChild(li);
+		});
+	</script>
 </body>
 
 </html>

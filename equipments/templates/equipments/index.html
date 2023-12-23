@@ -50,17 +50,21 @@
 				<tbody>
 					{% for equipment in equipments %}
 					<tr>
-						<td class="border border-gray-300 p-1">{{equipment.0}}</td>
-						<td class="border border-gray-300 p-1">{{equipment.1}}</td>
-						<td class="border border-gray-300 p-1">{{equipment.2}}</td>
-						<td class="border border-gray-300 p-1">{{equipment.3}}</td>
-						<td class="border border-gray-300 p-1">cor: azul</td>
+						<td class="border border-gray-300 p-1">{{equipment.id}}</td>
+						<td class="border border-gray-300 p-1">{{equipment.name}}</td>
+						<td class="border border-gray-300 p-1">{{equipment.created_at}}</td>
+						<td class="border border-gray-300 p-1">{{equipment.equipment_type_name}}</td>
 						<td class="border border-gray-300 p-1">
-							<a href="edit/{{equipment.0}}" class="underline">
+							{% for key, value in equipment.attributes.items %}
+							{{key}}: {{value}}<br>
+							{% endfor %}
+						</td>
+						<td class="border border-gray-300 p-1">
+							<a href="edit/{{equipment.id}}" class="underline">
 								Editar
 							</a>
 							<br>
-							<a href="delete/{{equipment.0}}" class="underline text-red-500">
+							<a href="delete/{{equipment.id}}" class="underline text-red-500">
 								Eliminar
 							</a>
 						</td>

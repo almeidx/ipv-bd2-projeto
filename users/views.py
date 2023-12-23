@@ -3,9 +3,10 @@ from django.db import connection
 
 from ipv_bd2_projeto.models import Utilizador
 
+
 def index(request):
-    search_query = request.GET.get('search', '')
-    order_by = request.GET.get('order_by', 'id') if 'order_by' in request.GET else None
+    search_query = request.GET.get("search", "")
+    order_by = request.GET.get("order_by", "id") if "order_by" in request.GET else None
 
     if search_query or order_by:
         with connection.cursor() as cursor:
@@ -13,17 +14,23 @@ def index(request):
                 if search_query.isdigit():
                     cursor.execute("SELECT * FROM fn_get_user(%s);", [search_query])
                 else:
-                    if ' ' in search_query:
-                        first_name, last_name = search_query.split(' ', 1)
-                        cursor.execute("SELECT * FROM fn_get_user_name(%s, %s);", [first_name, last_name])
+                    if " " in search_query:
+                        first_name, last_name = search_query.split(" ", 1)
+                        cursor.execute(
+                            "SELECT * FROM fn_get_user_name(%s, %s);",
+                            [first_name, last_name],
+                        )
                     else:
-                        cursor.execute("SELECT * FROM fn_get_user_name(%s, NULL) UNION SELECT * FROM fn_get_user_name(NULL, %s);", [search_query, search_query])
+                        cursor.execute(
+                            "SELECT * FROM fn_get_user_name(%s, NULL) UNION SELECT * FROM fn_get_user_name(NULL, %s);",
+                            [search_query],
+                        )
             else:
                 cursor.execute("SELECT * FROM fn_get_users();")
 
             users = cursor.fetchall()
 
-            if order_by == 'id':
+            if order_by == "id":
                 users.sort(key=lambda x: x[0])
 
     else:
@@ -31,44 +38,51 @@ def index(request):
             cursor.execute("SELECT * FROM fn_get_users();")
             users = cursor.fetchall()
 
-    return render(request, "users/index.html", {"users": users, "search_query": search_query, "order_by": order_by})
+    return render(
+        request,
+        "users/index.html",
+        {"users": users, "search_query": search_query, "order_by": order_by},
+    )
 
 
 def edit(request, id):
-	if request.method == "POST":
-		with connection.cursor() as cursor:
-			cursor.execute("SELECT * FROM fn_get_user(%s);", [id])
-			user = cursor.fetchone()
+    if request.method == "POST":
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM fn_get_user(%s);", [id])
+            user = cursor.fetchone()
 
-		with connection.cursor() as cursor:
-			cursor.execute("CALL sp_edit_user(%s, %s, %s, %s);", [
-				id,
-				request.POST["first_name"],
-				request.POST["last_name"],
-				request.POST["type"]
-			])
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "CALL sp_edit_user(%s, %s, %s, %s);",
+                [
+                    id,
+                    request.POST["first_name"],
+                    request.POST["last_name"],
+                    request.POST["type"],
+                ],
+            )
 
-		return redirect("/users/")
+        return redirect("/users/")
 
-	with connection.cursor() as cursor:
-		cursor.execute("SELECT * FROM fn_get_user(%s);", [id])
-		user = cursor.fetchone()
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_user(%s);", [id])
+        user = cursor.fetchone()
 
-	return render(request, "users/edit.html", {"user": user})
+    return render(request, "users/edit.html", {"user": user})
 
 
 def register(request):
-	if request.method == "POST":
-		Utilizador.objects.create(
-			first_name=request.POST["first_name"],
-			last_name=request.POST["last_name"],
-			email=request.POST["email"],
-			password=request.POST["password"],
-			type=request.POST["type"],
-			is_staff=True if request.POST["type"] == "Administrador" else False,
-			is_superuser=True if request.POST["type"] == "Administrador" else False
-		)
+    if request.method == "POST":
+        Utilizador.objects.create(
+            first_name=request.POST["first_name"],
+            last_name=request.POST["last_name"],
+            email=request.POST["email"],
+            password=request.POST["password"],
+            type=request.POST["type"],
+            is_staff=True if request.POST["type"] == "Administrador" else False,
+            is_superuser=True if request.POST["type"] == "Administrador" else False,
+        )
 
-		return redirect("/users/")
+        return redirect("/users/")
 
-	return render(request, "users/register.html")
+    return render(request, "users/register.html")

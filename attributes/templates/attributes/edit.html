@@ -15,43 +15,58 @@
 	<div class="p-12 min-w-full">
 		<h1 class="text-4xl mb-8">Editar Atributo</h1>
 
-		<form class="flex flex-col gap-4  max-w-md" method="post">
+		<form class="flex flex-col gap-4  max-w-lg" method="post">
 			{% csrf_token %}
 
-			{% include '$input.html' with type="text" id="nome" placeholder="Nome do Atributo" %}
+			{% include '$input.html' with type="text" id="name" placeholder="Nome" value=attribute.name %}
 
-			{% include '$submit.html' with text="Guardar" %}
+			<div class="flex gap-8">
+				<div id="value_cnt" class="flex flex-col gap-4">
+					{% for value in values %}
+					<div data-id="{{ value.id }}">
+						<input class="p-2 border border-gray-500 rounded-full" type="text" name="value:{{ value.id }}"
+							id="value:{{ value.id }}" placeholder="Valor" value="{{ value.value }}">
 
-			{% include '$input.html' with type="text" id="morada" placeholder="Valor novo" %}
+						<button class="border border-gray-500 px-5 rounded-full h-11" type="button"
+							onclick="document.getElementById(`value:{{ value.id }}`).parentElement.remove();">
+							Apagar
+						</button>
+					</div>
 
-			{% include '$submit.html' with text="Adicionar Valor" %}
+					{% endfor %}
+				</div>
+
+				<button id="add_btn" type="button" class="border border-gray-500 px-5 rounded-full h-11">
+					Adicionar
+				</button>
+			</div>
+
+			{% include '$submit.html' with text="Editar" %}
 		</form>
 	</div>
-	<div class="p-12">
-		<div class="flex flex-col gap-4">
-			<table
-				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
-				<thead>
-					<tr>
-						<th class="border border-gray-300 bg-gray-200 text-black p-1">ID</th>
-						<th class="border border-gray-300 bg-gray-200 text-black p-1">Valor</th>
-						<th class="border border-gray-300 bg-gray-200 text-black p-1">Ações</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td class="border border-gray-300 text-black p-1">1</td>
-						<td class="border border-gray-300 text-black p-1">Vermelho</td>
-						<td class="border border-gray-300 text-black p-1">
-							<a href="edit/{{ user.id }}">
-								Editar
-							</a>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-	</div>
+	<script>
+		const addButton = document.getElementById('add_btn');
+		const valueContainer = document.getElementById('value_cnt');
+
+		addButton.addEventListener('click', () => {
+			const newId = Math.random().toString().slice(2);
+
+			const li = document.createElement('div');
+			li.dataset.id = newId;
+
+			li.innerHTML = `
+				<input class="p-2 border border-gray-500 rounded-full" type="text" name="value:${newId}"
+					id="value:${newId}" placeholder="Valor" value="">
+
+				<button class="border border-gray-500 px-5 rounded-full h-11" type="button"
+					onclick="document.getElementById(\`value:${newId}\`).parentElement.remove();">
+					Apagar
+				</button>
+			`;
+
+			valueContainer.appendChild(li);
+		});
+	</script>
 </body>
 
 </html>

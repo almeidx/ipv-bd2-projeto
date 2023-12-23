@@ -28,10 +28,6 @@
 				<option value="componente2">Atributo 2</option>
 				<option value="componente3">Atributo 3</option>
 			</select>
-
-			<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="stock/">
-				Ver Stock
-			</a>
 		</div>
 
 		<div class="flex flex-col gap-4">
@@ -39,27 +35,40 @@
 				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
 				<thead>
 					<tr>
-						<th class="border border-gray-300 bg-gray-200 text-black p-1 w-12">ID</th>
-						<th class="border border-gray-300 bg-gray-200 text-black p-1 ">Atributo</th>
-						<th class="border border-gray-300 bg-gray-200 text-black p-1 ">Valores</th>
-						<th class="border border-gray-300 bg-gray-200 text-black p-1 w-32">Ações</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">ID</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Atributo</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Valores</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Ações</th>
 					</tr>
 				</thead>
 				<tbody>
+					{% for attribute in attributes %}
 					<tr>
-						<td class="border border-gray-300 text-black p-1 max-w-sm">1</td>
-						<td class="border border-gray-300 text-black p-1">Cor</td>
-						<td class="border border-gray-300 text-black p-1">Vermelho, Verde, Preto</td>
-						<td class="border border-gray-300 text-black p-1">
-							<a href="edit/1">
-								Editar
-							</a>
+						<td class="border border-gray-300 p-1">
+							{{ attribute.id }}
+						</td>
+						<td class="border border-gray-300 p-1">{{ attribute.name }}</td>
+						<td class="border border-gray-300 p-1">
+							{% for value in attribute.values %}
+							{{ value }},
+							{% endfor %}
+						</td>
+						<td class="border border-gray-300 p-1">
+							<a class="underline" href="edit/{{ attribute.id }}">Editar</a>
+							<br>
+							<a class="underline text-red-500" href="delete/{{ attribute.id }}">Apagar</a>
 						</td>
 					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
+	{% if delete_fail %}
+	<script defer>
+		alert("Não foi possível eliminar o tipo de equipamento.");
+	</script>
+	{% endif %}
 </body>
 
 </html>

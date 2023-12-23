@@ -28,31 +28,47 @@
           {% endfor %}
         </select>
 
-        <!--
-        <div class="flex w-full gap-4 ">
-          <select name="Atributo"
-            class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-            <option value="Atributo1">Atributo 1</option>
-            <option value="Atributo2">Atributo 2</option>
-            <option value="Atributo3">Atributo 3</option>
-          </select>
+        <div class="flex gap-4">
+          <div class="flex flex-col gap-4" id="att_cnt">
+            <div>
+              <select id="attributes" name="attributes"
+                class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+                {% for attribute in attributes %}
+                <option value="{{attribute.id}}:{{attribute.value_id}}">{{attribute.name}}:
+                  {{attribute.value}}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
 
-          <select name="Valor"
-            class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-            <option value="Valor">Valor 1</option>
-            <option value="Valor">Valor 2</option>
-            <option value="Valor">Valor 3</option>
-          </select>
-
-          <button class="bg-gray-900 px-16 border border-gray-500 rounded-3xl text-white w-fit">
-            Adicionar Atributo
-          </button>
-        </div> -->
+          <button id="add_att_btn" class="border border-gray-500 p-1 rounded-full h-10" type="button">Adicionar
+            Atributo</button>
+        </div>
       </div>
 
       {% include '$submit.html' with text="Registar Equipamento" %}
     </form>
   </div>
+
+  <script>
+    const attributesContainer = document.getElementById('att_cnt');
+    const addAttributeButton = document.getElementById('add_att_btn');
+
+    addAttributeButton.addEventListener('click', () => {
+      const div = document.createElement('div');
+
+      div.innerHTML = `
+        <select id="attributes" name="attributes"
+          class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+          {% for attribute in attributes %}
+          <option value="{{attribute.id}}:{{attribute.value_id}}">{{attribute.name}}: {{attribute.value}}</option>
+          {% endfor %}
+        </select>
+      `;
+
+      attributesContainer.appendChild(div);
+    });
+  </script>
 </body>
 
 </html>
