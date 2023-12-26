@@ -15,43 +15,68 @@
 	<div class="p-12">
 		<div class="flex justify-between items-center w-full">
 			<h1 class="text-4xl mb-8">Listagem de Encomendas de Equipamentos</h1>
+
+			<div class="flex gap-4">
+				<a href="register"
+					class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Encomendar</a>
+
+				<a href="shipments"
+					class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Expedições</a>
+
+				<a href="invoices"
+					class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Faturas</a>
+			</div>
 		</div>
 
-
-		//Falta filtros
 		<div class="flex flex-col gap-4">
 			<table
 				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
 				<thead>
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Nome Cliente</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Quantidade</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Estado</th>
-						<th class="border border-gray-300 bg-gray-200 p-1 w-32">Fatura</th>
-						<th class="border border-gray-300 bg-gray-200 p-1 w-32">Expedição</th>
-
+						<th class="border border-gray-300 bg-gray-200 p-1">Data criação</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Cliente</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Funcionário Responsável</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Equipamentos</th>
+						<th class="border border-gray-300 bg-gray-200 p-1 w-44">Ações</th>
 					</tr>
 				</thead>
 				<tbody>
+					{% for equipment_order in equipment_orders %}
 					<tr>
-						<td class="border border-gray-300 p-4">1</td>
-						<td class="border border-gray-300 p-4">Exemplo Nome</td>
-						<td class="border border-gray-300 p-4">Tipo Equipamento (QUANTIDADE)</td>
-						<td class="border border-gray-300 p-4">Encomendado | Em expediçaõ | Entregue</td>
-						<td class="border border-gray-300 p-4">
-							<a href="">
-								Fatura
-							</a>
+						<td class="border border-gray-300 p-4">{{ equipment_order.0 }}</td>
+						<td class="border border-gray-300 p-4">{{ equipment_order.1 }}</td>
+						<td class="border border-gray-300 p-4">{{ equipment_order.2 }}</td>
+						<td class="border border-gray-300 p-4">{{ equipment_order.3 }}</td>
+						<td class="border border-gray-300 text-black p-1">
+							{% for equipment in equipment_order.6 %}
+							{{ equipment.1 }} ({{ equipment.2 }})
+							{% if not forloop.last %}, {% endif %}
+							{% endfor %}
 						</td>
-
-						<td class="border border-gray-300 p-4">
-							<a href="">
+						<td class="border border-gray-300 p-4 flex flex-col" class="underline">
+							{% if equipment_order.4 %}
+							<a class="underline" href="shipments/{{ equipment_order.0 }}">
 								Expedição
 							</a>
-						</td>
+							{% else %}
+							<a class="underline" href="shipments/{{ equipment_order.0 }}/register">
+								Registar Expedição
+							</a>
+							{% endif %}
 
+							{% if equipment_order.5 %}
+							<a class="underline" href="invoices/{{ equipment_order.0 }}">
+								Fatura
+							</a>
+							{% else %}
+							<a class="underline" href="invoices/{{ equipment_order.0 }}/register">
+								Registar Fatura
+							</a>
+							{% endif %}
+						</td>
 					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 		</div>

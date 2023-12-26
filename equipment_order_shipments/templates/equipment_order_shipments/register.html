@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Registar Expedição de Encomenda de Equipamento</title>
+
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+	{% include '$navbar.html' %}
+
+	<div class="p-12">
+		<h1 class="text-4xl mb-8">Registar Expedição de Encomenda de Equipamento</h1>
+
+		<form class="flex flex-col gap-4 max-w-md" method="post">
+			{% csrf_token %}
+
+			<select id="production_registry_id_id"
+				class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
+				{% for production_registry in production_registries %}
+				<option value="{{ production_registry.0 }}">{{ production_registry.1 }}</option>
+				{% endfor %}
+			</select>
+
+			{% include '$input.html' with type="date" id="sent_at" placeholder="Data de envio" %}
+
+			{% include '$input.html' with type="text" id="truck_license" placeholder="Morada" %}
+
+			{% include '$input.html' with type="date" id="delivery_date_expected" placeholder="Data de entrega esperada" %}
+
+			{% include '$submit.html' with text="Registar Expedição de Encomenda" %}
+		</form>
+	</div>
+</body>
+
+</html>

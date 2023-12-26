@@ -18,37 +18,67 @@
     <form class="flex flex-col gap-4 max-w-md" method="post">
       {% csrf_token %}
 
-      <select name="cliente"
+      {% include '$input.html' with type="date" id="created_at" placeholder="Data criação" %}
+
+      <select name="client_id_id"
         class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-        <option value="Cliente1">Cliente 1</option>
-        <option value="Cliente2">Cliente 2</option>
-        <option value="Cliente3">Cliente 3</option>
+        {% for client in clients %}
+        <option value="{{client.0}}">{{client.1}}</option>
+        {% endfor %}
       </select>
-      {% include '$input.html' with type="text" id="morada" placeholder="Morada" %}
 
-      {% include '$input.html' with type="text" id="codigopostal" placeholder="Código Postal" %}
+      {% include '$input.html' with type="text" id="address" placeholder="Morada" %}
 
-      {% include '$input.html' with type="text" id="localidade" placeholder="Localidade" %}
+      {% include '$input.html' with type="text" id="postal_code" placeholder="Código Postal" %}
 
-      <div class="flex w-full gap-4 ">
-        <select name="equipamento"
-          class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-          <option value="Equipamento1">Equipamento 1</option>
-          <option value="Equipamento2">Equipamento 2</option>
-          <option value="Equipamento3">Equipamento 3</option>
-        </select>
+      {% include '$input.html' with type="text" id="locality" placeholder="Localidade" %}
 
-        {% include '$input.html' with type="number" id="quantidade" placeholder="quantidade" %}
+      <div class="flex w-full gap-4">
+        <div id="attr_container" class="flex flex-col gap-4">
+          <div class="flex gap-4">
+            <select name="equipment_id" id="equipment_id"
+              class="appearance-none border border-gray-500 rounded-3xl p-2 min-w-[16rem] leading-tight focus:outline-none focus:shadow-outline">
+              {% for equipment in equipments %}
+              <option value="{{ equipment.0 }}">{{ equipment.1 }}</option>
+              {% endfor %}
+            </select>
 
-        <button class="bg-gray-900 px-16 border border-gray-500 rounded-3xl text-white w-fit">
+            {% include '$input.html' with type="number" id="amount" placeholder="Quantidade" value=1 %}
+          </div>
+        </div>
+
+        <button class="bg-gray-900 border px-4 border-gray-500 h-11 rounded-3xl w-fit whitespace-nowrap text-white"
+          id="add_attr_btn" type="button">
           Adicionar Equipamento
         </button>
       </div>
 
-
       {% include '$submit.html' with text="Registar Criação de Encomenda " %}
     </form>
   </div>
+
+  <script>
+    const addAttrBtn = document.getElementById('add_attr_btn');
+    const attrContainer = document.getElementById('attr_container');
+    let attrCount = 1;
+
+    addAttrBtn.addEventListener('click', () => {
+      const attr = document.createElement('div');
+      attr.className = 'flex gap-4';
+      attr.innerHTML = `
+        <select name="equipment_id" id="equipment_id"
+          class="appearance-none border border-gray-500 rounded-3xl p-2 min-w-[16rem] leading-tight focus:outline-none focus:shadow-outline">
+          {% for equipment in equipments %}
+          <option value="{{ equipment.0 }}">{{ equipment.1 }}</option>
+          {% endfor %}
+        </select>
+
+        {% include '$input.html' with type="number" id="amount" placeholder="Quantidade" value=1 %}
+      `;
+
+      attrContainer.appendChild(attr);
+    });
+  </script>
 </body>
 
 </html>

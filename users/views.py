@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.db import connection
+from django.contrib.auth.hashers import make_password
 
 from ipv_bd2_projeto.models import Utilizador
 
@@ -77,10 +78,10 @@ def register(request):
             first_name=request.POST["first_name"],
             last_name=request.POST["last_name"],
             email=request.POST["email"],
-            password=request.POST["password"],
+            password=make_password(request.POST["password"]),
             type=request.POST["type"],
-            is_staff=True if request.POST["type"] == "Administrador" else False,
-            is_superuser=True if request.POST["type"] == "Administrador" else False,
+            is_staff=(request.POST["type"] == "Administrador"),
+            is_superuser=(request.POST["type"] == "Administrador"),
         )
 
         return redirect("/users/")

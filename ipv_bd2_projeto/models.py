@@ -1,7 +1,14 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin, Group, Permission
+from django.contrib.auth.models import (
+    AbstractBaseUser,
+    BaseUserManager,
+    PermissionsMixin,
+    Group,
+    Permission,
+)
 from django.utils import timezone
+
 
 class Armazem(models.Model):
     id = models.AutoField(primary_key=True)
@@ -28,9 +35,9 @@ class UtilizadorManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('type', Utilizador.TipoDeUtilizador.ADMIN)
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault("type", Utilizador.TipoDeUtilizador.ADMIN)
+        extra_fields.setdefault("is_staff", True)
+        extra_fields.setdefault("is_superuser", True)
         return self.create_user(email, password, **extra_fields)
 
 
@@ -49,22 +56,24 @@ class Utilizador(AbstractBaseUser, PermissionsMixin):
         choices=TipoDeUtilizador.choices,
         default=TipoDeUtilizador.CLIENTE,
     )
-    password = models.CharField(max_length=256, default='password')
+    password = models.CharField(max_length=256, default="password")
 
     date_joined = models.DateTimeField(default=timezone.now)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
 
-    groups = models.ManyToManyField(Group, verbose_name=_("groups"), blank=True, related_name="utilizador_groups")
+    groups = models.ManyToManyField(
+        Group, verbose_name=_("groups"), blank=True, related_name="utilizador_groups"
+    )
     user_permissions = models.ManyToManyField(
         Permission,
         verbose_name=_("user permissions"),
         blank=True,
-        related_name="utilizador_user_permissions"
+        related_name="utilizador_user_permissions",
     )
 
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name']
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["first_name", "last_name"]
 
     objects = UtilizadorManager()
 
@@ -185,6 +194,16 @@ class QuantidadeGuiaEntregaComponente(models.Model):
         ]
 
 
+class RegistoProducao(models.Model):
+    id = models.AutoField(primary_key=True)
+    started_at = models.DateField(default=timezone.now)
+    ended_at = models.DateField()
+    tipo_mao_de_obra_id = models.ForeignKey(TipoMaoDeObra, on_delete=models.DO_NOTHING)
+    armazem_id = models.ForeignKey(Armazem, on_delete=models.DO_NOTHING)
+    funcionario_id = models.ForeignKey(Utilizador, on_delete=models.DO_NOTHING)
+    equipamento_id = models.ForeignKey(Equipamento, on_delete=models.DO_NOTHING)
+
+
 class Expedicao(models.Model):
     sent_at = models.DateField(default=timezone.now)
     truck_license = models.CharField(null=True, max_length=50)
@@ -192,17 +211,9 @@ class Expedicao(models.Model):
     encomenda_id = models.OneToOneField(
         EncomendaEquipamento, on_delete=models.DO_NOTHING, primary_key=True
     )
-
-
-class RegistoProducao(models.Model):
-    id = models.AutoField(primary_key=True)
-    started_at = models.DateField(default=timezone.now)
-    ended_at = models.DateField()
-    delivery_id = models.ForeignKey(Expedicao, on_delete=models.DO_NOTHING)
-    tipo_mao_de_obra_id = models.ForeignKey(TipoMaoDeObra, on_delete=models.DO_NOTHING)
-    armazem_id = models.ForeignKey(Armazem, on_delete=models.DO_NOTHING)
-    funcionario_id = models.ForeignKey(Utilizador, on_delete=models.DO_NOTHING)
-    equipamento_id = models.ForeignKey(Equipamento, on_delete=models.DO_NOTHING)
+    registo_producao_id = models.OneToOneField(
+        RegistoProducao, on_delete=models.DO_NOTHING, null=True
+    )
 
 
 class QuantidadeComponenteRegistoProducao(models.Model):

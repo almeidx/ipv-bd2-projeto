@@ -1,0 +1,53 @@
+from django.db import connection
+from django.shortcuts import redirect, render
+
+
+def index(request):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_expedicao();")
+        shipments = cursor.fetchall()
+
+    print(shipments)
+
+    return render(
+        request, "equipment_order_shipments/index.html", {"shipments": shipments}
+    )
+
+
+def info(request, id):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_expedicao(%s);", [id])
+        shipment = cursor.fetchone()
+
+    print(shipment)
+
+    return render(
+        request, "equipment_order_shipments/info.html", {"shipment": shipment}
+    )
+
+
+def register(request, id):
+    if request.method == "POST":
+        sent_at = request.POST["sent_at"]
+        truck_license = request.POST["truck_license"]
+        delivery_date_expected = request.POST["delivery_date_expected"]
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "CALL sp_create_expedicao(%s, %s, %s, %s);",
+                [sent_at, truck_license, delivery_date_expected, id],
+            )
+
+        return redirect("/equipments/orders/shipments")
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_unassigned_production_registries();")
+        production_registries = cursor.fetchall()
+
+    print(production_registries)
+
+    return render(
+        request,
+        "equipment_order_shipments/register.html",
+        {"production_registries": production_registries},
+    )

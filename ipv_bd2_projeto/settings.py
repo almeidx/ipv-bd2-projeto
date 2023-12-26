@@ -46,11 +46,12 @@ INSTALLED_APPS = [
     "equipment_orders",
     "production_registry",
     "labor",
-    "invoice",
+    "equipment_order_invoices",
     "attributes",
-    "seller",
+    "suppliers",
     "equipment_type",
     "storage",
+    "equipment_order_shipments",
 ]
 
 MIDDLEWARE = [

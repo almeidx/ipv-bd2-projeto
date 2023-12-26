@@ -29,8 +29,8 @@
             <th class="border border-gray-300 bg-gray-200 text-black p-1">Data</th>
             <th class="border border-gray-300 bg-gray-200 text-black p-1">Componentes</th>
             <th class="border border-gray-300 bg-gray-200 text-black p-1">Fornecedor</th>
-            <th class="border border-gray-300 bg-gray-200 text-black p-1">Funcionário</th>
             <th class="border border-gray-300 bg-gray-200 text-black p-1">Exportado</th>
+            <th class="border border-gray-300 bg-gray-200 text-black p-1">Funcionário</th>
             <th class="border border-gray-300 bg-gray-200 text-black p-1 w-32">Ações</th>
           </tr>
         </thead>
@@ -72,8 +72,18 @@
       </table>
 
       <div class="flex mt-8 gap-4">
-        {% include '$submit.html' with text="Exportar XML" %}
-        {% include '$submit.html' with text="Expotar JSON" %}
+        <!--{% include '$submit.html' with text="Exportar XML" id="exportXMLButton" %}-->
+        <button class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit" type="button">
+          <a href="export-xml/">
+            Exportar XML
+          </a>
+        </button>
+        <!--{% include '$submit.html' with text="Exportar JSON" %}-->
+        <button class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit" type="button">
+          <a href="export-json/">
+            Exportar JSON
+          </a>
+        </button>
       </div>
     </div>
   </div>

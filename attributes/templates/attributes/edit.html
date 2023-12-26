@@ -23,7 +23,7 @@
 			<div class="flex gap-8">
 				<div id="value_cnt" class="flex flex-col gap-4">
 					{% for value in values %}
-					<div data-id="{{ value.id }}">
+					<div>
 						<input class="p-2 border border-gray-500 rounded-full" type="text" name="value:{{ value.id }}"
 							id="value:{{ value.id }}" placeholder="Valor" value="{{ value.value }}">
 
@@ -52,7 +52,6 @@
 			const newId = Math.random().toString().slice(2);
 
 			const li = document.createElement('div');
-			li.dataset.id = newId;
 
 			li.innerHTML = `
 				<input class="p-2 border border-gray-500 rounded-full" type="text" name="value:${newId}"

@@ -14,12 +14,12 @@
 
 	<div class="p-12">
 		<div class="flex justify-between items-center w-full">
-			<h1 class="text-4xl mb-8">Faturas - Compras Cliente</h1>
+			<h1 class="text-4xl mb-8">Faturação-Encomenda Cliente </h1>
 		</div>
 
 		<div class="flex flex-col gap-4">
 			<div class="max-w-fit flex flex-col gap-4">
-				<h4>Dados Cliente</h4>
+				<h4 class="text-lg"><strong>Dados Cliente: </strong></h4>
 
 				{% include '$input.html' with type="text" id="nome" placeholder="Nome" readonly=True %}
 
@@ -31,7 +31,7 @@
 
 			</div>
 			<table
-				class="overflow-auto border border-gray-300 h-full max-w-3xl table-fixed border-collapse border-spacing-px text-left">
+				class="overflow-auto border border-gray-300 h-full max-w-3xl table-fixed border-collapse border-spacing-px text-left mb-8">
 				<thead>
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
@@ -50,7 +50,7 @@
 		</div>
 
 		<div class="flex flex-col gap-4 w-fit mt-8">
-			<h4>Preço Total da Compra:</h4>
+			<h4 class="text-lg"><strong>Preço Total da Compra:</strong></h4>
 
 			{% include '$input.html' with type="text" id="nome" placeholder="Preço" readonly=True %}
 		</div>

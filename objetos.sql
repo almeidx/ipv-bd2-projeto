@@ -960,3 +960,24 @@ BEGIN
     END IF;
 END;
 $$;
+
+-- fuction delete encomenda de componentes
+CREATE FUNCTION fn_delete_encomenda_componente(p_id integer) RETURNS boolean
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM ipv_bd2_projeto_encomendacomponente
+        WHERE ipv_bd2_projeto_encomendacomponente.id = p_id AND ipv_bd2_projeto_encomendacomponente.exported = TRUE
+    ) THEN
+        RAISE NOTICE 'Não é possível apagar a encomenda, pois já foi exportada.';
+        RETURN FALSE;
+    ELSE
+        DELETE FROM ipv_bd2_projeto_encomendacomponente WHERE ipv_bd2_projeto_encomendacomponente.id = p_id;
+        RAISE NOTICE 'Encomenda apagada com sucesso.';
+        RETURN TRUE;
+    END IF;
+END;
+$$;
+

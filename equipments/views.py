@@ -64,7 +64,11 @@ def index(request):
     if request.GET.get("delete_fail"):
         context["delete_fail"] = True  # type: ignore
 
-    return render(request, "equipments/index.html", context)
+    return render(
+        request,
+        "equipments/index.html",
+        context,
+    )
 
 
 def delete(request, id):
@@ -81,26 +85,6 @@ def delete(request, id):
 
 def register(request):
     attributes = [attribute for attribute in mongo_attributes.find()]
-    values = mongo_attribute_values.find()
-
-    attribute_values = []
-
-    for attribute_value in values:
-        attribute = None
-        for attr in attributes:
-            if attr["_id"] == attribute_value["attributeId"]:
-                attribute = attr
-                break
-
-        if attribute is not None:
-            attribute_values.append(
-                {
-                    "id": attribute["_id"],
-                    "name": attribute["name"],
-                    "value_id": attribute_value["_id"],
-                    "value": attribute_value["value"],
-                }
-            )
 
     if request.method == "POST":
         name = request.POST["name"]
@@ -127,6 +111,26 @@ def register(request):
 
         return redirect("/equipments/")
 
+    values = mongo_attribute_values.find()
+    attribute_values = []
+
+    for attribute_value in values:
+        attribute = None
+        for attr in attributes:
+            if attr["_id"] == attribute_value["attributeId"]:
+                attribute = attr
+                break
+
+        if attribute is not None:
+            attribute_values.append(
+                {
+                    "id": attribute["_id"],
+                    "name": attribute["name"],
+                    "value_id": attribute_value["_id"],
+                    "value": attribute_value["value"],
+                }
+            )
+
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM fn_get_tipo_equipamentos();")
         equipment_types = cursor.fetchall()
@@ -137,13 +141,93 @@ def register(request):
 
 def edit(request, id):
     if request.method == "POST":
+        attributes = request.POST.getlist("attributes")
+        values_existentes = mongo_equipment_attributes.find(
+            {"equipmentId": "__pgs" + str(id)}
+        )
+
         with connection.cursor() as cursor:
             cursor.execute(
-                "CALL sp_edit_tipo_equipamento(%s, %s);",
+                "CALL sp_edit_equipamento(%s, %s, %s);",
                 [id, request.POST["name"], request.POST["tipo_equipment_id_id"]],
             )
 
+        for attribute in attributes:
+            attribute_id, value_id = attribute.split(":")
+
+            if next(
+                (
+                    attr["valueId"]
+                    for attr in values_existentes
+                    if attr["valueId"] == ObjectId(value_id)
+                ),
+                None,
+            ):
+                # Valor existente
+                continue
+
+            # Valor novo
+            mongo_equipment_attributes.insert_one(
+                {
+                    "equipmentId": "__pgs" + str(id),
+                    "attributeId": ObjectId(attribute_id),
+                    "valueId": ObjectId(value_id),
+                }
+            )
+
+        # Valor removido
+        for value in values_existentes:
+            if next(
+                (
+                    attr["valueId"]
+                    for attr in attributes
+                    if attr.split(":")[1] == str(value["valueId"])
+                ),
+                None,
+            ):
+                continue
+
+            mongo_equipment_attributes.delete_one({"_id": value["_id"]})
+
         return redirect("/equipments/")
+
+    attributes = [attribute for attribute in mongo_attributes.find()]
+    values = mongo_attribute_values.find()
+    attribute_values = []
+
+    for attribute_value in values:
+        attribute = None
+        for attr in attributes:
+            if attr["_id"] == attribute_value["attributeId"]:
+                attribute = attr
+                break
+
+        if attribute is not None:
+            attribute_values.append(
+                {
+                    "id": attribute["_id"],
+                    "name": attribute["name"],
+                    "value_id": attribute_value["_id"],
+                    "value": attribute_value["value"],
+                }
+            )
+
+    equipment_attributes = mongo_equipment_attributes.find(
+        {"equipmentId": "__pgs" + str(id)}
+    )
+
+    preselected_attributes = []
+    for attribute in equipment_attributes:
+        attr_value = next(
+            (
+                attr["value_id"]
+                for attr in attribute_values
+                if attr["value_id"] == attribute["valueId"]
+            ),
+            None,
+        )
+
+        preselected_attributes.append(attr_value)
 
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM fn_get_equipamento_by_id(%s);", [id])
@@ -156,7 +240,12 @@ def edit(request, id):
     return render(
         request,
         "equipments/edit.html",
-        {"equipment_types": equipment_types, "equipment": equipment},
+        {
+            "equipment_types": equipment_types,
+            "equipment": equipment,
+            "attributes": attribute_values,
+            "preselected_attributes": preselected_attributes,
+        },
     )
 
 
