@@ -31,11 +31,18 @@ def register(request, id):
         sent_at = request.POST["sent_at"]
         truck_license = request.POST["truck_license"]
         delivery_date_expected = request.POST["delivery_date_expected"]
+        production_registry_id_id = request.POST["production_registry_id_id"]
 
         with connection.cursor() as cursor:
             cursor.execute(
-                "CALL sp_create_expedicao(%s, %s, %s, %s);",
-                [sent_at, truck_license, delivery_date_expected, id],
+                "CALL sp_create_expedicao(%s, %s, %s, %s, %s);",
+                [
+                    sent_at,
+                    truck_license,
+                    delivery_date_expected,
+                    id,
+                    production_registry_id_id,
+                ],
             )
 
         return redirect("/equipments/orders/shipments")
@@ -43,8 +50,6 @@ def register(request, id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM fn_get_unassigned_production_registries();")
         production_registries = cursor.fetchall()
-
-    print(production_registries)
 
     return render(
         request,

@@ -70,7 +70,7 @@ def register(request):
         clients = cursor.fetchall()
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_equipamentos();")
+        cursor.execute("SELECT * FROM fn_get_equipamentos(NULL, NULL);")
         equipments = cursor.fetchall()
 
     return render(

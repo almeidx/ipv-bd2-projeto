@@ -17,20 +17,16 @@
 			<h1 class="text-4xl mb-8">Listagem de Encomendas de Equipamentos</h1>
 
 			<div class="flex gap-4">
-				<a href="register"
-					class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Encomendar</a>
+				<a href="register" class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Encomendar</a>
 
-				<a href="shipments"
-					class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Expedições</a>
+				<a href="shipments" class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Expedições</a>
 
-				<a href="invoices"
-					class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Faturas</a>
+				<a href="invoices" class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Faturas</a>
 			</div>
 		</div>
 
 		<div class="flex flex-col gap-4">
-			<table
-				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
+			<table class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
 				<thead>
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
@@ -69,7 +65,7 @@
 							<a class="underline" href="invoices/{{ equipment_order.0 }}">
 								Fatura
 							</a>
-							{% else %}
+							{% elif equipment_order.4 %}
 							<a class="underline" href="invoices/{{ equipment_order.0 }}/register">
 								Registar Fatura
 							</a>

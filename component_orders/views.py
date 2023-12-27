@@ -93,12 +93,10 @@ def edit(request, id):
     if request.method == "POST":
         with connection.cursor() as cursor:
             cursor.execute(
-                "CALL sp_edit_encomenda_componentes(%s, %s, %s, %s);",
+                "CALL sp_edit_encomenda_componentes(%s, %s, %s);",
                 [
-                    request.POST["created_at"],
                     request.POST["new_fornecedor_id"],
                     request.POST["new_funcionario_responsavel_id"],
-                    request.POST["new_exported_status"],
                 ],
             )
 
@@ -109,16 +107,20 @@ def edit(request, id):
         components_orders = cursor.fetchone()
 
     return render(
-        request, "components_orders/edit.html", {"components_orders": components_orders}
+        request, "component_orders/edit.html", {"components_orders": components_orders}
     )
 
 
-def delete_encomenda(request, p_id):
+def delete(request, id):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT fn_delete_encomenda_componente(%s);", [p_id])
+        cursor.execute("SELECT public.fn_delete_encomenda_componente(%s);", [id])
         result = cursor.fetchone()
+        deleted_successfully = result[0] if result is not None else False
 
-    return redirect("/components/orders/")
+    if deleted_successfully:
+        return redirect("/components/orders/")
+    else:
+        return redirect("/components/orders/?delete_fail")
 
 
 def fetch_data(query):
@@ -168,7 +170,6 @@ def export_xml(request):
 
 
 def export_json(request):
-    # Obtendo os dados da base de dados
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM fn_get_component_orders();")
         component_orders = cursor.fetchall()
@@ -177,7 +178,6 @@ def export_json(request):
         cursor.execute("SELECT * FROM fn_get_component_order_amounts();")
         amounts = cursor.fetchall()
 
-    # Organizando os amounts por ordem de componente
     amounts_dict = {}
     for amount in amounts:
         order_id = amount[0]
@@ -203,13 +203,10 @@ def export_json(request):
             }
         )
 
-    # Convertendo para JSON usando o codificador DjangoJSONEncoder
     json_data = json.dumps(serialized_data, cls=DjangoJSONEncoder, indent=2)
 
-    # Criando uma resposta JSON sem especificar o codificador
     response = JsonResponse(serialized_data, safe=False)
 
-    # Adicionando cabeçalhos para forçar o download do JSON
     response["Content-Disposition"] = 'attachment; filename="exported_data.json"'
     response["Content-Type"] = "application/json"
 

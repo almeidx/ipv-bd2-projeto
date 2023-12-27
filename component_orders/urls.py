@@ -6,15 +6,15 @@ from .views import (
     edit,
     export_xml,
     export_json,
-    delete_encomenda,
+    delete,
 )
 
 urlpatterns = [
     path("", index, name="index"),
     path("register/", register),
     path("register_received/", register_received),
-    path("edit/<int:id>", edit),
+    path("edit/<int:id>", edit, name="edit"),
     path("export-xml/", export_xml, name="export_xml"),
     path("export-json/", export_json, name="export_json"),
-    path("delete/<int:id>", delete_encomenda),
+    path("delete/<int:id>/", delete, name="delete"),
 ]

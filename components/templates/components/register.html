@@ -18,10 +18,9 @@
     <form class="flex flex-col gap-4 max-w-md" method="post">
       {% csrf_token %}
 
-      {% include '$input.html' with type="text" id="name" placeholder="Name" %}
+      {% include '$input.html' with type="text" id="name" placeholder="Nome" %}
 
-      <select id="fornecedor_id_id" name="fornecedor_id_id"
-        class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+      <select id="fornecedor_id_id" name="fornecedor_id_id" class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
         {% for seller in sellers %}
         <option value="{{seller.0}}">{{seller.1}}</option>
         {% endfor %}

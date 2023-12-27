@@ -20,8 +20,19 @@ mongo_attribute_values = db["attribute_values"]
 
 
 def index(request):
+    filter_name = request.POST.get("filter_name") or ""
+    sort_order = request.POST.get("sort_order")
+
+    print(
+        filter_name,
+        sort_order,
+    )
+
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_equipamentos();")
+        cursor.execute(
+            "SELECT * FROM fn_get_equipamentos(%s, %s)",
+            ["" if filter_name == "" else "%" + filter_name + "%", sort_order],
+        )
         equipments = cursor.fetchall()
 
     context = {
@@ -53,7 +64,9 @@ def index(request):
 
             attribute_name = mongo_attributes.find_one({"_id": ObjectId(attribute_id)})
             attribute_value = mongo_attribute_values.find_one(
-                {"_id": ObjectId(value_id)}
+                {
+                    "_id": ObjectId(value_id),
+                }
             )
 
             if attribute_name is not None and attribute_value is not None:
@@ -251,7 +264,7 @@ def edit(request, id):
 
 def stock(request):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_equipamentos();")
+        cursor.execute("SELECT * FROM fn_get_equipamentos(NULL, NULL);")
         equipments = cursor.fetchall()
 
     return render(request, "equipments/stock.html", {"equipments": equipments})

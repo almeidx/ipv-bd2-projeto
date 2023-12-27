@@ -18,10 +18,10 @@
 		<form class="flex flex-col gap-4 max-w-md" method="post">
 			{% csrf_token %}
 
-			<select id="production_registry_id_id"
+			<select id="production_registry_id_id" name="production_registry_id_id"
 				class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
 				{% for production_registry in production_registries %}
-				<option value="{{ production_registry.0 }}">{{ production_registry.1 }}</option>
+				<option value="{{ production_registry.0 }}">{{ production_registry.1 }} ({{ production_registry.2 }} - {{ production_registry.3 }}) ({{ production_registry.4 }} componentes)</option>
 				{% endfor %}
 			</select>
 

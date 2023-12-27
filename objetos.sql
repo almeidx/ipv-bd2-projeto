@@ -372,21 +372,27 @@ $$;
 -- Name: fn_get_encomenda_componentes_by_id(integer); Type: FUNCTION; Schema: public; Owner: aluno5
 --
 
-CREATE FUNCTION fn_get_encomenda_componentes_by_id(p_encomenda_id integer) RETURNS TABLE(id integer, created_at date, fornecedor_id integer, funcionario_responsavel_id integer, exported boolean)
+CREATE FUNCTION fn_get_encomenda_componentes_by_id(p_encomenda_id integer)
+RETURNS TABLE(
+    id integer,
+    created_at date,
+    fornecedor_id integer,
+    funcionario_responsavel_id integer,
+    exported boolean)
     LANGUAGE plpgsql
     AS $$
 BEGIN
     RETURN QUERY
     SELECT
-        id,
-        created_at,
-        fornecedor_id,
-        funcionario_responsavel_id,
-        exported
+        ipv_bd2_projeto_encomendacomponente.id,
+        ipv_bd2_projeto_encomendacomponente.created_at,
+        ipv_bd2_projeto_encomendacomponente.fornecedor_id_id,
+        ipv_bd2_projeto_encomendacomponente.funcionario_responsavel_id_id,
+        ipv_bd2_projeto_encomendacomponente.exported
     FROM
         ipv_bd2_projeto_encomendacomponente
     WHERE
-        id = p_encomenda_id;
+        ipv_bd2_projeto_encomendacomponente.id = p_encomenda_id;
 END;
 $$;
 
@@ -822,19 +828,26 @@ $$;
 -- Name: sp_edit_encomenda_componentes(date, integer, integer, boolean); Type: PROCEDURE; Schema: public; Owner: aluno5
 --
 
-CREATE PROCEDURE sp_edit_encomenda_componentes(IN p_encomendacomponentecreatedat date, IN p_newfornecedorid integer, IN p_newfuncionarioresponsavelid integer, IN p_newexportedstatus boolean)
+CREATE PROCEDURE sp_edit_encomenda_componentes(IN p_encomendacomponenteid integer, IN p_newfornecedorid integer, IN p_newfuncionarioresponsavelid integer)
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    UPDATE ipv_bd2_projeto_encomendacomponente
-    SET
-        fornecedor_id = p_NewFornecedorId,
-        funcionario_responsavel_id = p_NewFuncionarioResponsavelId,
-        exported = p_NewExportedStatus
-    WHERE
-        created_at = p_EncomendaComponenteCreatedAt;
-
-    RAISE NOTICE 'Encomenda de Componentes editada com sucesso.';
+    IF EXISTS (
+        SELECT 1
+        FROM ipv_bd2_projeto_encomendacomponente
+        WHERE ipv_bd2_projeto_encomendacomponente.id = p_encomendacomponenteid AND ipv_bd2_projeto_encomendacomponente.exported = TRUE
+    ) THEN
+        RAISE NOTICE 'Não é possível editar a encomenda, pois já foi exportada.';
+        RETURN;
+    ELSE
+        UPDATE ipv_bd2_projeto_encomendacomponente
+        SET
+            ipv_bd2_projeto_encomendacomponente.fornecedor_id = p_newfornecedorid,
+            ipv_bd2_projeto_encomendacomponente.funcionario_responsavel_id = p_newfuncionarioresponsavelid,
+        WHERE
+            ipv_bd2_projeto_encomendacomponente.id = p_encomendacomponenteid;
+        RAISE NOTICE 'Encomenda de Componentes editada com sucesso.';
+    END IF;
 END;
 $$;
 
@@ -980,4 +993,66 @@ BEGIN
     END IF;
 END;
 $$;
+
+CREATE OR REPLACE FUNCTION public.fn_get_equipamentos(
+    IN p_filtered character varying DEFAULT NULL,
+    IN p_order character varying DEFAULT NULL
+)
+RETURNS TABLE(id integer, name character varying, created_at date, tipo_equipamento_name character varying)
+LANGUAGE 'plpgsql'
+COST 100
+VOLATILE PARALLEL UNSAFE
+ROWS 1000
+AS $BODY$
+BEGIN
+    RETURN QUERY
+    SELECT e.id, e.name, e.created_at, t.name AS tipo_equipamento_name
+    FROM ipv_bd2_projeto_equipamento e
+    JOIN ipv_bd2_projeto_tipodeequipamento t ON e.tipo_equipamento_id_id = t.id
+    WHERE
+        (p_filtered IS NULL OR p_filtered = '' OR e.name ILIKE p_filtered)
+    ORDER BY
+        CASE WHEN p_order = 'id-asc' OR p_order IS NULL THEN e.id END ASC,
+        CASE WHEN p_order = 'id-desc' THEN e.id END DESC,
+        CASE WHEN p_order = 'name-asc' THEN LOWER(e.name) END ASC,
+        CASE WHEN p_order = 'name-desc' THEN LOWER(e.name) END DESC,
+        CASE WHEN p_order = 'created_at-asc' THEN e.created_at END ASC,
+        CASE WHEN p_order = 'created_at-desc' THEN e.created_at END DESC;
+END;
+$BODY$;
+
+
+
+CREATE OR REPLACE FUNCTION public.fn_get_unassigned_production_registries()
+RETURNS TABLE(
+    production_id integer,
+    equipamento_name character varying,
+    started_at date,
+    ended_at date,
+	componentes integer,
+	quantidade_componentes integer
+)
+LANGUAGE 'plpgsql'
+COST 100
+VOLATILE PARALLEL UNSAFE
+ROWS 1000
+AS $BODY$
+BEGIN
+    RETURN QUERY
+    SELECT
+        rp.id,
+        e.name AS equipamento_name,
+        rp.started_at,
+        rp.ended_at,
+		COUNT(qc.*) AS quantidade_componentes
+    FROM
+        ipv_bd2_projeto_registoproducao rp
+    JOIN
+        ipv_bd2_projeto_equipamento e ON rp.equipamento_id_id = e.id
+	LEFT JOIN
+        ipv_bd2_projeto_quantidadecomponenteregistoproducao qc ON rp.id = qc.registo_producao_id
+    WHERE
+        ipv_bd2_projeto_expedicao.registo_producao_id_id IS NULL;
+END;
+$BODY$;
 

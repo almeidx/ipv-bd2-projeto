@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Registar Fatura de Equipamento</title>
+
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+	{% include '$navbar.html' %}
+
+	<div class="p-12">
+		<h1 class="text-4xl mb-8">Registar Fatura de Equipamento</h1>
+
+		<form class="flex flex-col gap-4 max-w-md" method="post">
+			{% csrf_token %}
+
+			{% include '$input.html' with type="date" id="created_at" placeholder="Data de faturação" %}
+
+			{% include '$input.html' with type="text" id="contribuinte" placeholder="Contribuinte" %}
+
+			{% include '$submit.html' with text="Registar Fatura" %}
+		</form>
+	</div>
+</body>
+
+</html>

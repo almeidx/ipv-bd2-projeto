@@ -2,83 +2,104 @@
 <html lang="pt-PT">
 
 <head>
-	<meta charset="UTF-8" />
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>Listagem de Equipamentos</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Listagem de Equipamentos</title>
 
-	<script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body>
-	{% include '$navbar.html' %}
+    {% include '$navbar.html' %}
+    <div class="p-12">
+        <div class="flex justify-between items-center mb-8 w-full">
+            <h1 class="text-4xl ">Listagem de Equipamentos</h1>
 
-	<div class="p-12">
-		<div class="flex justify-between items-center mb-8 w-full">
-			<h1 class="text-4xl ">Listagem de Equipamentos</h1>
+            <div class="flex gap-4">
+                <a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="register">
+                    Registar
+                </a>
 
-			<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="register">
-				Registar
-			</a>
-		</div>
+                <a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="production_registry">
+                    Registos de Produção
+                </a>
+            </div>
+        </div>
 
-		<div class="flex justify-between w-full mb-4">
-			<select name="componente"
-				class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
-				<option value="componente1">Equipamento 1</option>
-				<option value="componente2">Equipamento 2</option>
-				<option value="componente3">Equipamento 3</option>
-			</select>
+        <div class="flex justify-between w-full mb-4">
+            <form method="POST" action="/equipments/">
+                {% csrf_token %}
 
-			<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="stock">
-				Ver Stock
-			</a>
-		</div>
+                <label class="mr-2"><b>Procurar por:</b></label>
+                <input type="text" name="filter_name" id="filter_name" placeholder="Nome" value="{{ request.POST.filter_name }}" class="border border-gray-500 rounded p-2">
 
-		<div class="flex flex-col gap-4">
-			<table
-				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
-				<thead>
-					<tr>
-						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Nome Equipamento</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Data criação</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Tipo</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Atributos</th>
-						<th class="border border-gray-300 bg-gray-200 p-1 w-32">Ações</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for equipment in equipments %}
-					<tr>
-						<td class="border border-gray-300 p-1">{{equipment.id}}</td>
-						<td class="border border-gray-300 p-1">{{equipment.name}}</td>
-						<td class="border border-gray-300 p-1">{{equipment.created_at}}</td>
-						<td class="border border-gray-300 p-1">{{equipment.equipment_type_name}}</td>
-						<td class="border border-gray-300 p-1">
-							{% for key, value in equipment.attributes.items %}
-							{{key}}: {{value}}<br>
-							{% endfor %}
-						</td>
-						<td class="border border-gray-300 p-1">
-							<a href="edit/{{equipment.id}}" class="underline">
-								Editar
-							</a>
-							<br>
-							<a href="delete/{{equipment.id}}" class="underline text-red-500">
-								Eliminar
-							</a>
-						</td>
-					</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-		</div>
-	</div>
-	{% if delete_fail %}
-	<script defer>
-		alert("Não foi possível eliminar o equipamento");
-	</script>
-	{% endif %}
+                <button type="submit" class="bg-gray-900 py-2 px-4 text-white rounded">Pesquisar</button>
+
+                <select name="sort_order" id="sort_order" class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline ml-2">
+                    <option value="id-asc">ID (Asc)</option>
+                    <option value="id-desc">ID (Desc)</option>
+                    <option value="created_at-asc">Data (Asc)</option>
+                    <option value="created_at-desc">Data (Desc)</option>
+                    <option value="name-asc">Nome (Asc)</option>
+                    <option value="name-desc">Nome (Desc)</option>
+                </select>
+
+                <script>
+                    if ("{{ request.POST.sort_order }}" !== "") {
+                        document.getElementById('sort_order').value = "{{ request.POST.sort_order }}";
+                    }
+                </script>
+            </form>
+
+            <a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="stock">
+                Ver Stock
+            </a>
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <table class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
+                <thead>
+                    <tr>
+                        <th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
+                        <th class="border border-gray-300 bg-gray-200 p-1">Nome Equipamento</th>
+                        <th class="border border-gray-300 bg-gray-200 p-1">Data criação</th>
+                        <th class="border border-gray-300 bg-gray-200 p-1">Tipo</th>
+                        <th class="border border-gray-300 bg-gray-200 p-1">Atributos</th>
+                        <th class="border border-gray-300 bg-gray-200 p-1 w-32">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for equipment in equipments %}
+                    <tr>
+                        <td class="border border-gray-300 p-1">{{ equipment.id }}</td>
+                        <td class="border border-gray-300 p-1">{{ equipment.name }}</td>
+                        <td class="border border-gray-300 p-1">{{ equipment.created_at }}</td>
+                        <td class="border border-gray-300 p-1">{{ equipment.equipment_type_name }}</td>
+                        <td class="border border-gray-300 p-1">
+                            {% for key, value in equipment.attributes.items %}
+                            {{ key }}: {{ value }}<br>
+                            {% endfor %}
+                        </td>
+                        <td class="border border-gray-300 p-1">
+                            <a href="edit/{{ equipment.id }}" class="underline">
+                                Editar
+                            </a>
+                            <br>
+                            <a href="delete/{{ equipment.id }}" class="underline text-red-500">
+                                Eliminar
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    {% if delete_fail %}
+    <script defer>
+        alert("Não foi possível eliminar o equipamento");
+    </script>
+    {% endif %}
 </body>
 
 </html>

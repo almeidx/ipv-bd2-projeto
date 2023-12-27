@@ -27,30 +27,48 @@
 				<thead>
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Nome Equipamento</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Equipamento</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Tipo Mão de Obra</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Custo</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Data</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Componentes Utilizados</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Data Início</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Data Fim</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Funcionário</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Armazem</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Custo</th>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-32">Ações</th>
 					</tr>
 				</thead>
 				<tbody>
+					{% for registry in registry_data %}
 					<tr>
-						<td class="border border-gray-300 p-1">1</td>
-						<td class="border border-gray-300 p-1">Equipamento</td>
-						<td class="border border-gray-300 p-1">Tipo</td>
-						<td class="border border-gray-300 p-1">Custo</td>
-						<td class="border border-gray-300 p-1">Data</td>
-						<td class="border border-gray-300 p-1">Funcionário</td>
+						<td class="border border-gray-300 p-1">{{ registry.id }}</td>
+						<td class="border border-gray-300 p-1">{{ registry.equipment_name }}</td>
+						<td class="border border-gray-300 p-1">{{ registry.labour_name }}</td>
 						<td class="border border-gray-300 p-1">
-							<a href="edit/1">Editar</a>
+							{% for component in registry.components %}
+							{{ component.1 }} ({{ component.2 }})<br>
+							{% endfor %}
+						</td>
+						<td class="border border-gray-300 p-1">{{ registry.started_at }}</td>
+						<td class="border border-gray-300 p-1">{{ registry.ended_at }}</td>
+						<td class="border border-gray-300 p-1">{{ registry.worker_name }}</td>
+						<td class="border border-gray-300 p-1">{{ registry.storage_name }}</td>
+						<td class="border border-gray-300 p-1">{{ registry.cost }} €</td>
+						<td class="flex flex-col border border-gray-300 p-1 underline">
+							<a href="edit/{{ registry.id }}">Editar</a>
+							<a class="text-red-500" href="delete/{{ registry.id }}">Apagar</a>
 						</td>
 					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 		</div>
 	</div>
+	{% if delete_fail %}
+	<script defer>
+		alert("Não foi possível eliminar o registo de produção.");
+	</script>
+	{% endif %}
 </body>
 
 </html>
