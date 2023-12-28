@@ -1056,3 +1056,76 @@ BEGIN
 END;
 $BODY$;
 
+-- FUNCTION: public.fn_get_expedicao_by_id(integer)
+
+-- DROP FUNCTION IF EXISTS public.fn_get_expedicao_by_id(integer);
+
+CREATE OR REPLACE FUNCTION public.fn_get_expedicao_by_id(
+	p_encomenda_id integer)
+    RETURNS TABLE(id integer, sent_at date, truck_license character varying, delivery_date_expected date)
+    LANGUAGE 'plpgsql'
+    COST 100
+    VOLATILE PARALLEL UNSAFE
+    ROWS 1000
+
+AS $BODY$
+BEGIN
+    RETURN QUERY
+    SELECT e.encomenda_id_id, e.sent_at, e.truck_license, e.delivery_date_expected,
+    FROM ipv_bd2_projeto_expedicao e
+    LEFT JOIN ipv_bd2_projeto_registoproducao t ON e.encomenda_id_id = t.expedicao_id_id
+    WHERE e.encomenda_id_id = p_encomenda_id;
+END;
+$BODY$;
+
+ALTER FUNCTION public.fn_get_expedicao_by_id(integer)
+    OWNER TO aluno5;
+
+
+
+---
+SELECT
+    json_build_object(
+        'encomenda_id', e.encomenda_id_id,
+        'sent_at', e.sent_at,
+        'truck_license', e.truck_license,
+        'delivery_date_expected', e.delivery_date_expected,
+        'registos_producao', (
+            SELECT
+                json_agg(
+                    json_build_object(
+                        'started_at', rp.started_at,
+                        'ended_at', rp.ended_at,
+                        'armazem_name', ar.name,
+                        'equipamento_name', eq.name,
+                        'funcionario_name', u.first_name || ' ' || u.last_name,
+                        'tipo_mao_de_obra_name', mo.name,
+                        'tipo_mao_de_obra_cost', mo.cost,
+                        'componentes_usados', (
+                            SELECT
+                                json_agg(
+                                    json_build_object(
+                                        'component_name', comp.name,
+                                        'component_cost', comp.cost
+                                    )
+                                )
+                            FROM
+                                ipv_bd2_projeto_quantidadecomponenteregistoproducao qnt
+                            INNER JOIN ipv_bd2_projeto_componente comp ON comp.id = qnt.componente_id
+                            WHERE qnt.registo_producao_id = rp.id
+                        )
+                    )
+                )
+            FROM
+                ipv_bd2_projeto_registoproducao rp
+            INNER JOIN ipv_bd2_projeto_armazem ar ON ar.id = rp.armazem_id_id
+            INNER JOIN ipv_bd2_projeto_equipamento eq ON eq.id = rp.equipamento_id_id
+            INNER JOIN ipv_bd2_projeto_utilizador u ON u.id = rp.funcionario_id_id
+            INNER JOIN ipv_bd2_projeto_tipomaodeobra mo ON mo.id = rp.tipo_mao_de_obra_id_id
+            WHERE expedicao_id_id = 1
+        )
+    ) AS result
+FROM
+    ipv_bd2_projeto_expedicao e
+WHERE
+    e.encomenda_id_id = 1;

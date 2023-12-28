@@ -16,14 +16,13 @@
 		<div class="flex justify-between items-center mb-8 w-full">
 			<h1 class="text-4xl">Ficha de Produção</h1>
 
-			<a class="bg-gray-900  py-2 border border-gray-500 rounded-3xl text-white w-40" href="register">
+			<a class="bg-gray-900  py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="register">
 				Registar
 			</a>
 		</div>
 
 		<div class="flex flex-col gap-4">
-			<table
-				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left text-black">
+			<table class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left text-black">
 				<thead>
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
@@ -34,7 +33,8 @@
 						<th class="border border-gray-300 bg-gray-200 p-1">Data Fim</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Funcionário</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Armazem</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Custo</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Custo Total</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Expedido</th>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-32">Ações</th>
 					</tr>
 				</thead>
@@ -46,7 +46,7 @@
 						<td class="border border-gray-300 p-1">{{ registry.labour_name }}</td>
 						<td class="border border-gray-300 p-1">
 							{% for component in registry.components %}
-							{{ component.1 }} ({{ component.2 }})<br>
+							{{ component.2 }}x {{ component.1 }}<br>
 							{% endfor %}
 						</td>
 						<td class="border border-gray-300 p-1">{{ registry.started_at }}</td>
@@ -54,6 +54,13 @@
 						<td class="border border-gray-300 p-1">{{ registry.worker_name }}</td>
 						<td class="border border-gray-300 p-1">{{ registry.storage_name }}</td>
 						<td class="border border-gray-300 p-1">{{ registry.cost }} €</td>
+						<td class="border border-gray-300 p-1">
+							{% if registry.is_shipped %}
+							Sim
+							{% else %}
+							Não
+							{% endif %}
+						</td>
 						<td class="flex flex-col border border-gray-300 p-1 underline">
 							<a href="edit/{{ registry.id }}">Editar</a>
 							<a class="text-red-500" href="delete/{{ registry.id }}">Apagar</a>

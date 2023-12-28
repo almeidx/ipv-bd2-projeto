@@ -7,7 +7,6 @@ import xml.etree.ElementTree as ET
 import json
 
 from django.core.serializers.json import DjangoJSONEncoder
-from datetime import date
 
 
 def index(request):
@@ -89,18 +88,29 @@ def register_received(request):
     return render(request, "component_orders/register_received.html")
 
 
+from django.http import HttpResponse
+
+
+from django.http import JsonResponse
+
+
+from django.http import JsonResponse
+
+
 def edit(request, id):
     if request.method == "POST":
-        with connection.cursor() as cursor:
-            cursor.execute(
-                "CALL sp_edit_encomenda_componentes(%s, %s, %s);",
-                [
-                    request.POST["new_fornecedor_id"],
-                    request.POST["new_funcionario_responsavel_id"],
-                ],
-            )
+        try:
+            # Retrieve form data
+            componente_id = request.POST["componente"]
+            fornecedor_id = request.POST["fornecedor"]
+            quantidade = request.POST["new_quantidade"]
 
-        return redirect("/components/orders/")
+            new_item = "componente2"
+
+            return JsonResponse({"success": True, "newItem": new_item})
+
+        except ValueError as e:
+            return JsonResponse({"success": False, "error": str(e)})
 
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM fn_get_encomenda_componentes_by_id(%s);", [id])

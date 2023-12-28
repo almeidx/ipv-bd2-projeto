@@ -18,12 +18,21 @@
 		<form class="flex flex-col gap-4 max-w-md" method="post">
 			{% csrf_token %}
 
-			<select id="production_registry_id_id" name="production_registry_id_id"
-				class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
-				{% for production_registry in production_registries %}
-				<option value="{{ production_registry.0 }}">{{ production_registry.1 }} ({{ production_registry.2 }} - {{ production_registry.3 }}) ({{ production_registry.4 }} componentes)</option>
-				{% endfor %}
-			</select>
+			<div class="flex gap-4">
+				<div id="registry_cnt" class="flex flex-col gap-4">
+					<div>
+						<select id="production_registry_id_id" name="production_registry_id_id" class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
+							{% for production_registry in production_registries %}
+							<option value="{{ production_registry.0 }}">{{ production_registry.1 }} ({{ production_registry.2 }} - {{ production_registry.3 }}) ({{ production_registry.4 }} componentes)</option>
+							{% endfor %}
+						</select>
+					</div>
+				</div>
+
+				<button id="add_btn" class="bg-gray-900 border px-4 border-gray-500 h-11 rounded-3xl w-fit whitespace-nowrap text-white" type="button">
+					Adicionar registos
+				</button>
+			</div>
 
 			{% include '$input.html' with type="date" id="sent_at" placeholder="Data de envio" %}
 
@@ -34,6 +43,25 @@
 			{% include '$submit.html' with text="Registar Expedição de Encomenda" %}
 		</form>
 	</div>
+
+	<script>
+		document.getElementById('add_btn').addEventListener('click', () => {
+			const registry_cnt = document.getElementById('registry_cnt');
+
+			const div = document.createElement('div');
+			div.innerHTML = `
+				<div>
+					<select id="production_registry_id_id" name="production_registry_id_id" class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
+						{% for production_registry in production_registries %}
+						<option value="{{ production_registry.0 }}">{{ production_registry.1 }} ({{ production_registry.2 }} - {{ production_registry.3 }}) ({{ production_registry.4 }} componentes)</option>
+						{% endfor %}
+					</select>
+				</div>
+			`;
+
+			registry_cnt.appendChild(div);
+		});
+	</script>
 </body>
 
 </html>

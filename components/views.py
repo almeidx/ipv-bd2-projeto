@@ -8,7 +8,7 @@ def index(request):
 
     with connection.cursor() as cursor:
         cursor.execute(
-            "SELECT * FROM  dd(%s, %s);",
+            "SELECT * FROM  fn_get_components(%s, %s);",
             ["" if filter_name == "" else "%" + filter_name + "%", sort_order],
         )
         components = cursor.fetchall()

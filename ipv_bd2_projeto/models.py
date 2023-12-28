@@ -194,6 +194,15 @@ class QuantidadeGuiaEntregaComponente(models.Model):
         ]
 
 
+class Expedicao(models.Model):
+    sent_at = models.DateField(default=timezone.now)
+    truck_license = models.CharField(null=True, max_length=50)
+    delivery_date_expected = models.DateField()
+    encomenda_id = models.OneToOneField(
+        EncomendaEquipamento, on_delete=models.DO_NOTHING, primary_key=True
+    )
+
+
 class RegistoProducao(models.Model):
     id = models.AutoField(primary_key=True)
     started_at = models.DateField(default=timezone.now)
@@ -202,18 +211,7 @@ class RegistoProducao(models.Model):
     armazem_id = models.ForeignKey(Armazem, on_delete=models.DO_NOTHING)
     funcionario_id = models.ForeignKey(Utilizador, on_delete=models.DO_NOTHING)
     equipamento_id = models.ForeignKey(Equipamento, on_delete=models.DO_NOTHING)
-
-
-class Expedicao(models.Model):
-    sent_at = models.DateField(default=timezone.now)
-    truck_license = models.CharField(null=True, max_length=50)
-    delivery_date_expected = models.DateField()
-    encomenda_id = models.OneToOneField(
-        EncomendaEquipamento, on_delete=models.DO_NOTHING, primary_key=True
-    )
-    registo_producao_id = models.OneToOneField(
-        RegistoProducao, on_delete=models.DO_NOTHING, null=True
-    )
+    expedicao_id = models.ForeignKey(Expedicao, on_delete=models.DO_NOTHING, null=True)
 
 
 class QuantidadeComponenteRegistoProducao(models.Model):

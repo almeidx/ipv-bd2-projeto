@@ -6,43 +6,20 @@ from ipv_bd2_projeto.models import Utilizador
 
 
 def index(request):
-    search_query = request.GET.get("search", "")
-    order_by = request.GET.get("order_by", "id") if "order_by" in request.GET else None
+    filter_name = request.POST.get("filter_name") or ""
+    sort_order = request.POST.get("sort_order")
 
-    if search_query or order_by:
-        with connection.cursor() as cursor:
-            if search_query:
-                if search_query.isdigit():
-                    cursor.execute("SELECT * FROM fn_get_user(%s);", [search_query])
-                else:
-                    if " " in search_query:
-                        first_name, last_name = search_query.split(" ", 1)
-                        cursor.execute(
-                            "SELECT * FROM fn_get_user_name(%s, %s);",
-                            [first_name, last_name],
-                        )
-                    else:
-                        cursor.execute(
-                            "SELECT * FROM fn_get_user_name(%s, NULL) UNION SELECT * FROM fn_get_user_name(NULL, %s);",
-                            [search_query],
-                        )
-            else:
-                cursor.execute("SELECT * FROM fn_get_users();")
-
-            users = cursor.fetchall()
-
-            if order_by == "id":
-                users.sort(key=lambda x: x[0])
-
-    else:
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM fn_get_users();")
-            users = cursor.fetchall()
+    with connection.cursor() as cursor:
+        cursor.execute(
+            "SELECT * FROM fn_get_utilizadores(%s,%s);",
+            ["" if filter_name == "" else "%" + filter_name + "%", sort_order],
+        )
+        users = cursor.fetchall()
 
     return render(
         request,
         "users/index.html",
-        {"users": users, "search_query": search_query, "order_by": order_by},
+        {"users": users},
     )
 
 

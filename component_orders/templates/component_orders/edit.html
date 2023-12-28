@@ -22,14 +22,13 @@
         {% include '$input.html' with type="text" id="fornecedor" placeholder="Fornecedor" %}
 
         <div class="flex w-full gap-4 ">
-          <select name="componente"
-            class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+          <select name="componente" class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
             <option value="componente1">Componente 1</option>
             <option value="componente2">Componente 2</option>
             <option value="componente3">Componente 3</option>
           </select>
 
-          {% include '$input.html' with type="number" id="amount" placeholder="Quantidade" %}
+          {% include '$input.html' with type="number" id="new_quantidade" placeholder="Quantidade" %}
 
           <button class="bg-gray-900 px-16 border border-gray-500 rounded-3xl text-white w-fit">
             Adicionar/Editar Componente
@@ -38,8 +37,7 @@
       </div>
 
       <div class="flex flex-col gap-4">
-        <table
-          class="overflow-auto border border-gray-300 h-full min-table-fixed border-collapse border-spacing-px text-left">
+        <table class="overflow-auto border border-gray-300 h-full min-table-fixed border-collapse border-spacing-px text-left">
           <thead>
             <tr>
               <th class="border border-gray-300 bg-gray-200 text-black p-1">Componente</th>

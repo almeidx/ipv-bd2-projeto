@@ -3,12 +3,22 @@ from django.shortcuts import render, redirect
 
 
 def index(request):
+    filter_name = request.POST.get("filter_name") or ""
+    sort_order = request.POST.get("sort_order")
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_equipment_orders();")
+        cursor.execute(
+            "SELECT * FROM fn_get_equipment_orders(%s, %s);",
+            ["" if filter_name == "" else "%" + filter_name + "%", sort_order],
+        )
         equipment_orders = cursor.fetchall()
 
+    print(equipment_orders)
+
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_equipment_order_amounts();")
+        cursor.execute(
+            "SELECT * FROM fn_get_equipment_order_amounts(%s, %s);",
+            ["" if filter_name == "" else "%" + filter_name + "%", sort_order],
+        )
         amounts = cursor.fetchall()
 
     context = {"equipment_orders": equipment_orders}
@@ -82,3 +92,15 @@ def register(request):
 
 def edit(request):
     return render(request, "equipment_orders/edit.html")
+
+
+def delete(request, id):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT public.fn_delete_encomenda_by_id(%s);", [id])
+        result = cursor.fetchone()
+        deleted_successfully = result[0] if result is not None else False
+
+    if deleted_successfully:
+        return redirect("/equipments/orders/")
+    else:
+        return redirect("/equipments/orders/?delete_fail=true")

@@ -16,13 +16,29 @@ def index(request):
 
 def info(request, id):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_expedicao(%s);", [id])
-        shipment = cursor.fetchone()
+        cursor.execute("SELECT * FROM fn_get_expedicao_by_id(%s);", [id])
+        shipment = cursor.fetchone()[0]  # type: ignore
 
-    print(shipment)
+    total_cost = sum(
+        map(
+            lambda registo: registo["tipo_mao_de_obra_cost"]
+            + sum(
+                map(
+                    lambda componente: componente["component_cost"]
+                    * componente["amount"],
+                    registo["componentes_usados"],
+                )
+            ),
+            shipment["registos_producao"],
+        )
+    )
+
+    print(shipment, total_cost)
 
     return render(
-        request, "equipment_order_shipments/info.html", {"shipment": shipment}
+        request,
+        "equipment_order_shipments/info.html",
+        {"shipment": shipment, "total_cost": total_cost},
     )
 
 
@@ -31,7 +47,7 @@ def register(request, id):
         sent_at = request.POST["sent_at"]
         truck_license = request.POST["truck_license"]
         delivery_date_expected = request.POST["delivery_date_expected"]
-        production_registry_id_id = request.POST["production_registry_id_id"]
+        production_registry_id_id = request.POST.getlist("production_registry_id_id")
 
         with connection.cursor() as cursor:
             cursor.execute(
@@ -41,7 +57,7 @@ def register(request, id):
                     truck_license,
                     delivery_date_expected,
                     id,
-                    production_registry_id_id,
+                    list(map(int, production_registry_id_id)),
                 ],
             )
 

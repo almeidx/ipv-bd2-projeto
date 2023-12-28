@@ -30,17 +30,35 @@
 		</div>
 
 		<div class="flex justify-between w-full mb-4">
-			<select name="componente"
-				class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
-				<option value="componente1">Armazém 1</option>
-				<option value="componente2">Armazém 2</option>
-				<option value="componente3">Armazém 3</option>
-			</select>
+			<form method="POST" action="/storage/">
+				{% csrf_token %}
+
+				<label class="mr-2"><b>Procurar por:</b></label>
+				<input type="text" name="filter_name" id="filter_name" placeholder="Nome" value="{{ request.POST.filter_name }}" class="border border-gray-500 rounded p-2">
+
+				<button type="submit" class="bg-gray-900 py-2 px-4 text-white rounded">Pesquisar</button>
+
+				<select name="sort_order" id="sort_order" class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline ml-2">
+					<option value="id-asc">ID (Asc)</option>
+					<option value="id-desc">ID (Desc)</option>
+					<option value="address-asc">Morada (Asc)</option>
+					<option value="address-desc">Morada (Desc)</option>
+					<option value="name-asc">Nome (Asc)</option>
+					<option value="name-desc">Nome (Desc)</option>
+					<option value="locality-asc">Localidade (Asc)</option>
+					<option value="locality-desc">Localidade (Desc)</option>
+				</select>
+
+				<script>
+					if ("{{ request.POST.sort_order }}" !== "") {
+						document.getElementById('sort_order').value = "{{ request.POST.sort_order }}";
+					}
+				</script>
+			</form>
 		</div>
 
 		<div class="flex flex-col gap-4">
-			<table
-				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
+			<table class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
 				<thead>
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>

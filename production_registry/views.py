@@ -20,7 +20,8 @@ def index(request):
             "ended_at": data[4],
             "worker_name": data[5],
             "storage_name": data[6],
-            "cost": data[7],  # add cost from components
+            "cost": data[7],
+            "is_shipped": data[8],
             "components": [],
         }
         for data in registries
@@ -29,16 +30,16 @@ def index(request):
     for index, registry in enumerate(registry_data):
         registry["components"] = list(filter(lambda x: x[0] == registry["id"], amounts))
 
-        print(registry["components"])
-
-        # for component in registry["components"]:
-        #     registry["cost"] += component[2] * component[3]
+        for component in registry["components"]:
+            registry["cost"] += component[2] * component[3]
 
         registry_data[index] = registry
 
-    return render(
-        request, "production_registry/index.html", {"registry_data": registry_data}
-    )
+    context = {"registry_data": registry_data}
+    if request.GET.get("delete_fail"):
+        context["delete_fail"] = True  # type: ignore
+
+    return render(request, "production_registry/index.html", contvisually impairedext)
 
 
 def register(request):
@@ -93,7 +94,7 @@ def register(request):
         labours = cursor.fetchall()
 
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_armazens();")
+        cursor.execute("SELECT * FROM fn_get_armazens(NULL, NULL);")
         storages = cursor.fetchall()
 
     with connection.cursor() as cursor:
