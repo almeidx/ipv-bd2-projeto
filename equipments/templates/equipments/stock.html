@@ -14,43 +14,41 @@
 
 	<div class="p-12">
 		<div class="flex justify-between items-center w-full">
-			<h1 class="text-4xl mb-8">Listagem de Equipamento - Stock</h1>
+			<h1 class="text-4xl mb-8">Listagem de Stock de Equipamentos</h1>
 
-			<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center"
-				href="../production_registry">
-				Ficha de Produção
-			</a>
+			<div class="flex gap-4">
+				<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="..">
+					Equipamentos
+				</a>
+				<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="../production_registry">
+					Registos de Produção
+				</a>
+			</div>
 		</div>
-
-		<div class="flex justify-between w-full mb-4">
-		</div>
-
-		FALTA FILTROS
 
 		<div class="flex flex-col gap-4">
-			<table
-				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
+			<table class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
 				<thead>
 					<tr>
-						<th class="border border-gray-300 bg-gray-200 text-black p-1 w-12">ID</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">ID Equipamento</th>
 						<th class="border border-gray-300 bg-gray-200 text-black p-1">Nome Componente</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">ID Armazém</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Nome Armazém</th>
 						<th class="border border-gray-300 bg-gray-200 text-black p-1">Quantidade</th>
-						<th class="border border-gray-300 bg-gray-200 text-black p-1">Armazém</th>
 					</tr>
 				</thead>
 				<tbody>
-					{% for stock in stocks %}
+					{% for stock in stock_equipamentos %}
 					<tr>
 						<td class="border border-gray-300 text-black p-1">{{stock.0}}</td>
 						<td class="border border-gray-300 text-black p-1">{{stock.1}}</td>
 						<td class="border border-gray-300 text-black p-1">{{stock.2}}</td>
 						<td class="border border-gray-300 text-black p-1">{{stock.3}}</td>
+						<td class="border border-gray-300 text-black p-1">{{stock.4}}</td>
 					</tr>
 					{% endfor %}
 				</tbody>
 			</table>
-
-
 		</div>
 	</div>
 </body>

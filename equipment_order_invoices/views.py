@@ -15,7 +15,15 @@ def index(request):
 def info(request, id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM fn_get_equipment_order_invoice_by_id(%s);", [id])
-        invoice = cursor.fetchone()
+        invoice = cursor.fetchone()[0]  # type: ignore
+
+    for registo in invoice["expedicao"]["registos_producao"]:
+        registo["price"] = registo["tipo_mao_de_obra_cost"] + sum(
+            componente["component_cost"] * componente["amount"]
+            for componente in registo["componentes_usados"]
+        )
+
+    print(invoice)
 
     return render(request, "equipment_order_invoices/info.html", {"invoice": invoice})
 

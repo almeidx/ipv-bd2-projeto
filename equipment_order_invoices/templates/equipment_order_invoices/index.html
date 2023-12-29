@@ -15,11 +15,14 @@
 	<div class="p-12">
 		<div class="flex justify-between items-center w-full">
 			<h1 class="text-4xl mb-8">Listagem de Faturas Encomenda</h1>
+
+			<div class="flex gap-4">
+				<a href=".." class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Encomendas</a>
+			</div>
 		</div>
 
 		<div class="flex justify-between w-full mb-4">
-			<select name="componente"
-				class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
+			<select name="componente" class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
 				<option value="componente1">Nome 1</option>
 				<option value="componente2">Nome 2</option>
 				<option value="componente3">Nome 3</option>
@@ -27,25 +30,26 @@
 		</div>
 
 		<div class="flex flex-col gap-4">
-			<table
-				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
+			<table class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
 				<thead>
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Nome Equipamento</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Data Envio</th>
-						<th class="border border-gray-300 bg-gray-200 p-1 w-32">Fatura</th>
+						<th class="border border-gray-300 bg-gray-200 p-1 w-32">Ações</th>
 					</tr>
 				</thead>
 				<tbody>
+					{% for invoice in invoices %}
 					<tr>
-						<td class="border border-gray-300 p-1">1</td>
-						<td class="border border-gray-300 p-1">Nome Equipamento</td>
-						<td class="border border-gray-300 p-1">Data</td>
+						<td class="border border-gray-300 p-1">{{invoice.0}}</td>
+						<td class="border border-gray-300 p-1">{{invoice.2}}</td>
+						<td class="border border-gray-300 p-1">{{invoice.1}}</td>
 						<td class="border border-gray-300 p-1">
-							<a href="1">Fatura</a>
+							<a href="{{invoice.0}}">Informação</a>
 						</td>
 					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 		</div>

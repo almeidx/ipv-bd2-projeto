@@ -27,14 +27,8 @@
 		</div>
 
 		<div class="flex flex-col gap-4">
-
 			<form method="POST" action="/equipments/orders/">
 				{% csrf_token %}
-
-				<label class="mr-2"><b>Procurar por:</b></label>
-				<input type="text" name="filter_name" id="filter_name" placeholder="Nome" value="{{ request.POST.filter_name }}" class="border border-gray-500 rounded p-2">
-
-				<button type="submit" class="bg-gray-900 py-2 px-4 text-white rounded">Pesquisar</button>
 
 				<select name="sort_order" id="sort_order" class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline ml-2">
 					<option value="id-asc">ID (Asc)</option>
@@ -46,6 +40,8 @@
 					<option value="func-asc">Funcionário (Asc)</option>
 					<option value="func-desc">Funcionário (Desc)</option>
 				</select>
+
+				<button type="submit" class="bg-gray-900 py-2 px-4 text-white rounded">Re-ordenar</button>
 
 				<script>
 					if ("{{ request.POST.sort_order }}" !== "") {
@@ -98,7 +94,10 @@
 								Registar Fatura
 							</a>
 							{% endif %}
+
+							{% if not equipment_order.4 and not equipment_order.5 %}
 							<a class="text-red-500" href="delete/{{ equipment_order.0  }}">Apagar</a>
+							{% endif %}
 						</td>
 					</tr>
 					{% endfor %}

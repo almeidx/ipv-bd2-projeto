@@ -20,12 +20,14 @@
 
       {% include '$input.html' with type="date" id="created_at" placeholder="Data criação" %}
 
-      <select name="client_id_id"
-        class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-        {% for client in clients %}
-        <option value="{{client.0}}">{{client.1}}</option>
-        {% endfor %}
-      </select>
+      <div>
+        <label for="client_id_id">Cliente:</label>
+        <select name="client_id_id" class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+          {% for client in clients %}
+          <option value="{{client.0}}">{{client.1}}</option>
+          {% endfor %}
+        </select>
+      </div>
 
       {% include '$input.html' with type="text" id="address" placeholder="Morada" %}
 
@@ -36,19 +38,20 @@
       <div class="flex w-full gap-4">
         <div id="attr_container" class="flex flex-col gap-4">
           <div class="flex gap-4">
-            <select name="equipment_id" id="equipment_id"
-              class="appearance-none border border-gray-500 rounded-3xl p-2 min-w-[16rem] leading-tight focus:outline-none focus:shadow-outline">
-              {% for equipment in equipments %}
-              <option value="{{ equipment.0 }}">{{ equipment.1 }}</option>
-              {% endfor %}
-            </select>
+            <div>
+              <label for="equipment_id">Equipamento:</label>
+              <select name="equipment_id" id="equipment_id" class="appearance-none border border-gray-500 rounded-3xl p-2 min-w-[16rem] leading-tight focus:outline-none focus:shadow-outline">
+                {% for equipment in equipments %}
+                <option value="{{ equipment.0 }}">{{ equipment.1 }}</option>
+                {% endfor %}
+              </select>
+            </div>
 
             {% include '$input.html' with type="number" id="amount" placeholder="Quantidade" value=1 %}
           </div>
         </div>
 
-        <button class="bg-gray-900 border px-4 border-gray-500 h-11 rounded-3xl w-fit whitespace-nowrap text-white"
-          id="add_attr_btn" type="button">
+        <button class="bg-gray-900 border px-4 border-gray-500 h-11 rounded-3xl w-fit whitespace-nowrap text-white" id="add_attr_btn" type="button">
           Adicionar Equipamento
         </button>
       </div>
@@ -66,12 +69,14 @@
       const attr = document.createElement('div');
       attr.className = 'flex gap-4';
       attr.innerHTML = `
-        <select name="equipment_id" id="equipment_id"
-          class="appearance-none border border-gray-500 rounded-3xl p-2 min-w-[16rem] leading-tight focus:outline-none focus:shadow-outline">
-          {% for equipment in equipments %}
-          <option value="{{ equipment.0 }}">{{ equipment.1 }}</option>
-          {% endfor %}
-        </select>
+        <div>
+          <label for="equipment_id">Equipamento:</label>
+          <select name="equipment_id" id="equipment_id" class="appearance-none border border-gray-500 rounded-3xl p-2 min-w-[16rem] leading-tight focus:outline-none focus:shadow-outline">
+            {% for equipment in equipments %}
+            <option value="{{ equipment.0 }}">{{ equipment.1 }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
         {% include '$input.html' with type="number" id="amount" placeholder="Quantidade" value=1 %}
       `;

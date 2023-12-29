@@ -14,47 +14,59 @@
 
 	<div class="p-12">
 		<div class="flex justify-between items-center w-full">
-			<h1 class="text-4xl mb-8">Faturação-Encomenda Cliente </h1>
+			<h1 class="text-4xl mb-8">Fatura de Equipamentos</h1>
 		</div>
 
 		<div class="flex flex-col gap-4">
-			<div class="max-w-fit flex flex-col gap-4">
-				<h4 class="text-lg"><strong>Dados Cliente: </strong></h4>
+			<div class="flex justify-between max-w-3xl">
+				<div class="flex flex-col flex-1">
+					<h2 class="text-3xl">Cliente</h2>
 
-				{% include '$input.html' with type="text" id="nome" placeholder="Nome" readonly=True %}
+					<p class="mt-2"><span class="font-bold">ID:</span> {{ invoice.cliente.id }}</p>
+					<p class="mt-2"><span class="font-bold">Nome:</span> {{ invoice.cliente.name }}</p>
+					<p class="mt-2"><span class="font-bold">Email:</span> {{ invoice.cliente.email }}</p>
+					<p class="mt-2"><span class="font-bold">Contribuinte:</span> {{ invoice.contribuinte }}</p>
+				</div>
 
-				{% include '$input.html' with type="text" id="Morada" placeholder="Morada" readonly=True %}
+				<div class="flex flex-col flex-1">
+					<h2 class="text-3xl">Informações</h2>
 
-				{% include '$input.html' with type="text" id="codigoPostal" placeholder="Código Postal" readonly=True %}
-
-				{% include '$input.html' with type="text" id="Localidade" placeholder="Localidade" readonly=True %}
-
+					<p class="mt-2"><span class="font-bold">Encomendado a:</span> {{ invoice.encomenda.created_at }}</p>
+					<p class="mt-2"><span class="font-bold">Local de entrega:</span> {{ invoice.encomenda.address }}, {{ invoice.encomenda.postal_code }}, {{ invoice.encomenda.locality }}</p>
+					<p class="mt-2"><span class="font-bold">Entregue a:</span> {{ invoice.expedicao.delivery_date_expected }}</p>
+					<p class="mt-2"><span class="font-bold">Preço total:</span> {{ invoice.total_cost }}€</p>
+				</div>
 			</div>
-			<table
-				class="overflow-auto border border-gray-300 h-full max-w-3xl table-fixed border-collapse border-spacing-px text-left mb-8">
+
+			<h2 class="text-2xl mt-4">Equipamentos</h2>
+			<table class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
 				<thead>
 					<tr>
-						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Nome Equipamento</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Data Envio</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Produzido a</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Componentes Usados</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Preço</th>
 					</tr>
 				</thead>
+
 				<tbody>
+					{% for registo in invoice.expedicao.registos_producao %}
 					<tr>
-						<td class="border border-gray-300 p-1 w-12">1</td>
-						<td class="border border-gray-300 p-1">Nome Equipamento</td>
-						<td class="border border-gray-300 p-1">Data</td>
+						<td class="border border-gray-300 p-4">{{ registo.equipamento_name }}</td>
+						<td class="border border-gray-300 p-4">{{ registo.ended_at }}</td>
+						<td class="border border-gray-300 p-4">
+							{% for componente in registo.componentes_usados %}
+							<p>{{ componente.amount }}x {{ componente.component_name }} ({{ componente.component_cost }}€ unit.)</p>
+							{% endfor %}
+						</td>
+						<td class="border border-gray-300 p-4">
+							{{ registo.price }}€
+						</td>
 					</tr>
+					{% endfor %}
 				</tbody>
 			</table>
 		</div>
-
-		<div class="flex flex-col gap-4 w-fit mt-8">
-			<h4 class="text-lg"><strong>Preço Total da Compra:</strong></h4>
-
-			{% include '$input.html' with type="text" id="nome" placeholder="Preço" readonly=True %}
-		</div>
-	</div>
 </body>
 
 </html>

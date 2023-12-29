@@ -39,7 +39,7 @@ def index(request):
     if request.GET.get("delete_fail"):
         context["delete_fail"] = True  # type: ignore
 
-    return render(request, "production_registry/index.html", contvisually impairedext)
+    return render(request, "production_registry/index.html", context)
 
 
 def register(request):
@@ -114,8 +114,61 @@ def register(request):
 
 
 def edit(request, id):
-    # TODO
-    return render(request, "production_registry/edit.html")
+    if request.method == "POST":
+        ended_at = request.POST["ended_at"]
+        started_at = request.POST["started_at"]
+        armazem_id_id = request.POST["armazem_id_id"]
+        tipo_mao_de_obra_id_id = request.POST["tipo_mao_de_obra_id_id"]
+
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "CALL sp_update_registo_producao(%s, %s, %s, %s, %s);",
+                [
+                    id,
+                    started_at,
+                    ended_at,
+                    armazem_id_id,
+                    tipo_mao_de_obra_id_id,
+                ],
+            )
+
+        return redirect("/equipments/production_registry/")
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_production_registry_by_id(%s);", [id])
+        production_registry = cursor.fetchone()  # type: ignore
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_tipo_mao_obra();")
+        labours = cursor.fetchall()
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_armazens(NULL, NULL);")
+        storages = cursor.fetchall()
+
+    print(
+        [
+            str(production_registry[0]),  # type: ignore
+            str(production_registry[1]),  # type: ignore
+            str(production_registry[2]),  # type: ignore
+            str(production_registry[3]),  # type: ignore
+        ]
+    )
+
+    return render(
+        request,
+        "production_registry/edit.html",
+        {
+            "labours": labours,
+            "storages": storages,
+            "production_registry": [
+                str(production_registry[0]),  # type: ignore
+                str(production_registry[1]),  # type: ignore
+                str(production_registry[2]),  # type: ignore
+                str(production_registry[3]),  # type: ignore
+            ],
+        },
+    )
 
 
 def delete(request, id):

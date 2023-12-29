@@ -1071,10 +1071,62 @@ CREATE OR REPLACE FUNCTION public.fn_get_expedicao_by_id(
 AS $BODY$
 BEGIN
     RETURN QUERY
-    SELECT e.encomenda_id_id, e.sent_at, e.truck_license, e.delivery_date_expected,
-    FROM ipv_bd2_projeto_expedicao e
-    LEFT JOIN ipv_bd2_projeto_registoproducao t ON e.encomenda_id_id = t.expedicao_id_id
-    WHERE e.encomenda_id_id = p_encomenda_id;
+    SELECT
+    json_build_object(
+        'created_at', f.created_at,
+        'contribuinte', f.contribuinte,
+        'expedicao', (
+            SELECT
+                json_build_object(
+                    'sent_at', e.sent_at,
+                    'truck_license', e.truck_license,
+                    'delivery_date_expected', e.delivery_date_expected,
+                    'registos_producao', (
+                        SELECT
+                            json_agg(
+                                json_build_object(
+                                    'started_at', rp.started_at,
+                                    'ended_at', rp.ended_at,
+                                    'armazem_name', ar.name,
+                                    'equipamento_name', eq.name,
+                                    'funcionario_name', u.first_name || ' ' || u.last_name,
+                                    'tipo_mao_de_obra_name', mo.name,
+                                    'tipo_mao_de_obra_cost', mo.cost,
+                                    'componentes_usados', (
+                                        SELECT
+                                            json_agg(
+                                                json_build_object(
+                                                    'component_name', comp.name,
+                                                    'component_cost', comp.cost,
+                                                    'amount', qnt.amount
+                                                )
+                                            )
+                                        FROM
+                                            ipv_bd2_projeto_quantidadecomponenteregistoproducao qnt
+                                        INNER JOIN ipv_bd2_projeto_componente comp ON comp.id = qnt.componente_id
+                                        WHERE qnt.registo_producao_id = rp.id
+                                    )
+                                )
+                            )
+                        FROM
+                            ipv_bd2_projeto_registoproducao rp
+                        INNER JOIN ipv_bd2_projeto_armazem ar ON ar.id = rp.armazem_id_id
+                        INNER JOIN ipv_bd2_projeto_equipamento eq ON eq.id = rp.equipamento_id_id
+                        INNER JOIN ipv_bd2_projeto_utilizador u ON u.id = rp.funcionario_id_id
+                        INNER JOIN ipv_bd2_projeto_tipomaodeobra mo ON mo.id = rp.tipo_mao_de_obra_id_id
+                        WHERE expedicao_id_id = e.encomenda_id_id
+                    )
+                )
+            FROM
+                ipv_bd2_projeto_expedicao e
+            WHERE
+                e.encomenda_id_id = f.encomenda_id_id
+        )
+    ) AS result
+FROM
+    ipv_bd2_projeto_fatura f
+WHERE
+    f.encomenda_id_id = 2;
 END;
 $BODY$;
 
@@ -1084,6 +1136,194 @@ ALTER FUNCTION public.fn_get_expedicao_by_id(integer)
 
 
 ---
+SELECT
+    json_build_object(
+        "created_at", f.created_at,
+        "contribuinte", f.contribuinte,
+        "expedicao", (
+            SELECT
+                json_agg(
+                    json_build_object(
+                        'encomenda_id', e.encomenda_id_id,
+                        'sent_at', e.sent_at,
+                        'truck_license', e.truck_license,
+                        'delivery_date_expected', e.delivery_date_expected,
+                        'registos_producao', (
+                            SELECT
+                                json_agg(
+                                    json_build_object(
+                                        'started_at', rp.started_at,
+                                        'ended_at', rp.ended_at,
+                                        'armazem_name', ar.name,
+                                        'equipamento_name', eq.name,
+                                        'funcionario_name', u.first_name || ' ' || u.last_name,
+                                        'tipo_mao_de_obra_name', mo.name,
+                                        'tipo_mao_de_obra_cost', mo.cost,
+                                        'componentes_usados', (
+                                            SELECT
+                                                json_agg(
+                                                    json_build_object(
+                                                        'component_name', comp.name,
+                                                        'component_cost', comp.cost,
+                                                        'amount', qnt.amount
+                                                    )
+                                                )
+                                            FROM
+                                                ipv_bd2_projeto_quantidadecomponenteregistoproducao qnt
+                                            INNER JOIN ipv_bd2_projeto_componente comp ON comp.id = qnt.componente_id
+                                            WHERE qnt.registo_producao_id = rp.id
+                                        )
+                                    )
+                                )
+                            FROM
+                                ipv_bd2_projeto_registoproducao rp
+                            INNER JOIN ipv_bd2_projeto_armazem ar ON ar.id = rp.armazem_id_id
+                            INNER JOIN ipv_bd2_projeto_equipamento eq ON eq.id = rp.equipamento_id_id
+                            INNER JOIN ipv_bd2_projeto_utilizador u ON u.id = rp.funcionario_id_id
+                            INNER JOIN ipv_bd2_projeto_tipomaodeobra mo ON mo.id = rp.tipo_mao_de_obra_id_id
+                            WHERE expedicao_id_id = 2
+                        )
+                    )
+                )
+            FROM
+                ipv_bd2_projeto_expedicao e
+            WHERE
+                e.encomenda_id_id = 2;
+        )
+    ) AS result
+FROM
+    ipv_bd2_projeto_fatura f
+WHERE
+    f.encomenda_id_id = 2;
+
+
+
+----
+
+SELECT
+    json_build_object(
+        'created_at', f.created_at,
+        'contribuinte', f.contribuinte,
+        'cliente', (
+            SELECT
+                json_build_object(
+                    'id', u_client.id,
+                    'name', u_client.first_name || ' ' || u_client.last_name,
+                    'email', u_client.email
+                )
+            FROM
+                ipv_bd2_projeto_encomendaequipamento f_client
+            INNER JOIN ipv_bd2_projeto_utilizador u_client ON u_client.id = f_client.client_id_id
+            WHERE
+                f_client.id = 2
+            LIMIT 1
+        ),
+		'encomenda', (
+			SELECT
+				json_build_object(
+					'created_at', encomenda.created_at,
+					'address', encomenda.address,
+					'postal_code', encomenda.postal_code,
+					'locality', encomenda.locality
+				)
+            FROM
+                ipv_bd2_projeto_encomendaequipamento encomenda
+            WHERE
+                encomenda.id = f.encomenda_id_id
+		),
+        'expedicao', (
+            SELECT
+                json_build_object(
+                    'truck_license', e.truck_license,
+                    'delivery_date_expected', e.delivery_date_expected,
+                    'registos_producao', (
+                        SELECT
+                            json_agg(
+                                json_build_object(
+                                    'ended_at', rp.ended_at,
+                                    'equipamento_name', eq.name,
+                                    'tipo_mao_de_obra_cost', mo.cost,
+                                    'componentes_usados', (
+                                        SELECT
+                                            json_agg(
+                                                json_build_object(
+                                                    'component_name', comp.name,
+                                                    'component_cost', comp.cost,
+                                                    'amount', qnt.amount
+                                                )
+                                            )
+                                        FROM
+                                            ipv_bd2_projeto_quantidadecomponenteregistoproducao qnt
+                                        INNER JOIN ipv_bd2_projeto_componente comp ON comp.id = qnt.componente_id
+                                        WHERE qnt.registo_producao_id = rp.id
+                                    )
+                                )
+                            )
+                        FROM
+                            ipv_bd2_projeto_registoproducao rp
+                        INNER JOIN ipv_bd2_projeto_equipamento eq ON eq.id = rp.equipamento_id_id
+                        INNER JOIN ipv_bd2_projeto_tipomaodeobra mo ON mo.id = rp.tipo_mao_de_obra_id_id
+                        WHERE expedicao_id_id = e.encomenda_id_id
+                    )
+                )
+            FROM
+                ipv_bd2_projeto_expedicao e
+            WHERE
+                e.encomenda_id_id = f.encomenda_id_id
+        ),
+        'total_cost', (
+            SELECT
+                COALESCE(
+                    SUM(tmo.tipo_mao_de_obra_cost + tcomp.total_component_cost),
+                    0
+                )
+            FROM (
+                SELECT
+                    rp.id,
+                    mo.cost AS tipo_mao_de_obra_cost
+                FROM
+                    ipv_bd2_projeto_registoproducao rp
+                INNER JOIN ipv_bd2_projeto_tipomaodeobra mo ON mo.id = rp.tipo_mao_de_obra_id_id
+                WHERE rp.expedicao_id_id = f.encomenda_id_id
+            ) tmo
+            LEFT JOIN (
+                SELECT
+                    qnt.registo_producao_id,
+                    SUM(comp.cost * qnt.amount) AS total_component_cost
+                FROM
+                    ipv_bd2_projeto_quantidadecomponenteregistoproducao qnt
+                INNER JOIN ipv_bd2_projeto_componente comp ON comp.id = qnt.componente_id
+                GROUP BY qnt.registo_producao_id
+            ) tcomp ON tcomp.registo_producao_id = tmo.id
+        )
+    ) AS result
+FROM
+    ipv_bd2_projeto_fatura f
+WHERE
+    f.encomenda_id_id = 2;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-------
 SELECT
     json_build_object(
         'encomenda_id', e.encomenda_id_id,
@@ -1106,7 +1346,8 @@ SELECT
                                 json_agg(
                                     json_build_object(
                                         'component_name', comp.name,
-                                        'component_cost', comp.cost
+                                        'component_cost', comp.cost,
+                                        'amount', qnt.amount
                                     )
                                 )
                             FROM

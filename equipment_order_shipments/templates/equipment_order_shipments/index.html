@@ -22,8 +22,7 @@
 		</div>
 
 		<div class="flex flex-col gap-4">
-			<table
-				class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
+			<table class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
 				<thead>
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
@@ -40,7 +39,11 @@
 						<td class="border border-gray-300 p-4">{{ shipment.1 }}</td>
 						<td class="border border-gray-300 p-4">{{ shipment.2 }}</td>
 						<td class="border border-gray-300 p-4">{{ shipment.3 }}</td>
-						<td class="border border-gray-300 p-4"></td>
+						<td class="border border-gray-300 p-4">
+							<a href="{{ shipment.0 }}">
+								Informações
+							</a>
+						</td>
 					</tr>
 					{% endfor %}
 				</tbody>

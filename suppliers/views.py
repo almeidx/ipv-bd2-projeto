@@ -3,8 +3,14 @@ from django.db import connection
 
 
 def index(request):
+    filter_name = request.POST.get("filter_name") or ""
+    sort_order = request.POST.get("sort_order")
+
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_fornecedores();")
+        cursor.execute(
+            "SELECT * FROM fn_get_fornecedores(%s,%s);",
+            ["" if filter_name == "" else "%" + filter_name + "%", sort_order],
+        )
         sellers = cursor.fetchall()
 
     context = {"sellers": sellers}

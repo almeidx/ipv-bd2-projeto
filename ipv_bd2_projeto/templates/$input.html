@@ -1,23 +1,29 @@
-<input
-	class="p-2 border border-gray-500 rounded-full"
-	type="{{ type }}"
-	name="{{ id }}"
-	id="{{ id }}"
-	placeholder="{{ placeholder }}"
-	required
-	{% if readonly %}
-		readonly
-	{% endif %}
-	{% if value %}
-		value="{{ value }}"
-	{% endif %}
-	{% if step %}
-		step="{{ step }}"
-	{% endif %}
-	{% if min %}
-		min="{{ min }}"
-	{% endif %}
-	{% if max %}
-		max="{{ max }}"
-	{% endif %}
->
+<div class="">
+	<label for="{{ id }}">{{ placeholder }}:</label>
+	<br>
+
+	<input
+		class="p-2 border border-gray-500 rounded-full"
+		type="{{ type }}"
+		name="{{ id }}"
+		id="{{ id }}"
+		placeholder="{{ placeholder }}"
+		required
+		{% if readonly %}
+			readonly
+		{% endif %}
+		{% if value %}
+			value="{{ value }}"
+		{% endif %}
+		{% if step %}
+			step="{{ step }}"
+		{% endif %}
+		{% if min %}
+			min="{{ min }}"
+		{% endif %}
+		{% if max %}
+			max="{{ max }}"
+		{% endif %}
+	>
+</div>
+

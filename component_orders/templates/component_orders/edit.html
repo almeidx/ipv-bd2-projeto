@@ -47,13 +47,21 @@
           </thead>
           <tbody>
             <tr>
-              <td class="border border-gray-300 text-black p-1">Componente</td>
+              {% for componente in component %}
+              <td class="border border-gray-300 text-black p-1">{{ componente.name }}</td>
+              <td class="border border-gray-300 text-black p-1">{{ componente.amount }}</td>
+              <td class="border border-gray-300 text-black p-1 w-32">
+                <button>
+                  Apagar
+                </button>
+                <!-- <td class="border border-gray-300 text-black p-1">Componente</td>
               <td class="border border-gray-300 text-black p-1">2</td>
               <td class="border border-gray-300 text-black p-1 w-32">
                 <button>
                   Apagar
                 </button>
-              </td>
+              </td> -->
+                {% endfor %}
             </tr>
           </tbody>
         </table>

@@ -10,8 +10,14 @@ from django.core.serializers.json import DjangoJSONEncoder
 
 
 def index(request):
+    filter_name = request.POST.get("filter_name") or ""
+    sort_order = request.POST.get("sort_order")
+
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_component_orders();")
+        cursor.execute(
+            "SELECT * FROM fn_get_component_orders(%s,%s);",
+            ["" if filter_name == "" else "%" + filter_name + "%", sort_order],
+        )
         component_orders = cursor.fetchall()
 
     with connection.cursor() as cursor:
@@ -91,26 +97,17 @@ def register_received(request):
 from django.http import HttpResponse
 
 
-from django.http import JsonResponse
-
-
-from django.http import JsonResponse
-
-
 def edit(request, id):
     if request.method == "POST":
-        try:
-            # Retrieve form data
-            componente_id = request.POST["componente"]
-            fornecedor_id = request.POST["fornecedor"]
-            quantidade = request.POST["new_quantidade"]
+        componente_id = request.POST.get("componente")
+        fornecedor_name = request.POST.get("fornecedor")
+        quantidade = request.POST.get("new_quantidade")
 
-            new_item = "componente2"
-
-            return JsonResponse({"success": True, "newItem": new_item})
-
-        except ValueError as e:
-            return JsonResponse({"success": False, "error": str(e)})
+        with connection.cursor() as cursor:
+            cursor.execute(
+                "UPDATE your_table_name SET componente_id = %s, fornecedor_id = %s, quantidade = %s WHERE id = %s;",
+                [componente_id, fornecedor_name, quantidade, id],
+            )
 
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM fn_get_encomenda_componentes_by_id(%s);", [id])

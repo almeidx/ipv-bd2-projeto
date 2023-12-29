@@ -264,7 +264,9 @@ def edit(request, id):
 
 def stock(request):
     with connection.cursor() as cursor:
-        cursor.execute("SELECT * FROM fn_get_equipamentos(NULL, NULL);")
-        equipments = cursor.fetchall()
+        cursor.execute("SELECT * FROM fn_get_stock_equipamentos();")
+        stock_equipamentos = cursor.fetchall()
 
-    return render(request, "equipments/stock.html", {"equipments": equipments})
+    return render(
+        request, "equipments/stock.html", {"stock_equipamentos": stock_equipamentos}
+    )

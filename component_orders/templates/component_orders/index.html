@@ -19,7 +19,36 @@
       <a href="register" class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Encomendar</a>
     </div>
 
-    <div class="flex flex-col gap-4">
+    <div class="mb-2">
+      <form method="POST" action="/components/orders/ ">
+        {% csrf_token %}
+
+        <label class="mr-2"><b>Procurar por:</b></label>
+        <input type="text" name="filter_name" id="filter_name" placeholder="Nome" value="{{ request.POST.filter_name }}" class="border border-gray-500 rounded p-2">
+
+        <button type="submit" class="bg-gray-900 py-2 px-4 text-white rounded">Pesquisar</button>
+
+        <select name="sort_order" id="sort_order" class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline ml-2">
+          <option value="id-asc">ID (Asc)</option>
+          <option value="id-desc">ID (Desc)</option>
+          <option value="date-asc">Data (Asc)</option>
+          <option value="date-desc">Data (Desc)</option>
+          <option value="components-asc">Componentes (Asc)</option>
+          <option value="components-desc">Componentes (Desc)</option>
+          <option value="supplier-asc">Fornecedor (Asc)</option>
+          <option value="supplier-desc">Fornecedor (Desc)</option>
+          <option value="employee-asc"> Funcionário (Asc)</option>
+          <option value="employee-desc"> Funcionário (Desc)</option>
+        </select>
+
+        <script>
+          if ("{{ request.POST.sort_order }}" !== "") {
+            document.getElementById('sort_order').value = "{{ request.POST.sort_order }}";
+          }
+        </script>
+      </form>
+    </div>
+    <div class="flex flex-col gap-4 mt-4">
       <table class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
         <thead>
           <tr>

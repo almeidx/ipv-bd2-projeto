@@ -5,14 +5,13 @@ from django.shortcuts import render, redirect
 def index(request):
     filter_name = request.POST.get("filter_name") or ""
     sort_order = request.POST.get("sort_order")
+
     with connection.cursor() as cursor:
         cursor.execute(
             "SELECT * FROM fn_get_equipment_orders(%s, %s);",
             ["" if filter_name == "" else "%" + filter_name + "%", sort_order],
         )
         equipment_orders = cursor.fetchall()
-
-    print(equipment_orders)
 
     with connection.cursor() as cursor:
         cursor.execute(
@@ -27,6 +26,8 @@ def index(request):
 
     for index, equipment_order in enumerate(equipment_orders):
         amounts_for_order = list(filter(lambda x: x[0] == equipment_order[0], amounts))
+        print("X", index, amounts_for_order)
+
         tmp_list = list(equipment_order)
         tmp_list.append(amounts_for_order)
 
