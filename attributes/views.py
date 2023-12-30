@@ -2,7 +2,7 @@ from bson import ObjectId
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.conf import settings
-from pymongo import MongoClient
+from pymongo import ASCENDING, DESCENDING, MongoClient
 from django.shortcuts import redirect
 
 
@@ -21,7 +21,36 @@ mongo_attribute_values = db["attribute_values"]
 
 
 def index(request):
-    attributes = mongo_attributes.find()
+    filter_name = request.POST.get("filter_name")
+    sort_order = request.POST.get("sort_order")
+
+    attributes_find_options = {}
+
+    if filter_name:
+        attributes_find_options["name"] = {
+            "$regex": filter_name,
+            "$options": "i",
+        }
+
+    if sort_order == "id_asc":
+        attributes_sort = "id"
+        attributes_sort_order = ASCENDING
+    elif sort_order == "id_desc":
+        attributes_sort = "id"
+        attributes_sort_order = DESCENDING
+    elif sort_order == "attribute_asc":
+        attributes_sort = "name"
+        attributes_sort_order = ASCENDING
+    elif sort_order == "attribute_desc":
+        attributes_sort = "name"
+        attributes_sort_order = DESCENDING
+    else:
+        attributes_sort = "id"
+        attributes_sort_order = ASCENDING
+
+    attributes = mongo_attributes.find(attributes_find_options).sort(
+        attributes_sort, attributes_sort_order
+    )
     values = mongo_attribute_values.find()
 
     clone = [

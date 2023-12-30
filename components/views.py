@@ -1,5 +1,8 @@
+import json
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import render, redirect
 from django.db import connection
+from .forms import ComponenteForm
 
 
 def index(request):
@@ -13,11 +16,9 @@ def index(request):
         )
         components = cursor.fetchall()
 
-    context = {"components": components}
+    context = {"components": components, "form": ComponenteForm()}
     if request.GET.get("delete_fail"):
-        context["delete_fail"] = True  # type: ignore
-
-    print(components)
+        context["delete_fail"] = True
 
     return render(request, "components/index.html", context)
 
@@ -73,7 +74,13 @@ def edit(request, id):
 
 
 def stock(request):
-    return render(request, "components/stock.html")
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_stock_componentes();")
+        stock_componentes = cursor.fetchall()
+
+    return render(
+        request, "components/stock.html", {"stock_componentes": stock_componentes}
+    )
 
 
 def delete(request, id):
@@ -86,3 +93,52 @@ def delete(request, id):
         return redirect("/components/")
     else:
         return redirect("/components/?delete_fail=1")
+
+
+def upload(request):
+    if request.method == "POST":
+        form = ComponenteForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            uploaded_file = request.FILES["file"]
+
+            try:
+                content = uploaded_file.read().decode("utf-8")
+                data = json.loads(content)
+
+                if is_valid_data(data):
+                    with connection.cursor() as cursor:
+                        cursor.callproc("sp_import_components", [json.dumps(data)])
+                else:
+                    return HttpResponseBadRequest("Error: Invalid data format.")
+            except json.JSONDecodeError:
+                return HttpResponse("Error: Invalid JSON file.")
+
+    return redirect("/components/")
+
+
+def is_valid_data(data):
+    if not isinstance(data, list):
+        return False
+
+    for item in data:
+        if (
+            not isinstance(item, dict)
+            or "name" not in item
+            or "cost" not in item
+            or "supplier" not in item
+        ):
+            return False
+
+        supplier = item["supplier"]
+        if (
+            not isinstance(supplier, dict)
+            or "name" not in supplier
+            or "email" not in supplier
+            or "address" not in supplier
+            or "postal_code" not in supplier
+            or "locality" not in supplier
+        ):
+            return False
+
+    return True

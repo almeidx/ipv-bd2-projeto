@@ -19,12 +19,14 @@
       {% csrf_token %}
 
       {% include '$input.html' with type="text" id="name" placeholder="Nome" %}
-
-      <select id="fornecedor_id_id" name="fornecedor_id_id" class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-        {% for seller in sellers %}
-        <option value="{{seller.0}}">{{seller.1}}</option>
-        {% endfor %}
-      </select>
+      <div>
+        <label for="Fornecedores">Fornecedores:</label>
+        <select id="fornecedor_id_id" name="fornecedor_id_id" class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+          {% for seller in sellers %}
+          <option value="{{seller.0}}">{{seller.1}}</option>
+          {% endfor %}
+        </select>
+      </div>
 
       {% include '$input.html' with type="number" id="cost" placeholder="Preço" %}
 

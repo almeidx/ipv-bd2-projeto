@@ -9,6 +9,7 @@ urlpatterns = [
     path("logout/", logout_view),
     path("components/", include("components.urls")),
     path("components/orders/", include("component_orders.urls")),
+    path("components/orders/received/", include("component_order_received.urls")),
     path("users/", include("users.urls")),
     path("equipments/", include("equipments.urls")),
     path("equipments/orders/", include("equipment_orders.urls")),

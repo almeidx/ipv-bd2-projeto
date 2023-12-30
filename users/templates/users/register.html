@@ -26,19 +26,20 @@
 
             {% include '$input.html' with type="password" id="password" placeholder="Password" %}
 
-            <select name="type" id="type"
-                class="appearance-none border border-gray-500 rounded-3xl w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-                <option value="AD">
-                    Administrador
-                </option>
-                <option value="FU" selected>
-                    Funcionário
-                </option>
-                <option value="CL">
-                    Cliente
-                </option>
-            </select>
-
+            <div>
+                <label for="tipo">Tipo de Utilizador:</label>
+                <select name="type" id="type" class="appearance-none border border-gray-500 rounded-3xl w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="AD">
+                        Administrador
+                    </option>
+                    <option value="FU" selected>
+                        Funcionário
+                    </option>
+                    <option value="CL">
+                        Cliente
+                    </option>
+                </select>
+            </div>
             {% include '$submit.html' with text="Registar Utilizador" %}
         </form>
     </div>

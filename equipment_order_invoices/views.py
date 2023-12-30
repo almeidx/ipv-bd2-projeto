@@ -1,5 +1,20 @@
+from django.conf import settings
 from django.db import connection
 from django.shortcuts import redirect, render
+from pymongo import MongoClient
+
+db_settings = settings.DATABASES["mongo"]
+client = MongoClient(
+    host=db_settings["CLIENT"]["host"],
+    port=db_settings["CLIENT"]["port"],
+    username=db_settings["CLIENT"]["username"],
+    password=db_settings["CLIENT"]["password"],
+    authSource=db_settings["AUTH_DATABASE"],
+)
+db = client[db_settings["NAME"]]
+mongo_attributes = db["attributes"]
+mongo_equipment_attributes = db["equipment_attributes"]
+mongo_attribute_values = db["attribute_values"]
 
 
 def index(request):
@@ -23,7 +38,25 @@ def info(request, id):
             for componente in registo["componentes_usados"]
         )
 
-    print(invoice)
+        equipment_attributes = [
+            x
+            for x in mongo_equipment_attributes.find(
+                {"equipmentId": "__pgs" + str(registo["equipamento_id"])}
+            )
+        ]
+
+        registo["atributos"] = []
+
+        for attribute in equipment_attributes:
+            attr_name = mongo_attributes.find_one({"_id": attribute["attributeId"]})
+            attr_value = mongo_attribute_values.find_one({"_id": attribute["valueId"]})
+
+            registo["atributos"].append(
+                {
+                    "name": attr_name["name"],  # type: ignore
+                    "value": attr_value["value"],  # type: ignore
+                }
+            )
 
     return render(request, "equipment_order_invoices/info.html", {"invoice": invoice})
 

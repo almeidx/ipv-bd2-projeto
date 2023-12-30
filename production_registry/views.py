@@ -70,8 +70,6 @@ def register(request):
             )
             production_registry_id = cursor.fetchone()
 
-        print(production_registry_id, componentes)
-
         production_registry_id = (
             production_registry_id[0] if production_registry_id else None
         )
@@ -145,15 +143,6 @@ def edit(request, id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM fn_get_armazens(NULL, NULL);")
         storages = cursor.fetchall()
-
-    print(
-        [
-            str(production_registry[0]),  # type: ignore
-            str(production_registry[1]),  # type: ignore
-            str(production_registry[2]),  # type: ignore
-            str(production_registry[3]),  # type: ignore
-        ]
-    )
 
     return render(
         request,

@@ -23,11 +23,6 @@ def index(request):
     filter_name = request.POST.get("filter_name") or ""
     sort_order = request.POST.get("sort_order")
 
-    print(
-        filter_name,
-        sort_order,
-    )
-
     with connection.cursor() as cursor:
         cursor.execute(
             "SELECT * FROM fn_get_equipamentos(%s, %s)",

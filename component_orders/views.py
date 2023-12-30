@@ -1,12 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db import connection
-
 from django.http import HttpResponse, JsonResponse
 import xml.etree.ElementTree as ET
-
-import json
-
-from django.core.serializers.json import DjangoJSONEncoder
 
 
 def index(request):
@@ -35,9 +30,11 @@ def index(request):
 
         component_orders[index] = tuple(tmp_list)
 
-    return render(
-        request, "component_orders/index.html", {"component_orders": component_orders}
-    )
+    context = {"component_orders": component_orders}
+    if request.GET.get("delete_fail"):
+        context["delete_fail"] = True  # type: ignore
+
+    return render(request, "component_orders/index.html", context)
 
 
 def register(request):
@@ -61,8 +58,6 @@ def register(request):
                 ],
             )
             encomenda_id = cursor.fetchone()
-
-        print(encomenda_id, componentes)
 
         encomenda_id = encomenda_id[0] if encomenda_id else None
 
@@ -90,31 +85,86 @@ def register(request):
     )
 
 
-def register_received(request):
-    return render(request, "component_orders/register_received.html")
-
-
-from django.http import HttpResponse
-
-
 def edit(request, id):
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_component_order_amounts();")
+        amounts = cursor.fetchall()
+
     if request.method == "POST":
-        componente_id = request.POST.get("componente")
-        fornecedor_name = request.POST.get("fornecedor")
-        quantidade = request.POST.get("new_quantidade")
+        fornecedor_id_id = request.POST["fornecedor_id_id"]
+
+        componente_id = request.POST.getlist("componente_id")
+        amount = request.POST.getlist("amount")
+
+        componentes = list(zip(componente_id, amount))
+
+        funcionario_id_id = request.user.id if request.user else 1
 
         with connection.cursor() as cursor:
             cursor.execute(
-                "UPDATE your_table_name SET componente_id = %s, fornecedor_id = %s, quantidade = %s WHERE id = %s;",
-                [componente_id, fornecedor_name, quantidade, id],
+                "CALL sp_edit_encomenda_componentes(%s, %s, %s);",
+                [id, fornecedor_id_id, funcionario_id_id],
             )
+
+        for componente_id, amount in componentes:
+            with connection.cursor() as cursor:
+                cursor.execute(
+                    "CALL sp_edit_quantidades_encomenda_componentes(%s, %s, %s);",
+                    [id, componente_id, amount],
+                )
+
+        componente_id = [int(x) for x in componente_id]
+
+        existing_amount_ids = [amount[0] for amount in amounts]
+        submitted_amount_ids = request.POST.getlist("amount_id")
+
+        for amount_id in existing_amount_ids:
+            if amount_id not in submitted_amount_ids:
+                with connection.cursor() as cursor:
+                    cursor.execute(
+                        "CALL sp_delete_quantidade_encomenda_componente(%s);",
+                        [amount_id],
+                    )
+
+        return redirect("/components/orders/")
 
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM fn_get_encomenda_componentes_by_id(%s);", [id])
-        components_orders = cursor.fetchone()
+        component_order = cursor.fetchone()
+
+    component_order_data = {
+        "id": component_order[0],  # type: ignore
+        "created_at": component_order[1],  # type: ignore
+        "supplier_id": component_order[2],  # type: ignore
+        "employee_id": component_order[3],  # type: ignore
+        "exported": component_order[4],  # type: ignore
+    }
+
+    preset_component_amounts = []
+
+    for amount in amounts:
+        if amount[0] == component_order[0]:  # type: ignore
+            preset_component_amounts.append(
+                {"component_id": amount[3], "amount": amount[2]}
+            )
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_components();")
+        componentes = cursor.fetchall()
+
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_fornecedores();")
+        sellers = cursor.fetchall()
 
     return render(
-        request, "component_orders/edit.html", {"components_orders": components_orders}
+        request,
+        "component_orders/edit.html",
+        {
+            "components_order": component_order,
+            "preset_component_amounts": preset_component_amounts,
+            "componentes": componentes,
+            "sellers": sellers,
+        },
     )
 
 
@@ -127,7 +177,7 @@ def delete(request, id):
     if deleted_successfully:
         return redirect("/components/orders/")
     else:
-        return redirect("/components/orders/?delete_fail")
+        return redirect("/components/orders/?delete_fail=true")
 
 
 def fetch_data(query):
@@ -137,43 +187,45 @@ def fetch_data(query):
 
 
 def export_xml(request):
-    try:
-        component_orders = fetch_data("SELECT * FROM fn_get_component_orders();")
-        amounts = fetch_data("SELECT * FROM fn_get_component_order_amounts();")
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_component_orders();")
+        component_orders = cursor.fetchall()
 
-        for index, component_order in enumerate(component_orders):
-            amounts_for_order = list(
-                filter(lambda x: x[0] == component_order[0], amounts)
-            )
-            component_order += (amounts_for_order,)
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT * FROM fn_get_component_order_amounts();")
+        amounts = cursor.fetchall()
 
-            component_orders[index] = component_order
+    with connection.cursor() as cursor:
+        cursor.execute("CALL sp_mark_component_orders_as_exported();")
 
-        root = ET.Element("data")
+    for index, component_order in enumerate(component_orders):
+        amounts_for_order = list(filter(lambda x: x[0] == component_order[0], amounts))
+        component_order += (amounts_for_order,)
 
-        for component_order in component_orders:
-            order_elem = ET.SubElement(root, "component_order")
-            ET.SubElement(order_elem, "id").text = str(component_order[0])
-            ET.SubElement(order_elem, "data").text = str(component_order[1])
-            components_elem = ET.SubElement(order_elem, "components")
+        component_orders[index] = component_order
 
-            for component in component_order[5]:
-                component_elem = ET.SubElement(components_elem, "component")
-                ET.SubElement(component_elem, "name").text = str(component[1])
-                ET.SubElement(component_elem, "quantity").text = str(component[2])
+    root = ET.Element("data")
 
-            ET.SubElement(order_elem, "supplier").text = str(component_order[2])
-            ET.SubElement(order_elem, "exported").text = (
-                "Sim" if component_order[4] else "Não"
-            )
+    for component_order in component_orders:
+        order_elem = ET.SubElement(root, "component_order")
+        ET.SubElement(order_elem, "id").text = str(component_order[0])
+        ET.SubElement(order_elem, "data").text = str(component_order[1])
+        components_elem = ET.SubElement(order_elem, "components")
 
-        xml_data = ET.tostring(root, encoding="utf-8", method="xml")
-        response = HttpResponse(xml_data, content_type="application/xml")
-        response["Content-Disposition"] = 'attachment; filename="exported_data.xml"'
-        return response
+        for component in component_order[5]:
+            component_elem = ET.SubElement(components_elem, "component")
+            ET.SubElement(component_elem, "name").text = str(component[1])
+            ET.SubElement(component_elem, "quantity").text = str(component[2])
 
-    except Exception as e:
-        return HttpResponse(f"An error occurred: {str(e)}", status=500)
+        ET.SubElement(order_elem, "supplier").text = str(component_order[2])
+        ET.SubElement(order_elem, "exported").text = (
+            "Sim" if component_order[4] else "Não"
+        )
+
+    xml_data = ET.tostring(root, encoding="utf-8", method="xml")
+    response = HttpResponse(xml_data, content_type="application/xml")
+    response["Content-Disposition"] = 'attachment; filename="exported_data.xml"'
+    return response
 
 
 def export_json(request):
@@ -184,6 +236,9 @@ def export_json(request):
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM fn_get_component_order_amounts();")
         amounts = cursor.fetchall()
+
+    with connection.cursor() as cursor:
+        cursor.execute("CALL sp_mark_component_orders_as_exported();")
 
     amounts_dict = {}
     for amount in amounts:
@@ -209,8 +264,6 @@ def export_json(request):
                 ],
             }
         )
-
-    json_data = json.dumps(serialized_data, cls=DjangoJSONEncoder, indent=2)
 
     response = JsonResponse(serialized_data, safe=False)
 

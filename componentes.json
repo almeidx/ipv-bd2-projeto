@@ -1,0 +1,112 @@
+[
+	{
+		"name": "RAM",
+		"cost": 25.99,
+		"supplier": {
+			"name": "Newegg",
+			"email": "contact@newegg.com",
+			"address": "123 Tech Street",
+			"postal_code": "98765",
+			"locality": "Electron City"
+		}
+	},
+	{
+		"name": "CPU",
+		"cost": 199.99,
+		"supplier": {
+			"name": "Newegg",
+			"email": "contact@newegg.com",
+			"address": "123 Tech Street",
+			"postal_code": "98765",
+			"locality": "Electron City"
+		}
+	},
+	{
+		"name": "Graphics Card",
+		"cost": 349.99,
+		"supplier": {
+			"name": "NVIDIA",
+			"email": "contact@nvidia.com",
+			"address": "456 GPU Avenue",
+			"postal_code": "54321",
+			"locality": "Graphics Town"
+		}
+	},
+	{
+		"name": "Storage (SSD)",
+		"cost": 129.99,
+		"supplier": {
+			"name": "Samsung",
+			"email": "info@samsung.com",
+			"address": "789 Data Drive",
+			"postal_code": "12345",
+			"locality": "Storage City"
+		}
+	},
+	{
+		"name": "Motherboard",
+		"cost": 179.95,
+		"supplier": {
+			"name": "ASUS",
+			"email": "support@asus.com",
+			"address": "101 Motherboard Lane",
+			"postal_code": "67890",
+			"locality": "Boardville"
+		}
+	},
+	{
+		"name": "Power Supply Unit (PSU)",
+		"cost": 89.99,
+		"supplier": {
+			"name": "Corsair",
+			"email": "sales@corsair.com",
+			"address": "202 Power Street",
+			"postal_code": "34567",
+			"locality": "Power City"
+		}
+	},
+	{
+		"name": "Cooling System (CPU Cooler)",
+		"cost": 79.99,
+		"supplier": {
+			"name": "NZXT",
+			"email": "info@nzxt.com",
+			"address": "303 Coolers Avenue",
+			"postal_code": "87654",
+			"locality": "Cooling Town"
+		}
+	},
+	{
+		"name": "Storage (HDD)",
+		"cost": 69.99,
+		"supplier": {
+			"name": "Western Digital",
+			"email": "sales@wd.com",
+			"address": "404 Hard Drive Lane",
+			"postal_code": "23456",
+			"locality": "Data City"
+		}
+	},
+	{
+		"name": "Case",
+		"cost": 109.95,
+		"supplier": {
+			"name": "Cooler Master",
+			"email": "info@coolermaster.com",
+			"address": "505 Case Street",
+			"postal_code": "78901",
+			"locality": "Caseville"
+		}
+	},
+	{
+		"name": "Monitor",
+		"cost": 299.99,
+		"supplier": {
+			"name": "Dell",
+			"email": "sales@dell.com",
+			"address": "606 Display Drive",
+			"postal_code": "01234",
+			"locality": "Screen City"
+		}
+	}
+]

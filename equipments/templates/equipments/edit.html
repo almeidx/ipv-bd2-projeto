@@ -27,7 +27,7 @@
           value="{{equipment_type.0}}"
           {% if equipment.3 == equipment_type.0 %}
           selected
-          {% endif %}  
+          {% endif %}
         >{{equipment_type.1}}</option>
         {% endfor %}
       </select>
@@ -35,19 +35,23 @@
       <div class="flex gap-4">
         <div class="flex flex-col gap-4" id="att_cnt">
           {% for preselected in preselected_attributes %}
-          <div id="value:{{ preselected }}" class="flex gap-4">
-            <select id="attributes" name="attributes"
-              class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-              {% for attribute in attributes %}
-              <option
-                value="{{attribute.id}}:{{attribute.value_id}}"
-                {% if preselected == attribute.value_id %}
-                selected
-                {% endif %}
-              >{{attribute.name}}: {{attribute.value}}</option>
-              {% endfor %}
-            </select>
-
+          <div id="value:{{ preselected }}" class="flex flex-col gap-4">
+            <div>
+              <div>
+                <label for="attributes">Atributo:</label>
+                <select id="attributes" name="attributes"
+                  class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+                  {% for attribute in attributes %}
+                  <option
+                    value="{{attribute.id}}:{{attribute.value_id}}"
+                    {% if preselected == attribute.value_id %}
+                    selected
+                    {% endif %}
+                  >{{attribute.name}}: {{attribute.value}}</option>
+                  {% endfor %}
+                </select>
+                </div>
+              </div>
             <button type="button" onclick="document.getElementById(`value:{{ preselected }}`).remove();" class="border border-gray-500 p-1 rounded-full h-10">
               Remover
             </button>
@@ -55,14 +59,14 @@
           {% endfor %}
         </div>
 
-        <button id="add_att_btn" class="border border-gray-500 p-1 rounded-full h-10 ml-24 whitespace-nowrap" type="button">Adicionar
+        <button id="add_att_btn" class="border border-gray-500 p-1 rounded-full h-10 ml-24 whitespace-nowrap mt-6" type="button">Adicionar
           Atributo</button>
       </div>
 
       {% include '$submit.html' with text="Guardar Equipamento" %}
     </form>
   </div>
-  
+
   <script>
     const attributesContainer = document.getElementById('att_cnt');
     const addAttributeButton = document.getElementById('add_att_btn');
@@ -71,13 +75,16 @@
       const div = document.createElement('div');
 
       div.innerHTML = `
+      <div>
+        <label for="attributes">Atributo:</label>
         <select id="attributes" name="attributes"
           class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
           {% for attribute in attributes %}
           <option value="{{attribute.id}}:{{attribute.value_id}}">{{attribute.name}}: {{attribute.value}}</option>
           {% endfor %}
         </select>
-      `;
+      </div>
+      ` ;
 
       attributesContainer.appendChild(div);
     });

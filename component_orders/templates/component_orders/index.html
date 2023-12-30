@@ -16,17 +16,16 @@
     <div class="flex items-center mb-8 justify-between h-fit">
       <h1 class="text-4xl">Listagem de Encomendas de Componentes</h1>
 
-      <a href="register" class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Encomendar</a>
+      <div class="flex gap-4">
+        <a href="register" class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Encomendar</a>
+
+        <a href="received" class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Guias de Entrega</a>
+      </div>
     </div>
 
     <div class="mb-2">
       <form method="POST" action="/components/orders/ ">
         {% csrf_token %}
-
-        <label class="mr-2"><b>Procurar por:</b></label>
-        <input type="text" name="filter_name" id="filter_name" placeholder="Nome" value="{{ request.POST.filter_name }}" class="border border-gray-500 rounded p-2">
-
-        <button type="submit" class="bg-gray-900 py-2 px-4 text-white rounded">Pesquisar</button>
 
         <select name="sort_order" id="sort_order" class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline ml-2">
           <option value="id-asc">ID (Asc)</option>
@@ -40,6 +39,8 @@
           <option value="employee-asc"> Funcionário (Asc)</option>
           <option value="employee-desc"> Funcionário (Desc)</option>
         </select>
+
+        <button type="submit" class="bg-gray-900 py-2 px-4 text-white rounded">Re-ordernar</button>
 
         <script>
           if ("{{ request.POST.sort_order }}" !== "") {
@@ -114,6 +115,12 @@
       </div>
     </div>
   </div>
+
+  {% if delete_fail %}
+  <script defer>
+    alert("Não foi possível eliminar a encomenda de componentes devido a já ter sido exportada.");
+  </script>
+  {% endif %}
 </body>
 
 </html>

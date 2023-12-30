@@ -9,7 +9,7 @@
 	<script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
+<body>	
 	{% include '$navbar.html' %}
 
 	<div class="p-12">
@@ -21,6 +21,7 @@
 			<div class="flex gap-4">
 				<div id="registry_cnt" class="flex flex-col gap-4">
 					<div>
+						<label for="Encomenda">Encomenda:</label>
 						<select id="production_registry_id_id" name="production_registry_id_id" class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
 							{% for production_registry in production_registries %}
 							<option value="{{ production_registry.0 }}">{{ production_registry.1 }} ({{ production_registry.2 }} - {{ production_registry.3 }}) ({{ production_registry.4 }} componentes)</option>
@@ -29,7 +30,7 @@
 					</div>
 				</div>
 
-				<button id="add_btn" class="bg-gray-900 border px-4 border-gray-500 h-11 rounded-3xl w-fit whitespace-nowrap text-white" type="button">
+				<button id="add_btn" class="bg-gray-900 border px-4 border-gray-500 h-11 rounded-3xl w-fit whitespace-nowrap text-white mt-6" type="button">
 					Adicionar registos
 				</button>
 			</div>
@@ -51,6 +52,7 @@
 			const div = document.createElement('div');
 			div.innerHTML = `
 				<div>
+					<label for="Encomenda">Encomenda:</label>
 					<select id="production_registry_id_id" name="production_registry_id_id" class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline">
 						{% for production_registry in production_registries %}
 						<option value="{{ production_registry.0 }}">{{ production_registry.1 }} ({{ production_registry.2 }} - {{ production_registry.3 }}) ({{ production_registry.4 }} componentes)</option>

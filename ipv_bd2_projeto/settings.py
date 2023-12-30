@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "equipment_type",
     "storage",
     "equipment_order_shipments",
+    "component_order_received",
 ]
 
 MIDDLEWARE = [
@@ -62,6 +63,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "ipv_bd2_projeto.middleware.LoginRequiredMiddleware",
 ]
 
 ROOT_URLCONF = "ipv_bd2_projeto.urls"

@@ -37,15 +37,14 @@
                 <label for="attributes">Atributo:</label>
                 <select id="attributes" name="attributes" class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
                   {% for attribute in attributes %}
-                  <option value="{{attribute.id}}:{{attribute.value_id}}">{{attribute.name}}:
-                    {{attribute.value}}</option>
+                  <option value="{{attribute.id}}:{{attribute.value_id}}">{{attribute.name}}: {{attribute.value}}</option>
                   {% endfor %}
                 </select>
               </div>
             </div>
           </div>
 
-          <button id="add_att_btn" class="border border-gray-500 p-1 rounded-full h-10" type="button">Adicionar Atributo</button>
+          <button id="add_att_btn" class="border border-gray-500 p-1 rounded-full h-10 mt-6" type="button">Adicionar Atributo</button>
         </div>
       </div>
 

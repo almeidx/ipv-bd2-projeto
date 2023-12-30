@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Listagem de Encomendas de Componentes</title>
+
+	<script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body>
+	{% include '$navbar.html' %}
+
+	<div class="p-12">
+		<div class="flex items-center mb-8 justify-between h-fit">
+			<h1 class="text-4xl">Listagem de Encomendas de Componentes</h1>
+
+			<div class="flex gap-4">
+				<a href=".." class="bg-gray-900 px-16 py-2 border border-gray-500 rounded-3xl text-white w-fit">Encomendas</a>
+			</div>
+		</div>
+
+		<div class="mb-2">
+			<form method="POST" action="/components/orders/ ">
+				{% csrf_token %}
+
+				<select name="sort_order" id="sort_order" class="appearance-none border border-gray-500 rounded-3xl w-md p-2 leading-tight focus:outline-none focus:shadow-outline ml-2">
+					<option value="id-asc">ID (Asc)</option>
+					<option value="id-desc">ID (Desc)</option>
+					<option value="date-asc">Data (Asc)</option>
+					<option value="date-desc">Data (Desc)</option>
+					<option value="components-asc">Componentes (Asc)</option>
+					<option value="components-desc">Componentes (Desc)</option>
+					<option value="supplier-asc">Fornecedor (Asc)</option>
+					<option value="supplier-desc">Fornecedor (Desc)</option>
+					<option value="employee-asc"> Funcionário (Asc)</option>
+					<option value="employee-desc"> Funcionário (Desc)</option>
+				</select>
+
+				<button type="submit" class="bg-gray-900 py-2 px-4 text-white rounded">Re-ordernar</button>
+
+				<script>
+					if ("{{ request.POST.sort_order }}" !== "") {
+						document.getElementById('sort_order').value = "{{ request.POST.sort_order }}";
+					}
+				</script>
+			</form>
+		</div>
+
+		<div class="flex flex-col gap-4 mt-4">
+			<table class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
+				<thead>
+					<tr>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1 w-12">ID</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Data de recebimento</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Armazém</th>
+						<th class="border border-gray-300 bg-gray-200 text-black p-1">Componentes</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for component_order in received %}
+					<tr>
+						<td class="border border-gray-300 text-black p-1">{{component_order.0}}</td>
+						<td class="border border-gray-300 text-black p-1">{{component_order.1}}</td>
+						<td class="border border-gray-300 text-black p-1">{{component_order.2}}</td>
+						<td class="border border-gray-300 text-black p-1">
+							{% for component in component_order.3 %}
+							{{ component.2 }}x {{ component.1 }}
+							{% if not forloop.last %}, {% endif %}
+							{% endfor %}
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
+</html>

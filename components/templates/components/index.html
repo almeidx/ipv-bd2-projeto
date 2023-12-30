@@ -12,7 +12,9 @@
 <body>
 	{% include '$navbar.html' %}
 
-	<div class="p-12">
+	<form class="p-12 flex-1" action="/components/" method="post">
+		{% csrf_token %}
+
 		<div class="flex justify-between items-center mb-8 w-full">
 			<h1 class="text-4xl">Listagem de Componentes</h1>
 
@@ -32,9 +34,7 @@
 		</div>
 
 		<div class="flex justify-between w-full mb-4">
-			<form method="POST" action="/components/">
-				{% csrf_token %}
-
+			<div>
 				<label class="mr-2"><b>Procurar por:</b></label>
 				<input type="text" name="filter_name" id="filter_name" placeholder="Nome" value="{{ request.POST.filter_name }}" class="border border-gray-500 rounded p-2">
 
@@ -58,12 +58,13 @@
 						document.getElementById('sort_order').value = "{{ request.POST.sort_order }}";
 					}
 				</script>
-			</form>
+			</div>
 
 			<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="stock/">
 				Ver Stock
 			</a>
 		</div>
+
 		<div class="flex flex-col gap-4">
 			<table class="overflow-auto border border-gray-300 h-full w-full table-fixed border-collapse border-spacing-px text-left">
 				<thead>
@@ -99,7 +100,17 @@
 				</tbody>
 			</table>
 		</div>
-	</div>
+	</form>
+
+	<form class="pl-12 mb-8" action="/components/upload/" method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+
+		{{ form.file }}
+
+		<button type="submit" class="bg-gray-900 py-2 px-4 text-white rounded">Importar Componentes</button>
+	</form>
+
+
 	{% if delete_fail %}
 	<script defer>
 		alert("Não foi possível eliminar o componente!");

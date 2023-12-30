@@ -44,6 +44,7 @@
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 p-1">Nome Equipamento</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Produzido a</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Atributos</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Componentes Usados</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Preço</th>
 					</tr>
@@ -54,6 +55,11 @@
 					<tr>
 						<td class="border border-gray-300 p-4">{{ registo.equipamento_name }}</td>
 						<td class="border border-gray-300 p-4">{{ registo.ended_at }}</td>
+						<td class="border border-gray-300 p-4">
+							{% for atributo in registo.atributos %}
+							<p>{{ atributo.name }}: {{ atributo.value }}</p>
+							{% endfor %}
+						</td>
 						<td class="border border-gray-300 p-4">
 							{% for componente in registo.componentes_usados %}
 							<p>{{ componente.amount }}x {{ componente.component_name }} ({{ componente.component_cost }}€ unit.)</p>

@@ -22,11 +22,13 @@
 
       {% include '$input.html' with type="text" id="last_name" placeholder="Último Nome" value=user.2 %}
 
+      <div>
+      <label for="tipo">Tipo de Utilizador:</label>
       <select name="type" id="type"
       class="appearance-none border border-gray-500 rounded-3xl w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
         <option
-          value="AD" 
-          {% if user.4 == 'AD' %} 
+          value="AD"
+          {% if user.4 == 'AD' %}
           selected
           {% endif %}
         >
@@ -34,7 +36,7 @@
         </option>
         <option
           value="FU"
-          {% if user.4 == 'FU' %} 
+          {% if user.4 == 'FU' %}
           selected
           {% endif %}
         >
@@ -49,6 +51,7 @@
           Cliente
         </option>
       </select>
+      </div>
 
       {% include '$submit.html' with text="Guardar" %}
     </form>

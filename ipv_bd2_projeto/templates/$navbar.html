@@ -5,7 +5,7 @@
 		</a>
 	</div>
 
-	<ul class="flex list-none gap-4 text-white no-underline">
+	<ul class="flex list-none gap-4 text-white no-underline z-50">
 		<li>
 			<a href="/">Equipamentos</a>
 		</li>
@@ -24,9 +24,12 @@
 		<li>
 			<a href="/storage/">Armazens</a>
 		</li>
+		<li>
+			<a href="/suppliers/">Fornecedores</a>
+		</li>
 	</ul>
 
-	<div class="flex w-full justify-end">~
+	<div class="flex w-full justify-end">
 		{% if user.is_authenticated %}
 		<a href="/logout">
 			<p class="text-white">{{ user.get_username }}</p>

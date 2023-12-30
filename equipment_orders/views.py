@@ -26,7 +26,6 @@ def index(request):
 
     for index, equipment_order in enumerate(equipment_orders):
         amounts_for_order = list(filter(lambda x: x[0] == equipment_order[0], amounts))
-        print("X", index, amounts_for_order)
 
         tmp_list = list(equipment_order)
         tmp_list.append(amounts_for_order)

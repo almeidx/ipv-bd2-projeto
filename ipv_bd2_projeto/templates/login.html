@@ -25,6 +25,10 @@
 
       {% include '$submit.html' with text="Login" %}
     </form>
+
+    {% if not at_least_one_user %}
+    <a class="border border-gray-500 px-5 rounded-full h-11" href="/users/register/">Criar conta</a>
+    {% endif %}
   </div>
 </body>
 

@@ -7,8 +7,6 @@ def index(request):
         cursor.execute("SELECT * FROM fn_get_expedicao();")
         shipments = cursor.fetchall()
 
-    print(shipments)
-
     return render(
         request, "equipment_order_shipments/index.html", {"shipments": shipments}
     )
@@ -32,8 +30,6 @@ def info(request, id):
             shipment["registos_producao"],
         )
     )
-
-    print(shipment, total_cost)
 
     return render(
         request,
