@@ -120,7 +120,7 @@ def edit(request, id):
 
         with connection.cursor() as cursor:
             cursor.execute(
-                "CALL sp_update_registo_producao(%s, %s, %s, %s, %s);",
+                "CALL sp_edit_registo_producao(%s, %s, %s, %s, %s);",
                 [
                     id,
                     started_at,
@@ -153,8 +153,8 @@ def edit(request, id):
             "production_registry": [
                 str(production_registry[0]),  # type: ignore
                 str(production_registry[1]),  # type: ignore
-                str(production_registry[2]),  # type: ignore
-                str(production_registry[3]),  # type: ignore
+                production_registry[2],  # type: ignore
+                production_registry[3],  # type: ignore
             ],
         },
     )

@@ -56,7 +56,10 @@
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Data criação</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Cliente</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Funcionário Responsável</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Funcionário</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Morada</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Código Postal</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Localidade</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Equipamentos</th>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-44">Ações</th>
 					</tr>
@@ -68,8 +71,11 @@
 						<td class="border border-gray-300 p-4">{{ equipment_order.1 }}</td>
 						<td class="border border-gray-300 p-4">{{ equipment_order.2 }}</td>
 						<td class="border border-gray-300 p-4">{{ equipment_order.3 }}</td>
+						<td class="border border-gray-300 p-4">{{ equipment_order.8 }}</td>
+						<td class="border border-gray-300 p-4">{{ equipment_order.7 }}</td>
+						<td class="border border-gray-300 p-4">{{ equipment_order.6 }}</td>
 						<td class="border border-gray-300 text-black p-1">
-							{% for equipment in equipment_order.6 %}
+							{% for equipment in equipment_order.9 %}
 							{{ equipment.2 }}x {{ equipment.1 }}
 							{% if not forloop.last %}, {% endif %}
 							{% endfor %}

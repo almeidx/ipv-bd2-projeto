@@ -17,18 +17,19 @@
 
     <form class="flex flex-col gap-4 max-w-md" method="post">
       {% csrf_token %}
+
       {{ form.as_p }}
 
       {% include '$input.html' with type="email" id="email" placeholder="Email" %}
 
       {% include '$input.html' with type="password" id="password" placeholder="Password" %}
 
-      {% include '$submit.html' with text="Login" %}
-    </form>
+      <div class="flex gap-4">
+        {% include '$submit.html' with text="Login" %}
 
-    {% if not at_least_one_user %}
-    <a class="border border-gray-500 px-5 rounded-full h-11" href="/users/register/">Criar conta</a>
-    {% endif %}
+        <a class="bg-gray-900 px-12 py-2 border border-gray-500 rounded-3xl text-white w-fit" href="/users/register/">Criar conta</a>
+      </div>
+    </form>
   </div>
 </body>
 

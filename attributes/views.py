@@ -85,8 +85,6 @@ def edit(request, id):
     ]
 
     if request.method == "POST":
-        name = request.POST.get("name")
-
         values_data = []
         for key in request.POST:
             if key.startswith("value:"):
@@ -99,8 +97,6 @@ def edit(request, id):
                         "value": request.POST[key],
                     }
                 )
-
-        mongo_attributes.update_one({"_id": ObjectId(id)}, {"$set": {"name": name}})
 
         value_ids = [value["id"] for value in values_data]
         deleted_ids = set()

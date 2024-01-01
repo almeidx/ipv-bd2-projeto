@@ -26,6 +26,7 @@
 			<p><span class="font-bold">Data de envio:</span> {{ shipment.sent_at }}</p>
 			<p><span class="font-bold">Data de chegada esperada:</span> {{ shipment.delivery_date_expected }}</p>
 			<p><span class="font-bold">Matrícula:</span> {{ shipment.truck_license }}</p>
+			<p><span class="font-bold">Local de Entrega:</span> {{ shipment.address }}, {{ shipment.postal_code }}, {{ shipment.locality }}</p>
 			<p><span class="font-bold">Preço Total:</span> {{ total_cost }}€</p>
 
 			<h2 class="text-2xl mt-4">Registos de Produção</h2>

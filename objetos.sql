@@ -1370,3 +1370,22 @@ FROM
     ipv_bd2_projeto_expedicao e
 WHERE
     e.encomenda_id_id = 1;
+
+
+
+
+-- Criando dados de teste
+INSERT INTO ipv_bd2_projeto_registoproducao (started_at, ended_at, armazem_id_id, tipo_mao_de_obra_id_id)
+VALUES ('2024-01-01', '2024-01-10', 1, 1);
+
+-- Obtendo o ID do registro recém-inserido
+SELECT id INTO registo_prod_id FROM ipv_bd2_projeto_registoproducao ORDER BY id DESC LIMIT 1;
+
+-- Exibindo os dados antes da atualização
+SELECT * FROM ipv_bd2_projeto_registoproducao WHERE id = registo_prod_id;
+
+-- Chamando o procedimento armazenado para realizar a atualização
+CALL sp_edit_registo_producao(registo_prod_i1d, '2024-01-02', '2024-01-2', 2, 2);
+
+-- Exibindo os dados após a atualização
+SELECT * FROM ipv_bd2_projeto_registoproducao WHERE id = registo_prod_id;

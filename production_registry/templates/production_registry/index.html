@@ -16,9 +16,15 @@
 		<div class="flex justify-between items-center mb-8 w-full">
 			<h1 class="text-4xl">Ficha de Produção</h1>
 
-			<a class="bg-gray-900  py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="register">
-				Registar
-			</a>
+			<div class="flex gap-4">
+				<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="../../labor">
+					Mão de Obra
+				</a>
+
+				<a class="bg-gray-900 py-2 border border-gray-500 rounded-3xl text-white w-40 text-center" href="register">
+					Registar
+				</a>
+			</div>
 		</div>
 
 		<div class="flex flex-col gap-4">
@@ -27,8 +33,8 @@
 					<tr>
 						<th class="border border-gray-300 bg-gray-200 p-1 w-12">ID</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Equipamento</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Tipo Mão de Obra</th>
-						<th class="border border-gray-300 bg-gray-200 p-1">Componentes Utilizados</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Mão de Obra</th>
+						<th class="border border-gray-300 bg-gray-200 p-1">Componentes</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Data Início</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Data Fim</th>
 						<th class="border border-gray-300 bg-gray-200 p-1">Funcionário</th>
@@ -61,8 +67,9 @@
 							Não
 							{% endif %}
 						</td>
-						<td class="flex flex-col border border-gray-300 p-1 underline">
+						<td class="border border-gray-300 p-1 underline">
 							<a href="edit/{{ registry.id }}">Editar</a>
+							<br>
 							<a class="text-red-500" href="delete/{{ registry.id }}">Apagar</a>
 						</td>
 					</tr>

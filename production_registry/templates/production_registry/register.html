@@ -19,42 +19,55 @@
       {% csrf_token %}
 
       <div class="flex flex-col gap-4 max-w-md">
-        <select name="equipamento_id_id" id="equipamento_id_id" class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-          {% for equipment in equipments %}
-          <option value="{{ equipment.0 }}">{{ equipment.1 }}</option>
-          {% endfor %}
-        </select>
+        <div>
+
+          <label for="Equipamento_id">Equipamento:</label>
+          <select name="equipamento_id_id" id="equipamento_id_id" class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+            {% for equipment in equipments %}
+            <option value="{{ equipment.0 }}">{{ equipment.1 }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
         {% include '$input.html' with type="date" id="started_at" placeholder="Data Inicio" %}
 
         {% include '$input.html' with type="date" id="ended_at" placeholder="Data Fim" %}
 
-        <select name="tipo_mao_de_obra_id_id" id="tipo_mao_de_obra_id_id" class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-          {% for labour in labours %}
-          <option value="{{ labour.0 }}">{{ labour.1 }}</option>
-          {% endfor %}
-        </select>
+        <div>
+          <label for="tipo_mao_de_obra_id">Tipo de mão de obra:</label>
+          <select name="tipo_mao_de_obra_id_id" id="tipo_mao_de_obra_id_id" class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+            {% for labour in labours %}
+            <option value="{{ labour.0 }}">{{ labour.1 }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
-        <select name="armazem_id_id" id="armazem_id_id" class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
-          {% for storage in storages %}
-          <option value="{{ storage.0 }}">{{ storage.1 }}</option>
-          {% endfor %}
-        </select>
+        <div>
+          <label for="armazem_id">Armazém:</label>
+          <select name="armazem_id_id" id="armazem_id_id" class="appearance-none border border-gray-500 rounded-3xl min-w-full p-2 leading-tight focus:outline-none focus:shadow-outline">
+            {% for storage in storages %}
+            <option value="{{ storage.0 }}">{{ storage.1 }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
         <div class="flex w-full gap-4">
           <div id="attr_container" class="flex flex-col gap-4">
             <div class="flex gap-4">
-              <select name="componente_id" id="componente_id" class="appearance-none border border-gray-500 rounded-3xl p-2 min-w-[16rem] leading-tight focus:outline-none focus:shadow-outline">
-                {% for componente in componentes %}
-                <option value="{{ componente.0 }}">{{ componente.1 }}</option>
-                {% endfor %}
-              </select>
+              <div>
+                <label for="componente_id">Componente:</label>
+                <select name="componente_id" id="componente_id" class="appearance-none border border-gray-500 rounded-3xl p-2 min-w-[16rem] leading-tight focus:outline-none focus:shadow-outline">
+                  {% for componente in componentes %}
+                  <option value="{{ componente.0 }}">{{ componente.1 }}</option>
+                  {% endfor %}
+                </select>
+              </div>
 
               {% include '$input.html' with type="number" id="amount" placeholder="Quantidade" value=1 %}
             </div>
           </div>
 
-          <button class="bg-gray-900 border px-4 border-gray-500 h-11 rounded-3xl w-fit whitespace-nowrap text-white" id="add_attr_btn" type="button">
+          <button class="bg-gray-900 border px-4 border-gray-500 h-11 rounded-3xl w-fit whitespace-nowrap text-white mt-6" id="add_attr_btn" type="button">
             Adicionar Componente
           </button>
         </div>
@@ -66,18 +79,20 @@
   <script>
     const addAttrBtn = document.getElementById('add_attr_btn');
     const attrContainer = document.getElementById('attr_container');
-    let attrCount = 1;
 
     addAttrBtn.addEventListener('click', () => {
       const attr = document.createElement('div');
       attr.className = 'flex gap-4';
       attr.innerHTML = `
-        <select name="componente_id" id="componente_id"
-          class="appearance-none border border-gray-500 rounded-3xl p-2 min-w-[16rem] leading-tight focus:outline-none focus:shadow-outline">
-          {% for componente in componentes %}
-          <option value="{{ componente.0 }}">{{ componente.1 }}</option>
-          {% endfor %}
-        </select>
+        <div class="flex flex-col">
+          <label for="componente_id">Componente:</label>
+          <select name="componente_id" id="componente_id"
+            class="appearance-none border border-gray-500 rounded-3xl p-2 min-w-[16rem] leading-tight focus:outline-none focus:shadow-outline">
+            {% for componente in componentes %}
+            <option value="{{ componente.0 }}">{{ componente.1 }}</option>
+            {% endfor %}
+          </select>
+        </div>
 
         {% include '$input.html' with type="number" id="amount" placeholder="Quantidade" value=1 %}
       `;

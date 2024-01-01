@@ -7,8 +7,6 @@ class LoginRequiredMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        print(request.path)
-
         with connection.cursor() as cursor:
             cursor.execute("SELECT fn_check_if_there_are_users()")
             result = cursor.fetchone()
