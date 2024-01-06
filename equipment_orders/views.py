@@ -90,10 +90,6 @@ def register(request):
     )
 
 
-def edit(request):
-    return render(request, "equipment_orders/edit.html")
-
-
 def delete(request, id):
     with connection.cursor() as cursor:
         cursor.execute("SELECT public.fn_delete_encomenda_by_id(%s);", [id])

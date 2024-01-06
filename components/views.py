@@ -108,7 +108,7 @@ def upload(request):
 
                 if is_valid_data(data):
                     with connection.cursor() as cursor:
-                        cursor.callproc("sp_import_components", [json.dumps(data)])
+                        cursor.callproc("fn_import_components", [json.dumps(data)])
                 else:
                     return HttpResponseBadRequest("Error: Invalid data format.")
             except json.JSONDecodeError:

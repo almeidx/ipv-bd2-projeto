@@ -5,7 +5,7 @@
 -- Dumped from database version 14.5 (Ubuntu 14.5-2.pgdg20.04+2)
 -- Dumped by pg_dump version 15.0 (Ubuntu 15.0-1.pgdg20.04+1)
 
--- Started on 2024-01-03 16:57:10 UTC
+-- Started on 2024-01-06 17:29:27 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -19,7 +19,7 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 3659 (class 1262 OID 30284)
+-- TOC entry 3651 (class 1262 OID 30284)
 -- Name: aluno5; Type: DATABASE; Schema: -; Owner: -
 --
 
@@ -48,7 +48,7 @@ CREATE SCHEMA public;
 
 
 --
--- TOC entry 354 (class 1255 OID 37479)
+-- TOC entry 345 (class 1255 OID 37479)
 -- Name: fn_check_if_there_are_users(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -70,7 +70,7 @@ $$;
 
 
 --
--- TOC entry 304 (class 1255 OID 37056)
+-- TOC entry 299 (class 1255 OID 37056)
 -- Name: fn_create_encomenda_componentes(timestamp without time zone, integer, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -90,7 +90,7 @@ $$;
 
 
 --
--- TOC entry 311 (class 1255 OID 37342)
+-- TOC entry 304 (class 1255 OID 37342)
 -- Name: fn_create_encomenda_equipamento(timestamp without time zone, character varying, character varying, character varying, integer, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -110,7 +110,7 @@ $$;
 
 
 --
--- TOC entry 317 (class 1255 OID 37336)
+-- TOC entry 310 (class 1255 OID 37336)
 -- Name: fn_create_equipment(character varying, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -132,7 +132,7 @@ $$;
 
 
 --
--- TOC entry 340 (class 1255 OID 37459)
+-- TOC entry 332 (class 1255 OID 37459)
 -- Name: fn_create_guia_entrega_componentes(date, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -145,7 +145,7 @@ BEGIN
     INSERT INTO ipv_bd2_projeto_guiaentregacomponente (created_at, armazem_id_id )
     VALUES (p_created_at, p_armazem_id_id)
 	RETURNING id INTO new_guia_id;
-	
+
 	RAISE NOTICE 'Guia criado com sucesso. ID: %', new_guia_id;
 
     RETURN new_guia_id;
@@ -154,7 +154,7 @@ $$;
 
 
 --
--- TOC entry 319 (class 1255 OID 37388)
+-- TOC entry 312 (class 1255 OID 37388)
 -- Name: fn_create_production_registry(date, date, integer, integer, integer, integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -184,39 +184,7 @@ $$;
 
 
 --
--- TOC entry 305 (class 1255 OID 37220)
--- Name: fn_delete_armazem(character varying); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.fn_delete_armazem(p_name character varying) RETURNS boolean
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-    item_in_use boolean;
-BEGIN
-    -- Verificar se o armazém está sendo usado em algum lugar
-    SELECT EXISTS (SELECT 1 FROM ipv_bd2_projeto_resgistoproducao WHERE ipv_bd2_projeto_armazem.name = p_name) INTO item_in_use;
-
-    IF item_in_use THEN
-        RAISE NOTICE 'Não é possível apagar o armazém, pois está sendo usado em algum lugar.';
-        RETURN FALSE;
-    ELSE
-        -- Se não estiver sendo usado, realizar a exclusão
-        IF EXISTS (SELECT 1 FROM ipv_bd2_projeto_armazem WHERE ipv_bd2_projeto_armazem.name = p_name) THEN
-            DELETE FROM ipv_bd2_projeto_armazem WHERE name = p_name;
-            RAISE NOTICE 'Armazem apagado com sucesso.';
-            RETURN TRUE;
-        ELSE
-            RAISE NOTICE 'Armazem não encontrado.';
-            RETURN FALSE;
-        END IF;
-    END IF;
-END;
-$$;
-
-
---
--- TOC entry 307 (class 1255 OID 37222)
+-- TOC entry 301 (class 1255 OID 37222)
 -- Name: fn_delete_armazem_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -248,7 +216,7 @@ $$;
 
 
 --
--- TOC entry 321 (class 1255 OID 37287)
+-- TOC entry 314 (class 1255 OID 37287)
 -- Name: fn_delete_component_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -273,7 +241,7 @@ BEGIN
             WHERE ipv_bd2_projeto_quantidadecomponenteregistoproducao.componente_id = p_id
         )
         INTO item_in_use;
-	
+
     IF item_in_use THEN
         RAISE NOTICE 'Não é possível apagar o componente, pois está sendo usado em algum lugar.';
         RETURN FALSE;
@@ -293,7 +261,7 @@ $$;
 
 
 --
--- TOC entry 336 (class 1255 OID 37433)
+-- TOC entry 328 (class 1255 OID 37433)
 -- Name: fn_delete_encomenda_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -331,7 +299,7 @@ $$;
 
 
 --
--- TOC entry 323 (class 1255 OID 37377)
+-- TOC entry 316 (class 1255 OID 37377)
 -- Name: fn_delete_encomenda_componente(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -357,7 +325,7 @@ $$;
 
 
 --
--- TOC entry 316 (class 1255 OID 37282)
+-- TOC entry 309 (class 1255 OID 37282)
 -- Name: fn_delete_equipment_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -369,7 +337,7 @@ DECLARE
 BEGIN
     -- Verificar se o equipamento está sendo usado em algum lugar
     SELECT EXISTS (SELECT 1 FROM ipv_bd2_projeto_quantidadeencomendaequipamento WHERE ipv_bd2_projeto_quantidadeencomendaequipamento.equipamento_id = p_id) INTO item_in_use;
-    
+
     SELECT EXISTS (SELECT 1 FROM ipv_bd2_projeto_registoproducao WHERE ipv_bd2_projeto_registoproducao.equipamento_id_id = p_id) INTO item_in_use;
 
     IF item_in_use THEN
@@ -391,7 +359,7 @@ $$;
 
 
 --
--- TOC entry 315 (class 1255 OID 37228)
+-- TOC entry 308 (class 1255 OID 37228)
 -- Name: fn_delete_fornecedor_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -403,7 +371,7 @@ DECLARE
 BEGIN
     -- Verificar se o fornecedor está sendo usado em algum lugar
     SELECT EXISTS (SELECT 1 FROM ipv_bd2_projeto_componente WHERE ipv_bd2_projeto_componente.fornecedor_id_id = p_id) INTO item_in_use;
-	
+
 	SELECT EXISTS (SELECT 1 FROM ipv_bd2_projeto_encomendacomponente WHERE ipv_bd2_projeto_encomendacomponente.fornecedor_id_id = p_id) INTO item_in_use;
 
     IF item_in_use THEN
@@ -425,7 +393,7 @@ $$;
 
 
 --
--- TOC entry 306 (class 1255 OID 37224)
+-- TOC entry 300 (class 1255 OID 37224)
 -- Name: fn_delete_labor_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -457,7 +425,7 @@ $$;
 
 
 --
--- TOC entry 326 (class 1255 OID 37394)
+-- TOC entry 319 (class 1255 OID 37394)
 -- Name: fn_delete_registo_producao_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -473,7 +441,7 @@ BEGIN
             WHERE ipv_bd2_projeto_registoproducao.id = p_id AND ipv_bd2_projeto_registoproducao.expedicao_id_id IS NOT NULL
         )
         INTO item_in_use;
-	
+
     IF item_in_use THEN
         RAISE NOTICE 'Não é possível apagar o registo de produção, pois está sendo usado em algum lugar.';
         RETURN FALSE;
@@ -493,7 +461,7 @@ $$;
 
 
 --
--- TOC entry 310 (class 1255 OID 37227)
+-- TOC entry 303 (class 1255 OID 37227)
 -- Name: fn_delete_tipo_equipamento_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -525,7 +493,7 @@ $$;
 
 
 --
--- TOC entry 288 (class 1255 OID 36999)
+-- TOC entry 285 (class 1255 OID 36999)
 -- Name: fn_get_armazem_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -539,21 +507,7 @@ $$;
 
 
 --
--- TOC entry 284 (class 1255 OID 37000)
--- Name: fn_get_armazens(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.fn_get_armazens() RETURNS TABLE(id integer, name character varying, address character varying, postal_code character varying, locality character varying)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    RETURN QUERY SELECT * FROM ipv_bd2_projeto_armazem ORDER BY id;
-END;
-$$;
-
-
---
--- TOC entry 329 (class 1255 OID 37407)
+-- TOC entry 321 (class 1255 OID 37407)
 -- Name: fn_get_armazens(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -593,7 +547,7 @@ $_$;
 
 
 --
--- TOC entry 269 (class 1255 OID 37341)
+-- TOC entry 267 (class 1255 OID 37341)
 -- Name: fn_get_clients(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -614,7 +568,7 @@ $$;
 
 
 --
--- TOC entry 300 (class 1255 OID 37024)
+-- TOC entry 296 (class 1255 OID 37024)
 -- Name: fn_get_component(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -638,7 +592,7 @@ $$;
 
 
 --
--- TOC entry 314 (class 1255 OID 37473)
+-- TOC entry 307 (class 1255 OID 37473)
 -- Name: fn_get_component_order_amounts(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -646,21 +600,21 @@ CREATE FUNCTION public.fn_get_component_order_amounts() RETURNS TABLE(encomenda_
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    RETURN QUERY 
+    RETURN QUERY
 	SELECT
 	    q.encomenda_id,
         c.name,
         q.amount,
 		c.id,
 		q.id
-	FROM ipv_bd2_projeto_quantidadeencomendacomponente q 
+	FROM ipv_bd2_projeto_quantidadeencomendacomponente q
 	INNER JOIN ipv_bd2_projeto_componente c on q.componente_id = c.id;
 END;
 $$;
 
 
 --
--- TOC entry 344 (class 1255 OID 37440)
+-- TOC entry 336 (class 1255 OID 37440)
 -- Name: fn_get_component_orders(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -698,41 +652,7 @@ $$;
 
 
 --
--- TOC entry 327 (class 1255 OID 37400)
--- Name: fn_get_componentes(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.fn_get_componentes(p_filtered character varying DEFAULT NULL::character varying, p_order character varying DEFAULT NULL::character varying) RETURNS TABLE(id integer, name character varying, created_at date, cost double precision)
-    LANGUAGE plpgsql
-    AS $_$
-BEGIN
-    RETURN QUERY
-    SELECT
-        c.id,
-        c.name,
-        c.created_at,
-        c.cost
-    FROM
-        ipv_bd2_projeto_componente c
-    WHERE
-        (p_filtered IS NULL OR p_filtered = '' OR
-        c.name ILIKE p_filtered OR
-        (p_filtered ~ E'^\\d+$' AND c.id = p_filtered::int))
-    ORDER BY
-        CASE WHEN p_order = 'id-asc' OR p_order IS NULL THEN c.id END ASC,
-        CASE WHEN p_order = 'id-desc' THEN c.id END DESC,
-        CASE WHEN p_order = 'name-asc' THEN LOWER(c.name) END ASC,
-        CASE WHEN p_order = 'name-desc' THEN LOWER(c.name) END DESC,
-        CASE WHEN p_order = 'created_at-asc' THEN c.created_at END ASC,
-        CASE WHEN p_order = 'created_at-desc' THEN c.created_at END DESC,
-        CASE WHEN p_order = 'cost-asc' THEN c.cost END ASC,
-        CASE WHEN p_order = 'cost-desc' THEN c.cost END DESC;
-END;
-$_$;
-
-
---
--- TOC entry 330 (class 1255 OID 37405)
+-- TOC entry 322 (class 1255 OID 37405)
 -- Name: fn_get_components(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -770,7 +690,7 @@ $$;
 
 
 --
--- TOC entry 349 (class 1255 OID 37469)
+-- TOC entry 341 (class 1255 OID 37469)
 -- Name: fn_get_encomenda_componentes_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -794,7 +714,7 @@ $$;
 
 
 --
--- TOC entry 299 (class 1255 OID 37022)
+-- TOC entry 295 (class 1255 OID 37022)
 -- Name: fn_get_equipamento_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -811,7 +731,7 @@ $$;
 
 
 --
--- TOC entry 296 (class 1255 OID 37017)
+-- TOC entry 293 (class 1255 OID 37017)
 -- Name: fn_get_equipamentos(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -828,7 +748,7 @@ $$;
 
 
 --
--- TOC entry 328 (class 1255 OID 37397)
+-- TOC entry 320 (class 1255 OID 37397)
 -- Name: fn_get_equipamentos(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -856,7 +776,7 @@ $_$;
 
 
 --
--- TOC entry 312 (class 1255 OID 37348)
+-- TOC entry 305 (class 1255 OID 37348)
 -- Name: fn_get_equipment_order_amounts(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -864,19 +784,19 @@ CREATE FUNCTION public.fn_get_equipment_order_amounts() RETURNS TABLE(equipament
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    RETURN QUERY 
+    RETURN QUERY
 	SELECT
 	    q.encomenda_id,
         e.name,
         q.amount
-	FROM ipv_bd2_projeto_quantidadeencomendaequipamento q 
+	FROM ipv_bd2_projeto_quantidadeencomendaequipamento q
 	INNER JOIN ipv_bd2_projeto_equipamento e on q.equipamento_id = e.id;
 END;
 $$;
 
 
 --
--- TOC entry 333 (class 1255 OID 37425)
+-- TOC entry 325 (class 1255 OID 37425)
 -- Name: fn_get_equipment_order_amounts(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -884,13 +804,13 @@ CREATE FUNCTION public.fn_get_equipment_order_amounts(p_filtered character varyi
     LANGUAGE plpgsql
     AS $$
 BEGIN
-    RETURN QUERY 
+    RETURN QUERY
     SELECT
         q.encomenda_id,
         e.name AS equipment,
         q.amount
     FROM
-        ipv_bd2_projeto_quantidadeencomendaequipamento q 
+        ipv_bd2_projeto_quantidadeencomendaequipamento q
     INNER JOIN
         ipv_bd2_projeto_equipamento e ON q.equipamento_id = e.id
     WHERE
@@ -906,7 +826,7 @@ $$;
 
 
 --
--- TOC entry 347 (class 1255 OID 37437)
+-- TOC entry 338 (class 1255 OID 37437)
 -- Name: fn_get_equipment_order_invoice_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1022,7 +942,7 @@ $$;
 
 
 --
--- TOC entry 338 (class 1255 OID 37436)
+-- TOC entry 330 (class 1255 OID 37436)
 -- Name: fn_get_equipment_order_invoices(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1046,7 +966,7 @@ $$;
 
 
 --
--- TOC entry 355 (class 1255 OID 37483)
+-- TOC entry 346 (class 1255 OID 37483)
 -- Name: fn_get_equipment_orders(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1069,7 +989,7 @@ BEGIN
         ipv_bd2_projeto_encomendaequipamento e
     JOIN
         ipv_bd2_projeto_utilizador u ON e.funcionario_id_id = u.id
-    JOIN 
+    JOIN
         ipv_bd2_projeto_utilizador cliente ON e.client_id_id = cliente.id
     WHERE
         (p_filtered IS NULL OR p_filtered = '' OR
@@ -1086,7 +1006,7 @@ $$;
 
 
 --
--- TOC entry 313 (class 1255 OID 37351)
+-- TOC entry 306 (class 1255 OID 37351)
 -- Name: fn_get_expedicao(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1095,7 +1015,7 @@ CREATE FUNCTION public.fn_get_expedicao() RETURNS TABLE(id integer, sent_at date
     AS $$
 BEGIN
     RETURN QUERY
-    SELECT e.encomenda_id_id, e.sent_at, e.truck_license , e.delivery_date_expected  
+    SELECT e.encomenda_id_id, e.sent_at, e.truck_license , e.delivery_date_expected
     FROM ipv_bd2_projeto_expedicao e
     LEFT JOIN ipv_bd2_projeto_registoproducao t ON e.encomenda_id_id = t.expedicao_id_id;
 END;
@@ -1103,7 +1023,7 @@ $$;
 
 
 --
--- TOC entry 337 (class 1255 OID 37422)
+-- TOC entry 329 (class 1255 OID 37422)
 -- Name: fn_get_expedicao_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1120,7 +1040,7 @@ BEGIN
         'delivery_date_expected', e.delivery_date_expected,
 		'address', enceq.address,
 		'postal_code', enceq.postal_code,
-		'locality', enceq.locality, 
+		'locality', enceq.locality,
         'registos_producao', (
             SELECT
                 json_agg(
@@ -1168,22 +1088,7 @@ $$;
 
 
 --
--- TOC entry 264 (class 1255 OID 37005)
--- Name: fn_get_fatura(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.fn_get_fatura() RETURNS TABLE(created_at date, contribuinte integer, encomenda_id integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    RETURN QUERY
-    SELECT * FROM ipv_bd2_projeto_fatura;
-END;
-$$;
-
-
---
--- TOC entry 294 (class 1255 OID 37010)
+-- TOC entry 291 (class 1255 OID 37010)
 -- Name: fn_get_fornecedor_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1197,7 +1102,7 @@ $$;
 
 
 --
--- TOC entry 339 (class 1255 OID 37438)
+-- TOC entry 331 (class 1255 OID 37438)
 -- Name: fn_get_fornecedores(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1236,7 +1141,7 @@ $$;
 
 
 --
--- TOC entry 342 (class 1255 OID 37461)
+-- TOC entry 334 (class 1255 OID 37461)
 -- Name: fn_get_guia_entrega_componentes(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1253,7 +1158,7 @@ $$;
 
 
 --
--- TOC entry 343 (class 1255 OID 37463)
+-- TOC entry 335 (class 1255 OID 37463)
 -- Name: fn_get_guia_entrega_componentes_amounts(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1270,7 +1175,7 @@ $$;
 
 
 --
--- TOC entry 334 (class 1255 OID 37432)
+-- TOC entry 326 (class 1255 OID 37432)
 -- Name: fn_get_production_registries(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1292,19 +1197,19 @@ BEGIN
     FROM
         ipv_bd2_projeto_registoproducao rp
     JOIN
-        ipv_bd2_projeto_equipamento e ON rp.equipamento_id_id = e.id 
-	JOIN 
+        ipv_bd2_projeto_equipamento e ON rp.equipamento_id_id = e.id
+	JOIN
 		ipv_bd2_projeto_tipomaodeobra tmo ON rp.tipo_mao_de_obra_id_id = tmo.id
 	JOIN
 		ipv_bd2_projeto_utilizador u ON rp.funcionario_id_id = u.id
-	JOIN 
+	JOIN
 		ipv_bd2_projeto_armazem arm ON rp.armazem_id_id = arm.id;
 END;
 $$;
 
 
 --
--- TOC entry 345 (class 1255 OID 37443)
+-- TOC entry 337 (class 1255 OID 37443)
 -- Name: fn_get_production_registry_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1325,7 +1230,7 @@ $$;
 
 
 --
--- TOC entry 335 (class 1255 OID 37434)
+-- TOC entry 327 (class 1255 OID 37434)
 -- Name: fn_get_production_registry_component_amouts(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1348,28 +1253,7 @@ $$;
 
 
 --
--- TOC entry 303 (class 1255 OID 37050)
--- Name: fn_get_quantity_orders(integer, integer, integer, integer); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.fn_get_quantity_orders(p_id integer, p_encomenda_id integer, p_componente_id integer, p_amount integer) RETURNS TABLE(id integer, encomenda_id integer, componente_id integer, amount integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    RETURN QUERY
-    SELECT * 
-    FROM ipv_bd2_projeto_quantidadeencomendacomponente
-    WHERE
-        (p_id IS NULL OR ipv_bd2_projeto_quantidadeencomendacomponente.id = p_id)
-        AND (p_encomenda_id IS NULL OR ipv_bd2_projeto_quantidadeencomendacomponente.encomenda_id = p_encomenda_id)
-        AND (p_componente_id IS NULL OR ipv_bd2_projeto_quantidadeencomendacomponente.componente_id = p_componente_id)
-        AND (p_amount IS NULL OR ipv_bd2_projeto_quantidadeencomendacomponente.amount = p_amount);
-END;
-$$;
-
-
---
--- TOC entry 346 (class 1255 OID 37465)
+-- TOC entry 339 (class 1255 OID 37465)
 -- Name: fn_get_stock_componentes(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1412,7 +1296,7 @@ $$;
 
 
 --
--- TOC entry 348 (class 1255 OID 37453)
+-- TOC entry 340 (class 1255 OID 37453)
 -- Name: fn_get_stock_equipamentos(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1442,7 +1326,7 @@ $$;
 
 
 --
--- TOC entry 267 (class 1255 OID 36995)
+-- TOC entry 265 (class 1255 OID 36995)
 -- Name: fn_get_tipo_equipamento(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1463,7 +1347,7 @@ $$;
 
 
 --
--- TOC entry 285 (class 1255 OID 33783)
+-- TOC entry 282 (class 1255 OID 33783)
 -- Name: fn_get_tipo_equipamentos(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1478,7 +1362,7 @@ $$;
 
 
 --
--- TOC entry 291 (class 1255 OID 37002)
+-- TOC entry 288 (class 1255 OID 37002)
 -- Name: fn_get_tipo_mao_obra(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1492,7 +1376,7 @@ $$;
 
 
 --
--- TOC entry 265 (class 1255 OID 37003)
+-- TOC entry 264 (class 1255 OID 37003)
 -- Name: fn_get_tipo_mao_obra_by_id(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1506,7 +1390,7 @@ $$;
 
 
 --
--- TOC entry 322 (class 1255 OID 37399)
+-- TOC entry 315 (class 1255 OID 37399)
 -- Name: fn_get_unassigned_production_registries(); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1536,7 +1420,7 @@ $$;
 
 
 --
--- TOC entry 268 (class 1255 OID 33653)
+-- TOC entry 266 (class 1255 OID 33653)
 -- Name: fn_get_user(integer); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1560,59 +1444,7 @@ $$;
 
 
 --
--- TOC entry 309 (class 1255 OID 37226)
--- Name: fn_get_user_name(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.fn_get_user_name(p_first_name character varying, p_last_name character varying) RETURNS TABLE(id integer, first_name character varying, last_name character varying, email character varying, user_type character varying)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    RETURN QUERY
-    SELECT
-        ipv_bd2_projeto_utilizador.id,
-        ipv_bd2_projeto_utilizador.first_name,
-        ipv_bd2_projeto_utilizador.last_name,
-        ipv_bd2_projeto_utilizador.email,
-        type AS user_type
-    FROM
-        ipv_bd2_projeto_utilizador
-    WHERE
-        (
-            LOWER(ipv_bd2_projeto_utilizador.first_name) ILIKE LOWER('%' || p_first_name || '%')
-            AND LOWER(ipv_bd2_projeto_utilizador.last_name) ILIKE LOWER('%' || p_last_name || '%')
-        )
-        OR
-        (
-            LOWER(ipv_bd2_projeto_utilizador.first_name) ILIKE LOWER('%' || p_first_name || '%')
-            AND p_last_name IS NULL
-        )
-        OR
-        (
-            LOWER(ipv_bd2_projeto_utilizador.last_name) ILIKE LOWER('%' || p_last_name || '%')
-            AND p_first_name IS NULL
-        );
-END;
-$$;
-
-
---
--- TOC entry 266 (class 1255 OID 33652)
--- Name: fn_get_users(); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.fn_get_users() RETURNS TABLE(id integer, first_name character varying, last_name character varying, email character varying, type character varying)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    RETURN QUERY
-    SELECT ipv_bd2_projeto_utilizador.id, ipv_bd2_projeto_utilizador.first_name, ipv_bd2_projeto_utilizador.last_name, ipv_bd2_projeto_utilizador.email, ipv_bd2_projeto_utilizador.type FROM ipv_bd2_projeto_utilizador;
-END;
-$$;
-
-
---
--- TOC entry 332 (class 1255 OID 37419)
+-- TOC entry 324 (class 1255 OID 37419)
 -- Name: fn_get_utilizadores(character varying, character varying); Type: FUNCTION; Schema: public; Owner: -
 --
 
@@ -1647,541 +1479,11 @@ $_$;
 
 
 --
--- TOC entry 286 (class 1255 OID 36996)
--- Name: sp_create_armazem(character varying, character varying, character varying, character varying); Type: PROCEDURE; Schema: public; Owner: -
+-- TOC entry 347 (class 1255 OID 37468)
+-- Name: fn_import_components(jsonb); Type: FUNCTION; Schema: public; Owner: -
 --
 
-CREATE PROCEDURE public.sp_create_armazem(IN p_name character varying, IN p_address character varying, IN p_postal_code character varying, IN p_locality character varying)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_armazem WHERE ipv_bd2_projeto_armazem.name = p_name) THEN
-        INSERT INTO ipv_bd2_projeto_armazem (name, address, postal_code, locality)
-        VALUES (p_name, p_address, p_postal_code, p_locality);
-        RAISE NOTICE 'Armazem criado com sucesso.';
-    ELSE
-        RAISE NOTICE 'Armazem já existe.';
-    END IF;
-END;
-$$;
-
-
---
--- TOC entry 301 (class 1255 OID 37023)
--- Name: sp_create_component(character varying, double precision, integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_create_component(IN p_componentname character varying, IN p_componentcost double precision, IN p_fornecedorid integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    INSERT INTO ipv_bd2_projeto_componente (name, cost, fornecedor_id_id, created_at)
-    VALUES (p_ComponentName, p_ComponentCost, p_FornecedorId, CURRENT_DATE);
-
-    RAISE NOTICE 'Componente criado com sucesso.';
-END;
-$$;
-
-
---
--- TOC entry 298 (class 1255 OID 37012)
--- Name: sp_create_equipment(character varying, integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_create_equipment(IN p_equipmentname character varying, IN p_tipoequipamentoid integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    INSERT INTO ipv_bd2_projeto_equipamento (name, tipo_equipamento_id_id, created_at)
-    VALUES (p_equipmentName, p_tipoEquipamentoId, CURRENT_DATE);
-
-    RAISE NOTICE 'Equipamento criado com sucesso.';
-END;
-$$;
-
-
---
--- TOC entry 331 (class 1255 OID 37416)
--- Name: sp_create_expedicao(date, character varying, date, integer, integer[]); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_create_expedicao(IN p_sent_at date, IN p_truck_license character varying, IN p_delivery_date_expected date, IN p_encomenda_id_id integer, IN p_registo_producao_ids integer[])
-    LANGUAGE plpgsql
-    AS $$
-DECLARE
-    v_expedicao_id_id integer;
-BEGIN
-    -- Inserir na tabela de expedicao e recuperar o ID inserido
-    INSERT INTO ipv_bd2_projeto_expedicao(sent_at, truck_license, delivery_date_expected, encomenda_id_id)
-    VALUES (p_sent_at, p_truck_license, p_delivery_date_expected, p_encomenda_id_id)
-    RETURNING ipv_bd2_projeto_expedicao.encomenda_id_id INTO v_expedicao_id_id;
-
-    -- Atualizar os registos de producao com o ID da expedicao
-    UPDATE ipv_bd2_projeto_registoproducao
-    SET expedicao_id_id = v_expedicao_id_id
-    WHERE ipv_bd2_projeto_registoproducao.id = ANY(p_registo_producao_ids);
-
-    RAISE NOTICE 'Expedicao criada com sucesso. ID da Expedicao: %', v_expedicao_id_id;
-END;
-$$;
-
-
---
--- TOC entry 325 (class 1255 OID 37403)
--- Name: sp_create_fatura(date, character varying, integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_create_fatura(IN p_created_at date, IN p_contribuinte character varying, IN p_encomenda_id_id integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    INSERT INTO ipv_bd2_projeto_fatura(created_at, contribuinte, encomenda_id_id)
-    VALUES (p_created_at, p_contribuinte, p_encomenda_id_id );
-
-    RAISE NOTICE 'Expedicao criada com sucesso.';
-END;
-$$;
-
-
---
--- TOC entry 293 (class 1255 OID 37007)
--- Name: sp_create_fornecedor(character varying, character varying, character varying, character varying, character varying); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_create_fornecedor(IN p_name character varying, IN p_address character varying, IN p_postal_code character varying, IN p_locality character varying, IN p_email character varying)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_fornecedor WHERE ipv_bd2_projeto_fornecedor.name = p_name) THEN
-        INSERT INTO ipv_bd2_projeto_fornecedor (name, address, postal_code, locality, email)
-        VALUES (p_name, p_address, p_postal_code, p_locality, p_email);
-        RAISE NOTICE 'Fornecedor criado com sucesso.';
-    ELSE
-        RAISE NOTICE 'Fornecedor já existe.';
-    END IF;
-END;
-$$;
-
-
---
--- TOC entry 320 (class 1255 OID 37389)
--- Name: sp_create_quantidades_componente_registo_producao(integer, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_create_quantidades_componente_registo_producao(IN registo_producao_id integer, IN p_componente_id integer, IN p_amount integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    INSERT INTO ipv_bd2_projeto_quantidadecomponenteregistoproducao(registo_producao_id, componente_id, amount)
-    VALUES (registo_producao_id, p_componente_id, p_amount);
-
-END;
-$$;
-
-
---
--- TOC entry 308 (class 1255 OID 37053)
--- Name: sp_create_quantidades_encomenda_componentes(integer, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_create_quantidades_encomenda_componentes(IN p_encomenda_id integer, IN p_componente_id integer, IN p_amount integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    -- Your logic to create quantities for the order components
-    -- Replace the following line with your actual logic
-    INSERT INTO ipv_bd2_projeto_quantidadeencomendacomponente(encomenda_id, componente_id, amount)
-    VALUES (p_encomenda_id, p_componente_id, p_amount);
-
-END;
-$$;
-
-
---
--- TOC entry 318 (class 1255 OID 37343)
--- Name: sp_create_quantidades_encomenda_equipamentos(integer, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_create_quantidades_encomenda_equipamentos(IN p_encomenda_id integer, IN p_equipamento_id integer, IN p_amount integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    -- Your logic to create quantities for the order components
-    -- Replace the following line with your actual logic
-    INSERT INTO ipv_bd2_projeto_quantidadeencomendaequipamento(encomenda_id, equipamento_id, amount)
-    VALUES (p_encomenda_id, p_equipamento_id, p_amount);
-
-END;
-$$;
-
-
---
--- TOC entry 341 (class 1255 OID 37460)
--- Name: sp_create_quantidades_guia_entrega_componentes(integer, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_create_quantidades_guia_entrega_componentes(IN p_guia_entrega_id integer, IN p_componente_id integer, IN p_amount integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    INSERT INTO ipv_bd2_projeto_quantidadeguiaentregacomponente(guia_entrega_id, componente_id, amount)
-    VALUES (p_guia_entrega_id, p_componente_id, p_amount);
-
-END;
-$$;
-
-
---
--- TOC entry 283 (class 1255 OID 33655)
--- Name: sp_create_tipo_equipamento(character varying); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_create_tipo_equipamento(IN p_name character varying)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_tipodeequipamento WHERE name = p_name) THEN
-        INSERT INTO ipv_bd2_projeto_tipodeequipamento (name)
-        VALUES (p_name);
-        RAISE NOTICE 'Tipo de equipamento criado com sucesso.';
-    ELSE
-        RAISE NOTICE 'Tipo de equipamento já existe.';
-    END IF;
-END;
-$$;
-
-
---
--- TOC entry 289 (class 1255 OID 37001)
--- Name: sp_create_tipo_mao_obra(character varying, double precision); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_create_tipo_mao_obra(IN p_name character varying, IN p_cost double precision)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_tipomaodeobra WHERE name = p_name) THEN
-        INSERT INTO ipv_bd2_projeto_tipomaodeobra (name, cost)
-        VALUES (p_name, p_cost);
-        RAISE NOTICE 'Tipo de mão de obra criado com sucesso.';
-    ELSE
-        RAISE NOTICE 'Tipo de mão de obra já existe.';
-    END IF;
-END;
-$$;
-
-
---
--- TOC entry 295 (class 1255 OID 37011)
--- Name: sp_delete_fornecedor(integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_delete_fornecedor(IN p_fornecedorid integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_fornecedor WHERE id = p_FornecedorId) THEN
-        RAISE NOTICE 'Fornecedor não encontrado. Falha na exclusão do fornecedor.';
-        RETURN;
-    END IF;
-
-    DELETE FROM ipv_bd2_projeto_fornecedor
-    WHERE id = p_FornecedorId;
-
-    RAISE NOTICE 'Fornecedor excluído com sucesso.';
-END;
-$$;
-
-
---
--- TOC entry 353 (class 1255 OID 37472)
--- Name: sp_delete_quantidade_encomenda_componente(integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_delete_quantidade_encomenda_componente(IN p_encomendacomponente_id integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-        DELETE FROM ipv_bd2_projeto_quantidadeencomendacomponente
-        WHERE ipv_bd2_projeto_quantidadeencomendacomponente.id = p_encomendacomponente_id;
-        RAISE NOTICE 'Encomenda de Componente excluída com sucesso.';
-END;
-$$;
-
-
---
--- TOC entry 287 (class 1255 OID 36998)
--- Name: sp_edit_armazem(integer, character varying, character varying, character varying, character varying); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_edit_armazem(IN p_armazemid integer, IN p_newarmazemname character varying, IN p_newarmazemaddress character varying, IN p_newarmazempostalcode character varying, IN p_newarmazemlocality character varying)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_armazem WHERE ipv_bd2_projeto_armazem.id = p_ArmazemId) THEN
-        RAISE NOTICE 'Armazém não encontrado. Falha na edição do armazém.';
-        RETURN;
-    END IF;
-
-    UPDATE ipv_bd2_projeto_armazem
-    SET
-        name = p_NewArmazemName,
-        address = p_NewArmazemAddress,
-        postal_code = p_NewArmazemPostalCode,
-        locality = p_NewArmazemLocality
-    WHERE
-        id = p_ArmazemId;
-
-    RAISE NOTICE 'Armazém editado com sucesso.';
-END;
-$$;
-
-
---
--- TOC entry 302 (class 1255 OID 37027)
--- Name: sp_edit_component(integer, character varying, double precision, integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_edit_component(IN p_component_id integer, IN p_new_name character varying, IN p_new_cost double precision, IN p_new_fornecedor_id integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    UPDATE ipv_bd2_projeto_componente
-    SET
-        name = p_new_name,
-        cost = p_new_cost,
-        fornecedor_id_id = p_new_fornecedor_id
-    WHERE
-        ipv_bd2_projeto_componente.id = p_component_id;
-
-    IF NOT FOUND THEN
-        RAISE NOTICE 'Componente não encontrado. Falha na edição do componente.';
-        RETURN;
-    END IF;
-
-    RAISE NOTICE 'Componente editado com sucesso.';
-END;
-$$;
-
-
---
--- TOC entry 324 (class 1255 OID 37396)
--- Name: sp_edit_encomenda_componentes(integer, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_edit_encomenda_componentes(IN p_encomendacomponenteid integer, IN p_newfornecedorid integer, IN p_newfuncionarioresponsavelid integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF EXISTS (
-        SELECT 1
-        FROM ipv_bd2_projeto_encomendacomponente
-        WHERE ipv_bd2_projeto_encomendacomponente.id = p_encomendacomponenteid AND ipv_bd2_projeto_encomendacomponente.exported = TRUE
-    ) THEN
-        RAISE NOTICE 'Não é possível editar a encomenda, pois já foi exportada.';
-        RETURN;
-    ELSE
-        UPDATE ipv_bd2_projeto_encomendacomponente
-        SET
-            fornecedor_id_id = p_newfornecedorid,
-            funcionario_responsavel_id_id = p_newfuncionarioresponsavelid
-        WHERE
-            ipv_bd2_projeto_encomendacomponente.id = p_encomendacomponenteid;
-        RAISE NOTICE 'Encomenda de Componentes editada com sucesso.';
-    END IF;
-END;
-$$;
-
-
---
--- TOC entry 297 (class 1255 OID 37013)
--- Name: sp_edit_equipamento(integer, character varying, integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_edit_equipamento(IN p_equipamentoid integer, IN p_newequipamentoname character varying, IN p_newtipoequipamentoid integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_equipamento WHERE id = p_EquipamentoId) THEN
-        RAISE NOTICE 'Equipamento não encontrado. Falha na edição do equipamento.';
-        RETURN;
-    END IF;
-
-    UPDATE ipv_bd2_projeto_equipamento
-    SET
-        name = p_NewEquipamentoName,
-        tipo_equipamento_id_id = p_NewTipoEquipamentoId
-    WHERE
-        id = p_EquipamentoId;
-
-    RAISE NOTICE 'Equipamento editado com sucesso.';
-END;
-$$;
-
-
---
--- TOC entry 292 (class 1255 OID 37009)
--- Name: sp_edit_fornecedor(integer, character varying, character varying, character varying, character varying, character varying); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_edit_fornecedor(IN p_fornecedorid integer, IN p_newfornecedorname character varying, IN p_newfornecedoraddress character varying, IN p_newfornecedorpostalcode character varying, IN p_newfornecedorlocality character varying, IN p_newfornecedoremail character varying)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_fornecedor WHERE id = p_FornecedorId) THEN
-        RAISE NOTICE 'Fornecedor não encontrado. Falha na edição do fornecedor.';
-        RETURN;
-    END IF;
-
-    UPDATE ipv_bd2_projeto_fornecedor
-    SET
-        name = p_NewFornecedorName,
-        address = p_NewFornecedorAddress,
-        postal_code = p_NewFornecedorPostalCode,
-        locality = p_NewFornecedorLocality,
-        email = p_NewFornecedorEmail
-    WHERE
-        id = p_FornecedorId;
-
-    RAISE NOTICE 'Fornecedor editado com sucesso.';
-END;
-$$;
-
-
---
--- TOC entry 351 (class 1255 OID 37471)
--- Name: sp_edit_quantidades_encomenda_componentes(integer, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_edit_quantidades_encomenda_componentes(IN p_id integer, IN p_componente_id integer, IN p_new_quantity integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-     IF EXISTS (
-        SELECT 1
-        FROM ipv_bd2_projeto_quantidadeencomendacomponente
-        WHERE encomenda_id = p_id AND componente_id = p_componente_id
-    ) THEN
-        UPDATE ipv_bd2_projeto_quantidadeencomendacomponente
-        SET
-            amount = p_new_quantity
-        WHERE
-            encomenda_id = p_id AND componente_id = p_componente_id;
-        RAISE NOTICE 'Quantidade de Componente na Encomenda editada com sucesso.';
-    ELSE
-        INSERT INTO ipv_bd2_projeto_quantidadeencomendacomponente (encomenda_id, componente_id, amount)
-        VALUES (p_id, p_componente_id, p_new_quantity);
-        RAISE NOTICE 'Nova Quantidade de Componente adicionada à Encomenda com sucesso.';
-    END IF;
-END;
-$$;
-
-
---
--- TOC entry 356 (class 1255 OID 37482)
--- Name: sp_edit_registo_producao(integer, date, date, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_edit_registo_producao(IN registo_prod_id integer, IN p_started_at date, IN p_ended_at date, IN p_armazem_id_id integer, IN p_tipo_mao_de_obra_id_id integer)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_registoproducao WHERE ipv_bd2_projeto_registoproducao.id = registo_prod_id) THEN
-        RAISE NOTICE 'Tipo de Registo não encontrado. Falha na edição do tipo de Registo.';
-        RETURN;
-    END IF;
-
-    UPDATE ipv_bd2_projeto_registoproducao
-    SET
-        started_at = p_started_at,
-		ended_at = p_ended_at,
-		armazem_id_id = p_armazem_id_id,
-		tipo_mao_de_obra_id_id = p_tipo_mao_de_obra_id_id
-		
-    WHERE
-        id = registo_prod_id;
-
-    RAISE NOTICE 'Tipo de Equipamento editado com sucesso.';
-END;
-$$;
-
-
---
--- TOC entry 274 (class 1255 OID 36994)
--- Name: sp_edit_tipo_equipamento(integer, character varying); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_edit_tipo_equipamento(IN p_tipoequipamentoid integer, IN p_newtipoequipamentoname character varying)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_tipodeequipamento WHERE id = p_TipoEquipamentoId) THEN
-        RAISE NOTICE 'Tipo de Equipamento não encontrado. Falha na edição do tipo de equipamento.';
-        RETURN;
-    END IF;
-
-    UPDATE ipv_bd2_projeto_tipodeequipamento
-    SET
-        name = p_NewTipoEquipamentoName
-    WHERE
-        id = p_TipoEquipamentoId;
-
-    RAISE NOTICE 'Tipo de Equipamento editado com sucesso.';
-END;
-$$;
-
-
---
--- TOC entry 290 (class 1255 OID 37006)
--- Name: sp_edit_tipo_mao_de_obra(integer, character varying, double precision); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_edit_tipo_mao_de_obra(IN p_tipomaodeobraid integer, IN p_newtipomaodeobraname character varying, IN p_newtipomaodeobracost double precision)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_tipomaodeobra WHERE id = p_TipoMaoDeObraId) THEN
-        RAISE NOTICE 'Tipo de Mão de Obra não encontrado. Falha na edição do tipo de mão de obra.';
-        RETURN;
-    END IF;
-
-    UPDATE ipv_bd2_projeto_tipomaodeobra
-    SET
-        name = p_NewTipoMaoDeObraName,
-        cost = p_NewTipoMaoDeObraCost
-    WHERE
-        id = p_TipoMaoDeObraId;
-
-    RAISE NOTICE 'Tipo de Mão de Obra editado com sucesso.';
-END;
-$$;
-
-
---
--- TOC entry 273 (class 1255 OID 33654)
--- Name: sp_edit_user(integer, character varying, character varying, character varying); Type: PROCEDURE; Schema: public; Owner: -
---
-
-CREATE PROCEDURE public.sp_edit_user(IN p_id integer, IN p_first_name character varying, IN p_last_name character varying, IN p_user_type character varying)
-    LANGUAGE plpgsql
-    AS $$
-BEGIN
-    IF EXISTS (SELECT 1 FROM ipv_bd2_projeto_utilizador WHERE ipv_bd2_projeto_utilizador.id = p_id) THEN
-        UPDATE ipv_bd2_projeto_utilizador SET first_name = p_first_name, last_name = p_last_name, type = p_user_type WHERE ipv_bd2_projeto_utilizador.id = p_id;
-        RAISE NOTICE 'Utilizador atualizado com sucesso.';
-    ELSE
-        RAISE NOTICE 'Utilizador com id % não existe.', p_id;
-    END IF;
-END;
-$$;
-
-
---
--- TOC entry 350 (class 1255 OID 37468)
--- Name: sp_import_components(jsonb); Type: FUNCTION; Schema: public; Owner: -
---
-
-CREATE FUNCTION public.sp_import_components(json_data jsonb) RETURNS void
+CREATE FUNCTION public.fn_import_components(json_data jsonb) RETURNS void
     LANGUAGE plpgsql
     AS $$
 DECLARE
@@ -2222,7 +1524,520 @@ $$;
 
 
 --
--- TOC entry 352 (class 1255 OID 37476)
+-- TOC entry 283 (class 1255 OID 36996)
+-- Name: sp_create_armazem(character varying, character varying, character varying, character varying); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_create_armazem(IN p_name character varying, IN p_address character varying, IN p_postal_code character varying, IN p_locality character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_armazem WHERE ipv_bd2_projeto_armazem.name = p_name) THEN
+        INSERT INTO ipv_bd2_projeto_armazem (name, address, postal_code, locality)
+        VALUES (p_name, p_address, p_postal_code, p_locality);
+        RAISE NOTICE 'Armazem criado com sucesso.';
+    ELSE
+        RAISE NOTICE 'Armazem já existe.';
+    END IF;
+END;
+$$;
+
+
+--
+-- TOC entry 297 (class 1255 OID 37023)
+-- Name: sp_create_component(character varying, double precision, integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_create_component(IN p_componentname character varying, IN p_componentcost double precision, IN p_fornecedorid integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    INSERT INTO ipv_bd2_projeto_componente (name, cost, fornecedor_id_id, created_at)
+    VALUES (p_ComponentName, p_ComponentCost, p_FornecedorId, CURRENT_DATE);
+
+    RAISE NOTICE 'Componente criado com sucesso.';
+END;
+$$;
+
+
+--
+-- TOC entry 323 (class 1255 OID 37416)
+-- Name: sp_create_expedicao(date, character varying, date, integer, integer[]); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_create_expedicao(IN p_sent_at date, IN p_truck_license character varying, IN p_delivery_date_expected date, IN p_encomenda_id_id integer, IN p_registo_producao_ids integer[])
+    LANGUAGE plpgsql
+    AS $$
+DECLARE
+    v_expedicao_id_id integer;
+BEGIN
+    -- Inserir na tabela de expedicao e recuperar o ID inserido
+    INSERT INTO ipv_bd2_projeto_expedicao(sent_at, truck_license, delivery_date_expected, encomenda_id_id)
+    VALUES (p_sent_at, p_truck_license, p_delivery_date_expected, p_encomenda_id_id)
+    RETURNING ipv_bd2_projeto_expedicao.encomenda_id_id INTO v_expedicao_id_id;
+
+    -- Atualizar os registos de producao com o ID da expedicao
+    UPDATE ipv_bd2_projeto_registoproducao
+    SET expedicao_id_id = v_expedicao_id_id
+    WHERE ipv_bd2_projeto_registoproducao.id = ANY(p_registo_producao_ids);
+
+    RAISE NOTICE 'Expedicao criada com sucesso. ID da Expedicao: %', v_expedicao_id_id;
+END;
+$$;
+
+
+--
+-- TOC entry 318 (class 1255 OID 37403)
+-- Name: sp_create_fatura(date, character varying, integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_create_fatura(IN p_created_at date, IN p_contribuinte character varying, IN p_encomenda_id_id integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    INSERT INTO ipv_bd2_projeto_fatura(created_at, contribuinte, encomenda_id_id)
+    VALUES (p_created_at, p_contribuinte, p_encomenda_id_id );
+
+    RAISE NOTICE 'Expedicao criada com sucesso.';
+END;
+$$;
+
+
+--
+-- TOC entry 290 (class 1255 OID 37007)
+-- Name: sp_create_fornecedor(character varying, character varying, character varying, character varying, character varying); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_create_fornecedor(IN p_name character varying, IN p_address character varying, IN p_postal_code character varying, IN p_locality character varying, IN p_email character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_fornecedor WHERE ipv_bd2_projeto_fornecedor.name = p_name) THEN
+        INSERT INTO ipv_bd2_projeto_fornecedor (name, address, postal_code, locality, email)
+        VALUES (p_name, p_address, p_postal_code, p_locality, p_email);
+        RAISE NOTICE 'Fornecedor criado com sucesso.';
+    ELSE
+        RAISE NOTICE 'Fornecedor já existe.';
+    END IF;
+END;
+$$;
+
+
+--
+-- TOC entry 313 (class 1255 OID 37389)
+-- Name: sp_create_quantidades_componente_registo_producao(integer, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_create_quantidades_componente_registo_producao(IN registo_producao_id integer, IN p_componente_id integer, IN p_amount integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    INSERT INTO ipv_bd2_projeto_quantidadecomponenteregistoproducao(registo_producao_id, componente_id, amount)
+    VALUES (registo_producao_id, p_componente_id, p_amount);
+
+END;
+$$;
+
+
+--
+-- TOC entry 302 (class 1255 OID 37053)
+-- Name: sp_create_quantidades_encomenda_componentes(integer, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_create_quantidades_encomenda_componentes(IN p_encomenda_id integer, IN p_componente_id integer, IN p_amount integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    -- Your logic to create quantities for the order components
+    -- Replace the following line with your actual logic
+    INSERT INTO ipv_bd2_projeto_quantidadeencomendacomponente(encomenda_id, componente_id, amount)
+    VALUES (p_encomenda_id, p_componente_id, p_amount);
+
+END;
+$$;
+
+
+--
+-- TOC entry 311 (class 1255 OID 37343)
+-- Name: sp_create_quantidades_encomenda_equipamentos(integer, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_create_quantidades_encomenda_equipamentos(IN p_encomenda_id integer, IN p_equipamento_id integer, IN p_amount integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    -- Your logic to create quantities for the order components
+    -- Replace the following line with your actual logic
+    INSERT INTO ipv_bd2_projeto_quantidadeencomendaequipamento(encomenda_id, equipamento_id, amount)
+    VALUES (p_encomenda_id, p_equipamento_id, p_amount);
+
+END;
+$$;
+
+
+--
+-- TOC entry 333 (class 1255 OID 37460)
+-- Name: sp_create_quantidades_guia_entrega_componentes(integer, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_create_quantidades_guia_entrega_componentes(IN p_guia_entrega_id integer, IN p_componente_id integer, IN p_amount integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    INSERT INTO ipv_bd2_projeto_quantidadeguiaentregacomponente(guia_entrega_id, componente_id, amount)
+    VALUES (p_guia_entrega_id, p_componente_id, p_amount);
+
+END;
+$$;
+
+
+--
+-- TOC entry 281 (class 1255 OID 33655)
+-- Name: sp_create_tipo_equipamento(character varying); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_create_tipo_equipamento(IN p_name character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_tipodeequipamento WHERE name = p_name) THEN
+        INSERT INTO ipv_bd2_projeto_tipodeequipamento (name)
+        VALUES (p_name);
+        RAISE NOTICE 'Tipo de equipamento criado com sucesso.';
+    ELSE
+        RAISE NOTICE 'Tipo de equipamento já existe.';
+    END IF;
+END;
+$$;
+
+
+--
+-- TOC entry 286 (class 1255 OID 37001)
+-- Name: sp_create_tipo_mao_obra(character varying, double precision); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_create_tipo_mao_obra(IN p_name character varying, IN p_cost double precision)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_tipomaodeobra WHERE name = p_name) THEN
+        INSERT INTO ipv_bd2_projeto_tipomaodeobra (name, cost)
+        VALUES (p_name, p_cost);
+        RAISE NOTICE 'Tipo de mão de obra criado com sucesso.';
+    ELSE
+        RAISE NOTICE 'Tipo de mão de obra já existe.';
+    END IF;
+END;
+$$;
+
+
+--
+-- TOC entry 292 (class 1255 OID 37011)
+-- Name: sp_delete_fornecedor(integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_delete_fornecedor(IN p_fornecedorid integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_fornecedor WHERE id = p_FornecedorId) THEN
+        RAISE NOTICE 'Fornecedor não encontrado. Falha na exclusão do fornecedor.';
+        RETURN;
+    END IF;
+
+    DELETE FROM ipv_bd2_projeto_fornecedor
+    WHERE id = p_FornecedorId;
+
+    RAISE NOTICE 'Fornecedor excluído com sucesso.';
+END;
+$$;
+
+
+--
+-- TOC entry 344 (class 1255 OID 37472)
+-- Name: sp_delete_quantidade_encomenda_componente(integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_delete_quantidade_encomenda_componente(IN p_encomendacomponente_id integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+        DELETE FROM ipv_bd2_projeto_quantidadeencomendacomponente
+        WHERE ipv_bd2_projeto_quantidadeencomendacomponente.id = p_encomendacomponente_id;
+        RAISE NOTICE 'Encomenda de Componente excluída com sucesso.';
+END;
+$$;
+
+
+--
+-- TOC entry 284 (class 1255 OID 36998)
+-- Name: sp_edit_armazem(integer, character varying, character varying, character varying, character varying); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_edit_armazem(IN p_armazemid integer, IN p_newarmazemname character varying, IN p_newarmazemaddress character varying, IN p_newarmazempostalcode character varying, IN p_newarmazemlocality character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_armazem WHERE ipv_bd2_projeto_armazem.id = p_ArmazemId) THEN
+        RAISE NOTICE 'Armazém não encontrado. Falha na edição do armazém.';
+        RETURN;
+    END IF;
+
+    UPDATE ipv_bd2_projeto_armazem
+    SET
+        name = p_NewArmazemName,
+        address = p_NewArmazemAddress,
+        postal_code = p_NewArmazemPostalCode,
+        locality = p_NewArmazemLocality
+    WHERE
+        id = p_ArmazemId;
+
+    RAISE NOTICE 'Armazém editado com sucesso.';
+END;
+$$;
+
+
+--
+-- TOC entry 298 (class 1255 OID 37027)
+-- Name: sp_edit_component(integer, character varying, double precision, integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_edit_component(IN p_component_id integer, IN p_new_name character varying, IN p_new_cost double precision, IN p_new_fornecedor_id integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    UPDATE ipv_bd2_projeto_componente
+    SET
+        name = p_new_name,
+        cost = p_new_cost,
+        fornecedor_id_id = p_new_fornecedor_id
+    WHERE
+        ipv_bd2_projeto_componente.id = p_component_id;
+
+    IF NOT FOUND THEN
+        RAISE NOTICE 'Componente não encontrado. Falha na edição do componente.';
+        RETURN;
+    END IF;
+
+    RAISE NOTICE 'Componente editado com sucesso.';
+END;
+$$;
+
+
+--
+-- TOC entry 317 (class 1255 OID 37396)
+-- Name: sp_edit_encomenda_componentes(integer, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_edit_encomenda_componentes(IN p_encomendacomponenteid integer, IN p_newfornecedorid integer, IN p_newfuncionarioresponsavelid integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM ipv_bd2_projeto_encomendacomponente
+        WHERE ipv_bd2_projeto_encomendacomponente.id = p_encomendacomponenteid AND ipv_bd2_projeto_encomendacomponente.exported = TRUE
+    ) THEN
+        RAISE NOTICE 'Não é possível editar a encomenda, pois já foi exportada.';
+        RETURN;
+    ELSE
+        UPDATE ipv_bd2_projeto_encomendacomponente
+        SET
+            fornecedor_id_id = p_newfornecedorid,
+            funcionario_responsavel_id_id = p_newfuncionarioresponsavelid
+        WHERE
+            ipv_bd2_projeto_encomendacomponente.id = p_encomendacomponenteid;
+        RAISE NOTICE 'Encomenda de Componentes editada com sucesso.';
+    END IF;
+END;
+$$;
+
+
+--
+-- TOC entry 294 (class 1255 OID 37013)
+-- Name: sp_edit_equipamento(integer, character varying, integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_edit_equipamento(IN p_equipamentoid integer, IN p_newequipamentoname character varying, IN p_newtipoequipamentoid integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_equipamento WHERE id = p_EquipamentoId) THEN
+        RAISE NOTICE 'Equipamento não encontrado. Falha na edição do equipamento.';
+        RETURN;
+    END IF;
+
+    UPDATE ipv_bd2_projeto_equipamento
+    SET
+        name = p_NewEquipamentoName,
+        tipo_equipamento_id_id = p_NewTipoEquipamentoId
+    WHERE
+        id = p_EquipamentoId;
+
+    RAISE NOTICE 'Equipamento editado com sucesso.';
+END;
+$$;
+
+
+--
+-- TOC entry 289 (class 1255 OID 37009)
+-- Name: sp_edit_fornecedor(integer, character varying, character varying, character varying, character varying, character varying); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_edit_fornecedor(IN p_fornecedorid integer, IN p_newfornecedorname character varying, IN p_newfornecedoraddress character varying, IN p_newfornecedorpostalcode character varying, IN p_newfornecedorlocality character varying, IN p_newfornecedoremail character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_fornecedor WHERE id = p_FornecedorId) THEN
+        RAISE NOTICE 'Fornecedor não encontrado. Falha na edição do fornecedor.';
+        RETURN;
+    END IF;
+
+    UPDATE ipv_bd2_projeto_fornecedor
+    SET
+        name = p_NewFornecedorName,
+        address = p_NewFornecedorAddress,
+        postal_code = p_NewFornecedorPostalCode,
+        locality = p_NewFornecedorLocality,
+        email = p_NewFornecedorEmail
+    WHERE
+        id = p_FornecedorId;
+
+    RAISE NOTICE 'Fornecedor editado com sucesso.';
+END;
+$$;
+
+
+--
+-- TOC entry 342 (class 1255 OID 37471)
+-- Name: sp_edit_quantidades_encomenda_componentes(integer, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_edit_quantidades_encomenda_componentes(IN p_id integer, IN p_componente_id integer, IN p_new_quantity integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+     IF EXISTS (
+        SELECT 1
+        FROM ipv_bd2_projeto_quantidadeencomendacomponente
+        WHERE encomenda_id = p_id AND componente_id = p_componente_id
+    ) THEN
+        UPDATE ipv_bd2_projeto_quantidadeencomendacomponente
+        SET
+            amount = p_new_quantity
+        WHERE
+            encomenda_id = p_id AND componente_id = p_componente_id;
+        RAISE NOTICE 'Quantidade de Componente na Encomenda editada com sucesso.';
+    ELSE
+        INSERT INTO ipv_bd2_projeto_quantidadeencomendacomponente (encomenda_id, componente_id, amount)
+        VALUES (p_id, p_componente_id, p_new_quantity);
+        RAISE NOTICE 'Nova Quantidade de Componente adicionada à Encomenda com sucesso.';
+    END IF;
+END;
+$$;
+
+
+--
+-- TOC entry 348 (class 1255 OID 37482)
+-- Name: sp_edit_registo_producao(integer, date, date, integer, integer); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_edit_registo_producao(IN registo_prod_id integer, IN p_started_at date, IN p_ended_at date, IN p_armazem_id_id integer, IN p_tipo_mao_de_obra_id_id integer)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_registoproducao WHERE ipv_bd2_projeto_registoproducao.id = registo_prod_id) THEN
+        RAISE NOTICE 'Tipo de Registo não encontrado. Falha na edição do tipo de Registo.';
+        RETURN;
+    END IF;
+
+    UPDATE ipv_bd2_projeto_registoproducao
+    SET
+        started_at = p_started_at,
+		ended_at = p_ended_at,
+		armazem_id_id = p_armazem_id_id,
+		tipo_mao_de_obra_id_id = p_tipo_mao_de_obra_id_id
+
+    WHERE
+        id = registo_prod_id;
+
+    RAISE NOTICE 'Tipo de Equipamento editado com sucesso.';
+END;
+$$;
+
+
+--
+-- TOC entry 272 (class 1255 OID 36994)
+-- Name: sp_edit_tipo_equipamento(integer, character varying); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_edit_tipo_equipamento(IN p_tipoequipamentoid integer, IN p_newtipoequipamentoname character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_tipodeequipamento WHERE id = p_TipoEquipamentoId) THEN
+        RAISE NOTICE 'Tipo de Equipamento não encontrado. Falha na edição do tipo de equipamento.';
+        RETURN;
+    END IF;
+
+    UPDATE ipv_bd2_projeto_tipodeequipamento
+    SET
+        name = p_NewTipoEquipamentoName
+    WHERE
+        id = p_TipoEquipamentoId;
+
+    RAISE NOTICE 'Tipo de Equipamento editado com sucesso.';
+END;
+$$;
+
+
+--
+-- TOC entry 287 (class 1255 OID 37006)
+-- Name: sp_edit_tipo_mao_de_obra(integer, character varying, double precision); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_edit_tipo_mao_de_obra(IN p_tipomaodeobraid integer, IN p_newtipomaodeobraname character varying, IN p_newtipomaodeobracost double precision)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM ipv_bd2_projeto_tipomaodeobra WHERE id = p_TipoMaoDeObraId) THEN
+        RAISE NOTICE 'Tipo de Mão de Obra não encontrado. Falha na edição do tipo de mão de obra.';
+        RETURN;
+    END IF;
+
+    UPDATE ipv_bd2_projeto_tipomaodeobra
+    SET
+        name = p_NewTipoMaoDeObraName,
+        cost = p_NewTipoMaoDeObraCost
+    WHERE
+        id = p_TipoMaoDeObraId;
+
+    RAISE NOTICE 'Tipo de Mão de Obra editado com sucesso.';
+END;
+$$;
+
+
+--
+-- TOC entry 271 (class 1255 OID 33654)
+-- Name: sp_edit_user(integer, character varying, character varying, character varying); Type: PROCEDURE; Schema: public; Owner: -
+--
+
+CREATE PROCEDURE public.sp_edit_user(IN p_id integer, IN p_first_name character varying, IN p_last_name character varying, IN p_user_type character varying)
+    LANGUAGE plpgsql
+    AS $$
+BEGIN
+    IF EXISTS (SELECT 1 FROM ipv_bd2_projeto_utilizador WHERE ipv_bd2_projeto_utilizador.id = p_id) THEN
+        UPDATE ipv_bd2_projeto_utilizador SET first_name = p_first_name, last_name = p_last_name, type = p_user_type WHERE ipv_bd2_projeto_utilizador.id = p_id;
+        RAISE NOTICE 'Utilizador atualizado com sucesso.';
+    ELSE
+        RAISE NOTICE 'Utilizador com id % não existe.', p_id;
+    END IF;
+END;
+$$;
+
+
+--
+-- TOC entry 343 (class 1255 OID 37476)
 -- Name: sp_mark_component_orders_as_exported(); Type: PROCEDURE; Schema: public; Owner: -
 --
 
@@ -3028,7 +2843,7 @@ ALTER TABLE public.ipv_bd2_projeto_utilizador_user_permissions ALTER COLUMN id A
 
 
 --
--- TOC entry 3369 (class 2606 OID 30845)
+-- TOC entry 3361 (class 2606 OID 30845)
 -- Name: auth_group auth_group_name_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3037,7 +2852,7 @@ ALTER TABLE ONLY public.auth_group
 
 
 --
--- TOC entry 3374 (class 2606 OID 30776)
+-- TOC entry 3366 (class 2606 OID 30776)
 -- Name: auth_group_permissions auth_group_permissions_group_id_permission_id_0cd325b0_uniq; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3046,7 +2861,7 @@ ALTER TABLE ONLY public.auth_group_permissions
 
 
 --
--- TOC entry 3377 (class 2606 OID 30745)
+-- TOC entry 3369 (class 2606 OID 30745)
 -- Name: auth_group_permissions auth_group_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3055,7 +2870,7 @@ ALTER TABLE ONLY public.auth_group_permissions
 
 
 --
--- TOC entry 3371 (class 2606 OID 30737)
+-- TOC entry 3363 (class 2606 OID 30737)
 -- Name: auth_group auth_group_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3064,7 +2879,7 @@ ALTER TABLE ONLY public.auth_group
 
 
 --
--- TOC entry 3364 (class 2606 OID 30767)
+-- TOC entry 3356 (class 2606 OID 30767)
 -- Name: auth_permission auth_permission_content_type_id_codename_01ab375a_uniq; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3073,7 +2888,7 @@ ALTER TABLE ONLY public.auth_permission
 
 
 --
--- TOC entry 3366 (class 2606 OID 30731)
+-- TOC entry 3358 (class 2606 OID 30731)
 -- Name: auth_permission auth_permission_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3082,7 +2897,7 @@ ALTER TABLE ONLY public.auth_permission
 
 
 --
--- TOC entry 3385 (class 2606 OID 30759)
+-- TOC entry 3377 (class 2606 OID 30759)
 -- Name: auth_user_groups auth_user_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3091,7 +2906,7 @@ ALTER TABLE ONLY public.auth_user_groups
 
 
 --
--- TOC entry 3388 (class 2606 OID 30791)
+-- TOC entry 3380 (class 2606 OID 30791)
 -- Name: auth_user_groups auth_user_groups_user_id_group_id_94350c0c_uniq; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3100,7 +2915,7 @@ ALTER TABLE ONLY public.auth_user_groups
 
 
 --
--- TOC entry 3379 (class 2606 OID 30751)
+-- TOC entry 3371 (class 2606 OID 30751)
 -- Name: auth_user auth_user_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3109,7 +2924,7 @@ ALTER TABLE ONLY public.auth_user
 
 
 --
--- TOC entry 3391 (class 2606 OID 30765)
+-- TOC entry 3383 (class 2606 OID 30765)
 -- Name: auth_user_user_permissions auth_user_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3118,7 +2933,7 @@ ALTER TABLE ONLY public.auth_user_user_permissions
 
 
 --
--- TOC entry 3394 (class 2606 OID 30805)
+-- TOC entry 3386 (class 2606 OID 30805)
 -- Name: auth_user_user_permissions auth_user_user_permissions_user_id_permission_id_14a6b632_uniq; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3127,7 +2942,7 @@ ALTER TABLE ONLY public.auth_user_user_permissions
 
 
 --
--- TOC entry 3382 (class 2606 OID 30840)
+-- TOC entry 3374 (class 2606 OID 30840)
 -- Name: auth_user auth_user_username_key; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3136,7 +2951,7 @@ ALTER TABLE ONLY public.auth_user
 
 
 --
--- TOC entry 3397 (class 2606 OID 30826)
+-- TOC entry 3389 (class 2606 OID 30826)
 -- Name: django_admin_log django_admin_log_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3145,7 +2960,7 @@ ALTER TABLE ONLY public.django_admin_log
 
 
 --
--- TOC entry 3359 (class 2606 OID 30725)
+-- TOC entry 3351 (class 2606 OID 30725)
 -- Name: django_content_type django_content_type_app_label_model_76bd3d3b_uniq; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3154,7 +2969,7 @@ ALTER TABLE ONLY public.django_content_type
 
 
 --
--- TOC entry 3361 (class 2606 OID 30723)
+-- TOC entry 3353 (class 2606 OID 30723)
 -- Name: django_content_type django_content_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3163,7 +2978,7 @@ ALTER TABLE ONLY public.django_content_type
 
 
 --
--- TOC entry 3357 (class 2606 OID 30717)
+-- TOC entry 3349 (class 2606 OID 30717)
 -- Name: django_migrations django_migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3172,7 +2987,7 @@ ALTER TABLE ONLY public.django_migrations
 
 
 --
--- TOC entry 3466 (class 2606 OID 31076)
+-- TOC entry 3458 (class 2606 OID 31076)
 -- Name: django_session django_session_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3181,7 +2996,7 @@ ALTER TABLE ONLY public.django_session
 
 
 --
--- TOC entry 3400 (class 2606 OID 33657)
+-- TOC entry 3392 (class 2606 OID 33657)
 -- Name: ipv_bd2_projeto_armazem ipv_bd2_projeto_armazem_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3190,7 +3005,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_armazem
 
 
 --
--- TOC entry 3403 (class 2606 OID 33670)
+-- TOC entry 3395 (class 2606 OID 33670)
 -- Name: ipv_bd2_projeto_componente ipv_bd2_projeto_componente_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3199,7 +3014,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_componente
 
 
 --
--- TOC entry 3407 (class 2606 OID 33688)
+-- TOC entry 3399 (class 2606 OID 33688)
 -- Name: ipv_bd2_projeto_encomendacomponente ipv_bd2_projeto_encomendacomponente_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3208,7 +3023,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_encomendacomponente
 
 
 --
--- TOC entry 3411 (class 2606 OID 33696)
+-- TOC entry 3403 (class 2606 OID 33696)
 -- Name: ipv_bd2_projeto_encomendaequipamento ipv_bd2_projeto_encomendaequipamento_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3217,7 +3032,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_encomendaequipamento
 
 
 --
--- TOC entry 3413 (class 2606 OID 33714)
+-- TOC entry 3405 (class 2606 OID 33714)
 -- Name: ipv_bd2_projeto_equipamento ipv_bd2_projeto_equipamento_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3226,7 +3041,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_equipamento
 
 
 --
--- TOC entry 3430 (class 2606 OID 30901)
+-- TOC entry 3422 (class 2606 OID 30901)
 -- Name: ipv_bd2_projeto_expedicao ipv_bd2_projeto_expedicao_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3235,7 +3050,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_expedicao
 
 
 --
--- TOC entry 3432 (class 2606 OID 30906)
+-- TOC entry 3424 (class 2606 OID 30906)
 -- Name: ipv_bd2_projeto_fatura ipv_bd2_projeto_fatura_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3244,7 +3059,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_fatura
 
 
 --
--- TOC entry 3416 (class 2606 OID 33727)
+-- TOC entry 3408 (class 2606 OID 33727)
 -- Name: ipv_bd2_projeto_fornecedor ipv_bd2_projeto_fornecedor_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3253,7 +3068,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_fornecedor
 
 
 --
--- TOC entry 3419 (class 2606 OID 33740)
+-- TOC entry 3411 (class 2606 OID 33740)
 -- Name: ipv_bd2_projeto_guiaentregacomponente ipv_bd2_projeto_guiaentregacomponente_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3262,7 +3077,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_guiaentregacomponente
 
 
 --
--- TOC entry 3461 (class 2606 OID 33748)
+-- TOC entry 3453 (class 2606 OID 33748)
 -- Name: ipv_bd2_projeto_quantidadecomponenteregistoproducao ipv_bd2_projeto_quantidadecomponenteregistoproducao_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3271,7 +3086,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadecomponenteregistoproducao
 
 
 --
--- TOC entry 3455 (class 2606 OID 33751)
+-- TOC entry 3447 (class 2606 OID 33751)
 -- Name: ipv_bd2_projeto_quantidadeencomendacomponente ipv_bd2_projeto_quantidadeencomendacomponente_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3280,7 +3095,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadeencomendacomponente
 
 
 --
--- TOC entry 3449 (class 2606 OID 33754)
+-- TOC entry 3441 (class 2606 OID 33754)
 -- Name: ipv_bd2_projeto_quantidadeencomendaequipamento ipv_bd2_projeto_quantidadeencomendaequipamento_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3289,7 +3104,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadeencomendaequipamento
 
 
 --
--- TOC entry 3443 (class 2606 OID 33757)
+-- TOC entry 3435 (class 2606 OID 33757)
 -- Name: ipv_bd2_projeto_quantidadeguiaentregacomponente ipv_bd2_projeto_quantidadeguiaentregacomponente_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3298,7 +3113,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadeguiaentregacomponente
 
 
 --
--- TOC entry 3438 (class 2606 OID 33760)
+-- TOC entry 3430 (class 2606 OID 33760)
 -- Name: ipv_bd2_projeto_registoproducao ipv_bd2_projeto_registoproducao_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3307,7 +3122,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_registoproducao
 
 
 --
--- TOC entry 3421 (class 2606 OID 33768)
+-- TOC entry 3413 (class 2606 OID 33768)
 -- Name: ipv_bd2_projeto_tipodeequipamento ipv_bd2_projeto_tipodeequipamento_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3316,7 +3131,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_tipodeequipamento
 
 
 --
--- TOC entry 3423 (class 2606 OID 33776)
+-- TOC entry 3415 (class 2606 OID 33776)
 -- Name: ipv_bd2_projeto_tipomaodeobra ipv_bd2_projeto_tipomaodeobra_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3325,7 +3140,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_tipomaodeobra
 
 
 --
--- TOC entry 3469 (class 2606 OID 33622)
+-- TOC entry 3461 (class 2606 OID 33622)
 -- Name: ipv_bd2_projeto_utilizador_groups ipv_bd2_projeto_utilizad_utilizador_id_group_id_33c28c17_uniq; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3334,7 +3149,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_utilizador_groups
 
 
 --
--- TOC entry 3475 (class 2606 OID 33636)
+-- TOC entry 3467 (class 2606 OID 33636)
 -- Name: ipv_bd2_projeto_utilizador_user_permissions ipv_bd2_projeto_utilizad_utilizador_id_permission_3bfa85d3_uniq; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3343,7 +3158,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_utilizador_user_permissions
 
 
 --
--- TOC entry 3426 (class 2606 OID 33596)
+-- TOC entry 3418 (class 2606 OID 33596)
 -- Name: ipv_bd2_projeto_utilizador ipv_bd2_projeto_utilizador_email_82f46450_uniq; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3352,7 +3167,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_utilizador
 
 
 --
--- TOC entry 3472 (class 2606 OID 33578)
+-- TOC entry 3464 (class 2606 OID 33578)
 -- Name: ipv_bd2_projeto_utilizador_groups ipv_bd2_projeto_utilizador_groups_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3361,7 +3176,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_utilizador_groups
 
 
 --
--- TOC entry 3428 (class 2606 OID 33599)
+-- TOC entry 3420 (class 2606 OID 33599)
 -- Name: ipv_bd2_projeto_utilizador ipv_bd2_projeto_utilizador_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3370,7 +3185,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_utilizador
 
 
 --
--- TOC entry 3478 (class 2606 OID 33588)
+-- TOC entry 3470 (class 2606 OID 33588)
 -- Name: ipv_bd2_projeto_utilizador_user_permissions ipv_bd2_projeto_utilizador_user_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3379,7 +3194,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_utilizador_user_permissions
 
 
 --
--- TOC entry 3457 (class 2606 OID 30967)
+-- TOC entry 3449 (class 2606 OID 30967)
 -- Name: ipv_bd2_projeto_quantidadeencomendacomponente unique_componente_encomenda; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3388,7 +3203,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadeencomendacomponente
 
 
 --
--- TOC entry 3445 (class 2606 OID 30963)
+-- TOC entry 3437 (class 2606 OID 30963)
 -- Name: ipv_bd2_projeto_quantidadeguiaentregacomponente unique_componente_guia_entrega; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3397,7 +3212,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadeguiaentregacomponente
 
 
 --
--- TOC entry 3463 (class 2606 OID 30969)
+-- TOC entry 3455 (class 2606 OID 30969)
 -- Name: ipv_bd2_projeto_quantidadecomponenteregistoproducao unique_componente_registo_producao; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3406,7 +3221,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadecomponenteregistoproducao
 
 
 --
--- TOC entry 3451 (class 2606 OID 30965)
+-- TOC entry 3443 (class 2606 OID 30965)
 -- Name: ipv_bd2_projeto_quantidadeencomendaequipamento unique_equipamento_encomenda; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3415,7 +3230,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadeencomendaequipamento
 
 
 --
--- TOC entry 3367 (class 1259 OID 30846)
+-- TOC entry 3359 (class 1259 OID 30846)
 -- Name: auth_group_name_a6ea08ec_like; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3423,7 +3238,7 @@ CREATE INDEX auth_group_name_a6ea08ec_like ON public.auth_group USING btree (nam
 
 
 --
--- TOC entry 3372 (class 1259 OID 30787)
+-- TOC entry 3364 (class 1259 OID 30787)
 -- Name: auth_group_permissions_group_id_b120cbf9; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3431,7 +3246,7 @@ CREATE INDEX auth_group_permissions_group_id_b120cbf9 ON public.auth_group_permi
 
 
 --
--- TOC entry 3375 (class 1259 OID 30788)
+-- TOC entry 3367 (class 1259 OID 30788)
 -- Name: auth_group_permissions_permission_id_84c5c92e; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3439,7 +3254,7 @@ CREATE INDEX auth_group_permissions_permission_id_84c5c92e ON public.auth_group_
 
 
 --
--- TOC entry 3362 (class 1259 OID 30773)
+-- TOC entry 3354 (class 1259 OID 30773)
 -- Name: auth_permission_content_type_id_2f476e4b; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3447,7 +3262,7 @@ CREATE INDEX auth_permission_content_type_id_2f476e4b ON public.auth_permission 
 
 
 --
--- TOC entry 3383 (class 1259 OID 30803)
+-- TOC entry 3375 (class 1259 OID 30803)
 -- Name: auth_user_groups_group_id_97559544; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3455,7 +3270,7 @@ CREATE INDEX auth_user_groups_group_id_97559544 ON public.auth_user_groups USING
 
 
 --
--- TOC entry 3386 (class 1259 OID 30802)
+-- TOC entry 3378 (class 1259 OID 30802)
 -- Name: auth_user_groups_user_id_6a12ed8b; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3463,7 +3278,7 @@ CREATE INDEX auth_user_groups_user_id_6a12ed8b ON public.auth_user_groups USING 
 
 
 --
--- TOC entry 3389 (class 1259 OID 30817)
+-- TOC entry 3381 (class 1259 OID 30817)
 -- Name: auth_user_user_permissions_permission_id_1fbb5f2c; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3471,7 +3286,7 @@ CREATE INDEX auth_user_user_permissions_permission_id_1fbb5f2c ON public.auth_us
 
 
 --
--- TOC entry 3392 (class 1259 OID 30816)
+-- TOC entry 3384 (class 1259 OID 30816)
 -- Name: auth_user_user_permissions_user_id_a95ead1b; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3479,7 +3294,7 @@ CREATE INDEX auth_user_user_permissions_user_id_a95ead1b ON public.auth_user_use
 
 
 --
--- TOC entry 3380 (class 1259 OID 30841)
+-- TOC entry 3372 (class 1259 OID 30841)
 -- Name: auth_user_username_6821ab7c_like; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3487,7 +3302,7 @@ CREATE INDEX auth_user_username_6821ab7c_like ON public.auth_user USING btree (u
 
 
 --
--- TOC entry 3395 (class 1259 OID 30837)
+-- TOC entry 3387 (class 1259 OID 30837)
 -- Name: django_admin_log_content_type_id_c4bce8eb; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3495,7 +3310,7 @@ CREATE INDEX django_admin_log_content_type_id_c4bce8eb ON public.django_admin_lo
 
 
 --
--- TOC entry 3398 (class 1259 OID 30838)
+-- TOC entry 3390 (class 1259 OID 30838)
 -- Name: django_admin_log_user_id_c564eba6; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3503,7 +3318,7 @@ CREATE INDEX django_admin_log_user_id_c564eba6 ON public.django_admin_log USING 
 
 
 --
--- TOC entry 3464 (class 1259 OID 31078)
+-- TOC entry 3456 (class 1259 OID 31078)
 -- Name: django_session_expire_date_a5c62663; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3511,7 +3326,7 @@ CREATE INDEX django_session_expire_date_a5c62663 ON public.django_session USING 
 
 
 --
--- TOC entry 3467 (class 1259 OID 31077)
+-- TOC entry 3459 (class 1259 OID 31077)
 -- Name: django_session_session_key_c0390e0f_like; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3519,7 +3334,7 @@ CREATE INDEX django_session_session_key_c0390e0f_like ON public.django_session U
 
 
 --
--- TOC entry 3401 (class 1259 OID 31069)
+-- TOC entry 3393 (class 1259 OID 31069)
 -- Name: ipv_bd2_projeto_componente_fornecedor_id_id_df64b80e; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3527,7 +3342,7 @@ CREATE INDEX ipv_bd2_projeto_componente_fornecedor_id_id_df64b80e ON public.ipv_
 
 
 --
--- TOC entry 3404 (class 1259 OID 31068)
+-- TOC entry 3396 (class 1259 OID 31068)
 -- Name: ipv_bd2_projeto_encomendac_funcionario_responsavel_id_3f63ec99; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3535,7 +3350,7 @@ CREATE INDEX ipv_bd2_projeto_encomendac_funcionario_responsavel_id_3f63ec99 ON p
 
 
 --
--- TOC entry 3405 (class 1259 OID 31067)
+-- TOC entry 3397 (class 1259 OID 31067)
 -- Name: ipv_bd2_projeto_encomendacomponente_fornecedor_id_id_0fd80159; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3543,7 +3358,7 @@ CREATE INDEX ipv_bd2_projeto_encomendacomponente_fornecedor_id_id_0fd80159 ON pu
 
 
 --
--- TOC entry 3408 (class 1259 OID 31065)
+-- TOC entry 3400 (class 1259 OID 31065)
 -- Name: ipv_bd2_projeto_encomendaequipamento_client_id_id_f8333eab; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3551,7 +3366,7 @@ CREATE INDEX ipv_bd2_projeto_encomendaequipamento_client_id_id_f8333eab ON publi
 
 
 --
--- TOC entry 3409 (class 1259 OID 31066)
+-- TOC entry 3401 (class 1259 OID 31066)
 -- Name: ipv_bd2_projeto_encomendaequipamento_funcionario_id_id_ae493915; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3559,7 +3374,7 @@ CREATE INDEX ipv_bd2_projeto_encomendaequipamento_funcionario_id_id_ae493915 ON 
 
 
 --
--- TOC entry 3414 (class 1259 OID 31064)
+-- TOC entry 3406 (class 1259 OID 31064)
 -- Name: ipv_bd2_projeto_equipamento_tipo_equipamento_id_id_2d6452e1; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3567,7 +3382,7 @@ CREATE INDEX ipv_bd2_projeto_equipamento_tipo_equipamento_id_id_2d6452e1 ON publ
 
 
 --
--- TOC entry 3417 (class 1259 OID 30975)
+-- TOC entry 3409 (class 1259 OID 30975)
 -- Name: ipv_bd2_projeto_guiaentregacomponente_armazem_id_id_6fec9e87; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3575,7 +3390,7 @@ CREATE INDEX ipv_bd2_projeto_guiaentregacomponente_armazem_id_id_6fec9e87 ON pub
 
 
 --
--- TOC entry 3458 (class 1259 OID 31062)
+-- TOC entry 3450 (class 1259 OID 31062)
 -- Name: ipv_bd2_projeto_quantidade_componente_id_5c1bd6eb; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3583,7 +3398,7 @@ CREATE INDEX ipv_bd2_projeto_quantidade_componente_id_5c1bd6eb ON public.ipv_bd2
 
 
 --
--- TOC entry 3440 (class 1259 OID 31026)
+-- TOC entry 3432 (class 1259 OID 31026)
 -- Name: ipv_bd2_projeto_quantidade_componente_id_bf73b2fb; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3591,7 +3406,7 @@ CREATE INDEX ipv_bd2_projeto_quantidade_componente_id_bf73b2fb ON public.ipv_bd2
 
 
 --
--- TOC entry 3452 (class 1259 OID 31050)
+-- TOC entry 3444 (class 1259 OID 31050)
 -- Name: ipv_bd2_projeto_quantidade_componente_id_d308854e; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3599,7 +3414,7 @@ CREATE INDEX ipv_bd2_projeto_quantidade_componente_id_d308854e ON public.ipv_bd2
 
 
 --
--- TOC entry 3446 (class 1259 OID 31038)
+-- TOC entry 3438 (class 1259 OID 31038)
 -- Name: ipv_bd2_projeto_quantidade_encomenda_id_9eadfdd0; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3607,7 +3422,7 @@ CREATE INDEX ipv_bd2_projeto_quantidade_encomenda_id_9eadfdd0 ON public.ipv_bd2_
 
 
 --
--- TOC entry 3453 (class 1259 OID 31051)
+-- TOC entry 3445 (class 1259 OID 31051)
 -- Name: ipv_bd2_projeto_quantidade_encomenda_id_e366189d; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3615,7 +3430,7 @@ CREATE INDEX ipv_bd2_projeto_quantidade_encomenda_id_e366189d ON public.ipv_bd2_
 
 
 --
--- TOC entry 3447 (class 1259 OID 31039)
+-- TOC entry 3439 (class 1259 OID 31039)
 -- Name: ipv_bd2_projeto_quantidade_equipamento_id_bc6a2a0b; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3623,7 +3438,7 @@ CREATE INDEX ipv_bd2_projeto_quantidade_equipamento_id_bc6a2a0b ON public.ipv_bd
 
 
 --
--- TOC entry 3441 (class 1259 OID 31027)
+-- TOC entry 3433 (class 1259 OID 31027)
 -- Name: ipv_bd2_projeto_quantidade_guia_entrega_id_c8202fb3; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3631,7 +3446,7 @@ CREATE INDEX ipv_bd2_projeto_quantidade_guia_entrega_id_c8202fb3 ON public.ipv_b
 
 
 --
--- TOC entry 3459 (class 1259 OID 31063)
+-- TOC entry 3451 (class 1259 OID 31063)
 -- Name: ipv_bd2_projeto_quantidade_registo_producao_id_ebc87815; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3639,7 +3454,7 @@ CREATE INDEX ipv_bd2_projeto_quantidade_registo_producao_id_ebc87815 ON public.i
 
 
 --
--- TOC entry 3433 (class 1259 OID 31011)
+-- TOC entry 3425 (class 1259 OID 31011)
 -- Name: ipv_bd2_projeto_registoproducao_armazem_id_id_3ea7abec; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3647,7 +3462,7 @@ CREATE INDEX ipv_bd2_projeto_registoproducao_armazem_id_id_3ea7abec ON public.ip
 
 
 --
--- TOC entry 3434 (class 1259 OID 31012)
+-- TOC entry 3426 (class 1259 OID 31012)
 -- Name: ipv_bd2_projeto_registoproducao_equipamento_id_id_76f1b7be; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3655,7 +3470,7 @@ CREATE INDEX ipv_bd2_projeto_registoproducao_equipamento_id_id_76f1b7be ON publi
 
 
 --
--- TOC entry 3435 (class 1259 OID 37413)
+-- TOC entry 3427 (class 1259 OID 37413)
 -- Name: ipv_bd2_projeto_registoproducao_expedicao_id_id_85c4025b; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3663,7 +3478,7 @@ CREATE INDEX ipv_bd2_projeto_registoproducao_expedicao_id_id_85c4025b ON public.
 
 
 --
--- TOC entry 3436 (class 1259 OID 31013)
+-- TOC entry 3428 (class 1259 OID 31013)
 -- Name: ipv_bd2_projeto_registoproducao_funcionario_id_id_76156b7b; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3671,7 +3486,7 @@ CREATE INDEX ipv_bd2_projeto_registoproducao_funcionario_id_id_76156b7b ON publi
 
 
 --
--- TOC entry 3439 (class 1259 OID 31014)
+-- TOC entry 3431 (class 1259 OID 31014)
 -- Name: ipv_bd2_projeto_registoproducao_tipo_mao_de_obra_id_id_966089c6; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3679,7 +3494,7 @@ CREATE INDEX ipv_bd2_projeto_registoproducao_tipo_mao_de_obra_id_id_966089c6 ON 
 
 
 --
--- TOC entry 3424 (class 1259 OID 33597)
+-- TOC entry 3416 (class 1259 OID 33597)
 -- Name: ipv_bd2_projeto_utilizador_email_82f46450_like; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3687,7 +3502,7 @@ CREATE INDEX ipv_bd2_projeto_utilizador_email_82f46450_like ON public.ipv_bd2_pr
 
 
 --
--- TOC entry 3470 (class 1259 OID 33634)
+-- TOC entry 3462 (class 1259 OID 33634)
 -- Name: ipv_bd2_projeto_utilizador_groups_group_id_45e4a6ad; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3695,7 +3510,7 @@ CREATE INDEX ipv_bd2_projeto_utilizador_groups_group_id_45e4a6ad ON public.ipv_b
 
 
 --
--- TOC entry 3473 (class 1259 OID 33633)
+-- TOC entry 3465 (class 1259 OID 33633)
 -- Name: ipv_bd2_projeto_utilizador_groups_utilizador_id_a98d0b2a; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3703,7 +3518,7 @@ CREATE INDEX ipv_bd2_projeto_utilizador_groups_utilizador_id_a98d0b2a ON public.
 
 
 --
--- TOC entry 3476 (class 1259 OID 33648)
+-- TOC entry 3468 (class 1259 OID 33648)
 -- Name: ipv_bd2_projeto_utilizador_permission_id_a05a2c5e; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3711,7 +3526,7 @@ CREATE INDEX ipv_bd2_projeto_utilizador_permission_id_a05a2c5e ON public.ipv_bd2
 
 
 --
--- TOC entry 3479 (class 1259 OID 33647)
+-- TOC entry 3471 (class 1259 OID 33647)
 -- Name: ipv_bd2_projeto_utilizador_utilizador_id_0f32fd19; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -3719,7 +3534,7 @@ CREATE INDEX ipv_bd2_projeto_utilizador_utilizador_id_0f32fd19 ON public.ipv_bd2
 
 
 --
--- TOC entry 3481 (class 2606 OID 30782)
+-- TOC entry 3473 (class 2606 OID 30782)
 -- Name: auth_group_permissions auth_group_permissio_permission_id_84c5c92e_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3728,7 +3543,7 @@ ALTER TABLE ONLY public.auth_group_permissions
 
 
 --
--- TOC entry 3482 (class 2606 OID 30777)
+-- TOC entry 3474 (class 2606 OID 30777)
 -- Name: auth_group_permissions auth_group_permissions_group_id_b120cbf9_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3737,7 +3552,7 @@ ALTER TABLE ONLY public.auth_group_permissions
 
 
 --
--- TOC entry 3480 (class 2606 OID 30768)
+-- TOC entry 3472 (class 2606 OID 30768)
 -- Name: auth_permission auth_permission_content_type_id_2f476e4b_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3746,7 +3561,7 @@ ALTER TABLE ONLY public.auth_permission
 
 
 --
--- TOC entry 3483 (class 2606 OID 30797)
+-- TOC entry 3475 (class 2606 OID 30797)
 -- Name: auth_user_groups auth_user_groups_group_id_97559544_fk_auth_group_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3755,7 +3570,7 @@ ALTER TABLE ONLY public.auth_user_groups
 
 
 --
--- TOC entry 3484 (class 2606 OID 30792)
+-- TOC entry 3476 (class 2606 OID 30792)
 -- Name: auth_user_groups auth_user_groups_user_id_6a12ed8b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3764,7 +3579,7 @@ ALTER TABLE ONLY public.auth_user_groups
 
 
 --
--- TOC entry 3485 (class 2606 OID 30811)
+-- TOC entry 3477 (class 2606 OID 30811)
 -- Name: auth_user_user_permissions auth_user_user_permi_permission_id_1fbb5f2c_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3773,7 +3588,7 @@ ALTER TABLE ONLY public.auth_user_user_permissions
 
 
 --
--- TOC entry 3486 (class 2606 OID 30806)
+-- TOC entry 3478 (class 2606 OID 30806)
 -- Name: auth_user_user_permissions auth_user_user_permissions_user_id_a95ead1b_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3782,7 +3597,7 @@ ALTER TABLE ONLY public.auth_user_user_permissions
 
 
 --
--- TOC entry 3487 (class 2606 OID 30827)
+-- TOC entry 3479 (class 2606 OID 30827)
 -- Name: django_admin_log django_admin_log_content_type_id_c4bce8eb_fk_django_co; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3791,7 +3606,7 @@ ALTER TABLE ONLY public.django_admin_log
 
 
 --
--- TOC entry 3488 (class 2606 OID 30832)
+-- TOC entry 3480 (class 2606 OID 30832)
 -- Name: django_admin_log django_admin_log_user_id_c564eba6_fk_auth_user_id; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3800,7 +3615,7 @@ ALTER TABLE ONLY public.django_admin_log
 
 
 --
--- TOC entry 3489 (class 2606 OID 33733)
+-- TOC entry 3481 (class 2606 OID 33733)
 -- Name: ipv_bd2_projeto_componente ipv_bd2_projeto_comp_fornecedor_id_id_df64b80e_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3809,7 +3624,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_componente
 
 
 --
--- TOC entry 3492 (class 2606 OID 33600)
+-- TOC entry 3484 (class 2606 OID 33600)
 -- Name: ipv_bd2_projeto_encomendaequipamento ipv_bd2_projeto_enco_client_id_id_f8333eab_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3818,7 +3633,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_encomendaequipamento
 
 
 --
--- TOC entry 3490 (class 2606 OID 33728)
+-- TOC entry 3482 (class 2606 OID 33728)
 -- Name: ipv_bd2_projeto_encomendacomponente ipv_bd2_projeto_enco_fornecedor_id_id_0fd80159_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3827,7 +3642,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_encomendacomponente
 
 
 --
--- TOC entry 3493 (class 2606 OID 33605)
+-- TOC entry 3485 (class 2606 OID 33605)
 -- Name: ipv_bd2_projeto_encomendaequipamento ipv_bd2_projeto_enco_funcionario_id_id_ae493915_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3836,7 +3651,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_encomendaequipamento
 
 
 --
--- TOC entry 3491 (class 2606 OID 33610)
+-- TOC entry 3483 (class 2606 OID 33610)
 -- Name: ipv_bd2_projeto_encomendacomponente ipv_bd2_projeto_enco_funcionario_responsa_3f63ec99_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3845,7 +3660,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_encomendacomponente
 
 
 --
--- TOC entry 3494 (class 2606 OID 33769)
+-- TOC entry 3486 (class 2606 OID 33769)
 -- Name: ipv_bd2_projeto_equipamento ipv_bd2_projeto_equi_tipo_equipamento_id__2d6452e1_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3854,7 +3669,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_equipamento
 
 
 --
--- TOC entry 3496 (class 2606 OID 33697)
+-- TOC entry 3488 (class 2606 OID 33697)
 -- Name: ipv_bd2_projeto_expedicao ipv_bd2_projeto_expe_encomenda_id_id_387d2844_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3863,7 +3678,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_expedicao
 
 
 --
--- TOC entry 3497 (class 2606 OID 33702)
+-- TOC entry 3489 (class 2606 OID 33702)
 -- Name: ipv_bd2_projeto_fatura ipv_bd2_projeto_fatu_encomenda_id_id_37f7678b_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3872,7 +3687,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_fatura
 
 
 --
--- TOC entry 3495 (class 2606 OID 33658)
+-- TOC entry 3487 (class 2606 OID 33658)
 -- Name: ipv_bd2_projeto_guiaentregacomponente ipv_bd2_projeto_guia_armazem_id_id_6fec9e87_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3881,7 +3696,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_guiaentregacomponente
 
 
 --
--- TOC entry 3509 (class 2606 OID 33681)
+-- TOC entry 3501 (class 2606 OID 33681)
 -- Name: ipv_bd2_projeto_quantidadecomponenteregistoproducao ipv_bd2_projeto_quan_componente_id_5c1bd6eb_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3890,7 +3705,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadecomponenteregistoproducao
 
 
 --
--- TOC entry 3503 (class 2606 OID 33671)
+-- TOC entry 3495 (class 2606 OID 33671)
 -- Name: ipv_bd2_projeto_quantidadeguiaentregacomponente ipv_bd2_projeto_quan_componente_id_bf73b2fb_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3899,7 +3714,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadeguiaentregacomponente
 
 
 --
--- TOC entry 3507 (class 2606 OID 33676)
+-- TOC entry 3499 (class 2606 OID 33676)
 -- Name: ipv_bd2_projeto_quantidadeencomendacomponente ipv_bd2_projeto_quan_componente_id_d308854e_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3908,7 +3723,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadeencomendacomponente
 
 
 --
--- TOC entry 3505 (class 2606 OID 33707)
+-- TOC entry 3497 (class 2606 OID 33707)
 -- Name: ipv_bd2_projeto_quantidadeencomendaequipamento ipv_bd2_projeto_quan_encomenda_id_9eadfdd0_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3917,7 +3732,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadeencomendaequipamento
 
 
 --
--- TOC entry 3508 (class 2606 OID 33689)
+-- TOC entry 3500 (class 2606 OID 33689)
 -- Name: ipv_bd2_projeto_quantidadeencomendacomponente ipv_bd2_projeto_quan_encomenda_id_e366189d_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3926,7 +3741,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadeencomendacomponente
 
 
 --
--- TOC entry 3506 (class 2606 OID 33720)
+-- TOC entry 3498 (class 2606 OID 33720)
 -- Name: ipv_bd2_projeto_quantidadeencomendaequipamento ipv_bd2_projeto_quan_equipamento_id_bc6a2a0b_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3935,7 +3750,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadeencomendaequipamento
 
 
 --
--- TOC entry 3504 (class 2606 OID 33741)
+-- TOC entry 3496 (class 2606 OID 33741)
 -- Name: ipv_bd2_projeto_quantidadeguiaentregacomponente ipv_bd2_projeto_quan_guia_entrega_id_c8202fb3_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3944,7 +3759,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadeguiaentregacomponente
 
 
 --
--- TOC entry 3510 (class 2606 OID 33761)
+-- TOC entry 3502 (class 2606 OID 33761)
 -- Name: ipv_bd2_projeto_quantidadecomponenteregistoproducao ipv_bd2_projeto_quan_registo_producao_id_ebc87815_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3953,7 +3768,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_quantidadecomponenteregistoproducao
 
 
 --
--- TOC entry 3498 (class 2606 OID 33663)
+-- TOC entry 3490 (class 2606 OID 33663)
 -- Name: ipv_bd2_projeto_registoproducao ipv_bd2_projeto_regi_armazem_id_id_3ea7abec_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3962,7 +3777,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_registoproducao
 
 
 --
--- TOC entry 3499 (class 2606 OID 33715)
+-- TOC entry 3491 (class 2606 OID 33715)
 -- Name: ipv_bd2_projeto_registoproducao ipv_bd2_projeto_regi_equipamento_id_id_76f1b7be_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3971,7 +3786,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_registoproducao
 
 
 --
--- TOC entry 3500 (class 2606 OID 37408)
+-- TOC entry 3492 (class 2606 OID 37408)
 -- Name: ipv_bd2_projeto_registoproducao ipv_bd2_projeto_regi_expedicao_id_id_85c4025b_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3980,7 +3795,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_registoproducao
 
 
 --
--- TOC entry 3501 (class 2606 OID 33615)
+-- TOC entry 3493 (class 2606 OID 33615)
 -- Name: ipv_bd2_projeto_registoproducao ipv_bd2_projeto_regi_funcionario_id_id_76156b7b_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3989,7 +3804,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_registoproducao
 
 
 --
--- TOC entry 3502 (class 2606 OID 33777)
+-- TOC entry 3494 (class 2606 OID 33777)
 -- Name: ipv_bd2_projeto_registoproducao ipv_bd2_projeto_regi_tipo_mao_de_obra_id__966089c6_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -3998,7 +3813,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_registoproducao
 
 
 --
--- TOC entry 3511 (class 2606 OID 33628)
+-- TOC entry 3503 (class 2606 OID 33628)
 -- Name: ipv_bd2_projeto_utilizador_groups ipv_bd2_projeto_util_group_id_45e4a6ad_fk_auth_grou; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4007,7 +3822,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_utilizador_groups
 
 
 --
--- TOC entry 3513 (class 2606 OID 33642)
+-- TOC entry 3505 (class 2606 OID 33642)
 -- Name: ipv_bd2_projeto_utilizador_user_permissions ipv_bd2_projeto_util_permission_id_a05a2c5e_fk_auth_perm; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4016,7 +3831,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_utilizador_user_permissions
 
 
 --
--- TOC entry 3514 (class 2606 OID 33637)
+-- TOC entry 3506 (class 2606 OID 33637)
 -- Name: ipv_bd2_projeto_utilizador_user_permissions ipv_bd2_projeto_util_utilizador_id_0f32fd19_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4025,7 +3840,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_utilizador_user_permissions
 
 
 --
--- TOC entry 3512 (class 2606 OID 33623)
+-- TOC entry 3504 (class 2606 OID 33623)
 -- Name: ipv_bd2_projeto_utilizador_groups ipv_bd2_projeto_util_utilizador_id_a98d0b2a_fk_ipv_bd2_p; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -4033,7 +3848,7 @@ ALTER TABLE ONLY public.ipv_bd2_projeto_utilizador_groups
     ADD CONSTRAINT ipv_bd2_projeto_util_utilizador_id_a98d0b2a_fk_ipv_bd2_p FOREIGN KEY (utilizador_id) REFERENCES public.ipv_bd2_projeto_utilizador(id) DEFERRABLE INITIALLY DEFERRED;
 
 
--- Completed on 2024-01-03 16:57:18 UTC
+-- Completed on 2024-01-06 17:29:40 UTC
 
 --
 -- PostgreSQL database dump complete
