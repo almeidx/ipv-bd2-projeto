@@ -1,0 +1,24 @@
+[
+	{
+		"name": "Keyboard",
+		"cost": 49.99,
+		"supplier": {
+			"name": "Logitech",
+			"email": "support@logitech.com",
+			"address": "707 Key Street",
+			"postal_code": "45678",
+			"locality": "Input Town"
+		}
+	},
+	{
+		"name": "Mouse",
+		"cost": 29.99,
+		"supplier": {
+			"name": "Razer",
+			"email": "info@razer.com",
+			"address": "808 Click Avenue",
+			"postal_code": "56789",
+			"locality": "Peripheral City"
+		}
+	}
+]

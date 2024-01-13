@@ -90,6 +90,8 @@ def edit(request, id):
         cursor.execute("SELECT * FROM fn_get_component_order_amounts();")
         amounts = cursor.fetchall()
 
+    amounts = list(filter(lambda x: x[0] == id, amounts))
+
     if request.method == "POST":
         fornecedor_id_id = request.POST["fornecedor_id_id"]
 
@@ -115,8 +117,8 @@ def edit(request, id):
 
         componente_id = [int(x) for x in componente_id]
 
-        existing_amount_ids = [amount[0] for amount in amounts]
-        submitted_amount_ids = request.POST.getlist("amount_id")
+        existing_amount_ids = [amount[4] for amount in amounts]
+        submitted_amount_ids = [int(x) for x in request.POST.getlist("amount_id")]
 
         for amount_id in existing_amount_ids:
             if amount_id not in submitted_amount_ids:
@@ -132,21 +134,12 @@ def edit(request, id):
         cursor.execute("SELECT * FROM fn_get_encomenda_componentes_by_id(%s);", [id])
         component_order = cursor.fetchone()
 
-    component_order_data = {
-        "id": component_order[0],  # type: ignore
-        "created_at": component_order[1],  # type: ignore
-        "supplier_id": component_order[2],  # type: ignore
-        "employee_id": component_order[3],  # type: ignore
-        "exported": component_order[4],  # type: ignore
-    }
-
     preset_component_amounts = []
 
     for amount in amounts:
-        if amount[0] == component_order[0]:  # type: ignore
-            preset_component_amounts.append(
-                {"component_id": amount[3], "amount": amount[2]}
-            )
+        preset_component_amounts.append(
+            {"component_id": amount[3], "amount": amount[2], "amount_id": amount[4]}
+        )
 
     with connection.cursor() as cursor:
         cursor.execute("SELECT * FROM fn_get_components();")
